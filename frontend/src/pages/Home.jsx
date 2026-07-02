@@ -5,6 +5,7 @@ import {
   ChevronRight, 
   Activity 
 } from 'lucide-react';
+import LiveMatchBanner from '../components/LiveMatchBanner';
 
 const API_BASE = 'http://localhost:3000/api';
 
@@ -83,6 +84,16 @@ function buildWcScorers(matches) {
   return Object.values(scorerMap).sort((a, b) => b.goals - a.goals).slice(0, 5);
 }
 
+const parseScorers = (str) => {
+  if (!str || str === 'null') return [];
+  return str.replace(/[{}"]/g, '').split(',').map(s => {
+    const raw = s.trim();
+    const minute = raw.match(/\d+['+]?/)?.[0] || 'Goal';
+    const name = raw.replace(/\s\d+['+]?.*/, '').trim();
+    return { raw, name: name || raw, minute };
+  }).filter(s => s.name);
+};
+
 export default function Home() {
   const [plData, setPlData] = useState(null);
   const [wcData, setWcData] = useState(null);
@@ -90,12 +101,12 @@ export default function Home() {
   const [newsTab, setNewsTab] = useState('all');
   const [loadingNews, setLoadingNews] = useState(false);
 
-  // Layout Tab Switchers
-  const [heroMatchFeed, setHeroMatchFeed] = useState('pl'); // 'pl' or 'wc'
+  // Layout Tab Switchers - Default to World Cup since FIFA is ongoing
+  const [heroMatchFeed, setHeroMatchFeed] = useState('wc'); // 'pl' or 'wc'
   const [heroMatchState, setHeroMatchState] = useState('scores'); // 'scores' or 'upcoming'
-  const [standingsTab, setStandingsTab] = useState('pl'); // 'pl' or 'wc'
-  const [fixturesTab, setFixturesTab] = useState('pl'); // 'pl' or 'wc'
-  const [scorersTab, setScorersTab] = useState('pl'); // 'pl' or 'wc'
+  const [standingsTab, setStandingsTab] = useState('wc'); // 'pl' or 'wc'
+  const [fixturesTab, setFixturesTab] = useState('wc'); // 'pl' or 'wc'
+  const [scorersTab, setScorersTab] = useState('wc'); // 'pl' or 'wc'
   
   const [selectedWcGroup, setSelectedWcGroup] = useState('Group A');
   const [loading, setLoading] = useState(true);
@@ -167,6 +178,27 @@ export default function Home() {
     return wcData?.matches ? buildWcScorers(wcData.matches) : [];
   }, [wcData]);
 
+  // Detect live matches - World Cup (matches that are not finished and have today's date)
+  const liveWcMatch = useMemo(() => {
+    if (!wcData?.matches) return null;
+    const today = new Date().toISOString().slice(0, 10);
+    return wcData.matches.find(m => 
+      m.finished !== 'TRUE' && 
+      m.local_date && 
+      String(m.local_date).includes(today)
+    );
+  }, [wcData]);
+
+  // Detect live matches - Premier League (matches with LIVE status)
+  const livePlMatch = useMemo(() => {
+    if (!plData?.matches) return null;
+    return plData.matches.find(m => m.status === 'LIVE');
+  }, [plData]);
+
+  // Priority: World Cup live match first, then PL live match
+  const currentLiveMatch = liveWcMatch || livePlMatch;
+  const liveMatchTournament = liveWcMatch ? 'worldcup' : livePlMatch ? 'pl' : null;
+
   // Combined Ticker Stories
   const tickerStories = useMemo(() => {
     const rawStories = news.length ? news : FALLBACK_NEWS;
@@ -177,9 +209,9 @@ export default function Home() {
     ]);
   }, [news, wcFinished]);
 
-  // Pick Overall Featured Matches for Hero Spotlight
-  const plFeaturedHero = plUpcoming[0] || plFinished[0];
-  const wcFeaturedHero = wcUpcoming[0] || wcFinished[0];
+  // Pick Overall Featured Matches for Hero Spotlight - prioritize finished matches
+  const plFeaturedHero = plFinished[0] || plUpcoming[0];
+  const wcFeaturedHero = wcFinished[0] || wcUpcoming[0];
   const flagshipMatch = heroMatchFeed === 'pl' ? plFeaturedHero : wcFeaturedHero;
   const isFlagshipPL = heroMatchFeed === 'pl';
   const isFlagshipFinished = isFlagshipPL 
@@ -233,19 +265,36 @@ export default function Home() {
         <div className="absolute inset-x-0 bottom-0 h-44 bg-gradient-to-t from-[#06070a] to-transparent" />
 
         <div className="relative mx-auto max-w-7xl px-4 pb-12 pt-8 lg:px-6">
-          <div className="mb-7 flex flex-wrap items-center justify-between gap-3">
-            <span className="rounded-full border border-white/10 bg-white/10 px-4 py-2 text-xs font-black uppercase tracking-widest text-white/65">
-              Football Hub Central
-            </span>
-            <div className="flex gap-2">
-              <button onClick={() => navigate('/pl')} className="rounded-full border border-white/10 bg-purple-600/20 px-4 py-2 text-xs font-black uppercase tracking-widest text-purple-300 hover:bg-purple-600/40 transition">
-                PL Hub
-              </button>
-              <button onClick={() => navigate('/worldcup')} className="rounded-full border border-white/10 bg-yellow-500/20 px-4 py-2 text-xs font-black uppercase tracking-widest text-yellow-300 hover:bg-yellow-500/40 transition">
-                World Cup Hub
-              </button>
-            </div>
+          <div className="mb-7 flex flex-wrap items-center gap-3">
+            <button 
+              onClick={() => setHeroMatchFeed('wc')}
+              className={`rounded-full border px-4 py-2 text-xs font-black uppercase tracking-widest transition ${
+                heroMatchFeed === 'wc' 
+                  ? 'border-yellow-500 bg-yellow-500 text-black' 
+                  : 'border-white/10 bg-white/10 text-white/65 hover:text-white'
+              }`}
+            >
+              World Cup
+            </button>
+            <button 
+              onClick={() => setHeroMatchFeed('pl')}
+              className={`rounded-full border px-4 py-2 text-xs font-black uppercase tracking-widest transition ${
+                heroMatchFeed === 'pl' 
+                  ? 'border-purple-600 bg-purple-600 text-white' 
+                  : 'border-white/10 bg-white/10 text-white/65 hover:text-white'
+              }`}
+            >
+              Premier League
+            </button>
           </div>
+
+          {/* Live Match Banner - Prominent display for current live matches */}
+          {currentLiveMatch && (
+            <div className="mb-8">
+              <LiveMatchBanner match={currentLiveMatch} tournament={liveMatchTournament} />
+            </div>
+          )}
+
 
           <div className="grid gap-8 lg:grid-cols-[1fr_390px]">
             {/* Left Main Hero Panel */}
@@ -253,79 +302,84 @@ export default function Home() {
               <div className="absolute inset-0 bg-[linear-gradient(115deg,rgba(16,185,129,0.12),transparent_45%),linear-gradient(20deg,rgba(139,92,246,0.10),transparent_34%)]" />
               
               <div className="relative z-20 max-w-2xl">
-                <span className="rounded-full bg-emerald-300 px-4 py-2 text-xs font-black uppercase tracking-[0.3em] text-gray-950">
-                  Scores, stats & headlines
-                </span>
                 <h1 className="mt-7 max-w-3xl text-4xl font-black leading-[1.02] sm:text-6xl">
-                  {flagshipMatch ? (
-                    isFlagshipPL ? (
-                      `Next in PL: ${flagshipMatch.homeTeam?.shortName || flagshipMatch.homeTeam?.name} vs ${flagshipMatch.awayTeam?.shortName || flagshipMatch.awayTeam?.name}`
-                    ) : (
-                      `Next in WC: ${flagshipMatch.home_team_name_en} vs ${flagshipMatch.away_team_name_en}`
-                    )
-                  ) : (
-                    'The ultimate dual-tournament soccer central.'
-                  )}
+                  {isFlagshipPL ? 'Premier League Football Central' : 'World Cup Football Central'}
                 </h1>
-                <p className="mt-6 max-w-xl text-base leading-8 text-white/62 sm:text-lg">
-                  Follow live standings, fixtures, schedules, player golden boots, and transfer rumours from one single integrated dashboard.
+                <p className="mt-4 max-w-xl text-sm leading-6 text-white/50">
+                  {isFlagshipPL 
+                    ? 'Live standings, fixtures, schedules, and top scorers.' 
+                    : 'Live standings, fixtures, schedules, and top scorers.'}
                 </p>
-
-                {/* Hero Feature Match Switcher */}
-                <div className="mt-6 flex gap-2">
-                  <button 
-                    onClick={() => setHeroMatchFeed('pl')}
-                    className={`rounded-lg px-3 py-1.5 text-xs font-bold transition ${
-                      isFlagshipPL ? 'bg-purple-600 text-white' : 'bg-black/30 text-white/50 hover:text-white'
-                    }`}
-                  >
-                    Premier League Spotlight
-                  </button>
-                  <button 
-                    onClick={() => setHeroMatchFeed('wc')}
-                    className={`rounded-lg px-3 py-1.5 text-xs font-bold transition ${
-                      !isFlagshipPL ? 'bg-yellow-500 text-black font-extrabold' : 'bg-black/30 text-white/50 hover:text-white'
-                    }`}
-                  >
-                    World Cup Spotlight
-                  </button>
-                </div>
               </div>
 
-              {/* Featured Match Card */}
-              {flagshipMatch && (
-                <div className="relative z-20 mt-8 grid max-w-xl grid-cols-[1fr_auto_1fr] items-center gap-3 rounded-2xl border border-white/10 bg-black/25 p-4">
-                  <div className="min-w-0 flex items-center gap-3">
-                    {isFlagshipPL ? (
-                      flagshipMatch.homeTeam?.crest && <img src={flagshipMatch.homeTeam.crest} alt="" className="h-9 w-9 object-contain" />
-                    ) : (
-                      flagshipMatch.home_team?.flag && <img src={flagshipMatch.home_team.flag} alt="" className="h-9 w-12 rounded-lg object-cover" />
-                    )}
-                    <span className="truncate text-sm font-black">
-                      {isFlagshipPL ? (flagshipMatch.homeTeam?.shortName || flagshipMatch.homeTeam?.name) : flagshipMatch.home_team_name_en}
-                    </span>
+              {/* Featured Match Card - Enhanced visual prominence */}
+              {flagshipMatch && (() => {
+                const homeScorers = isFlagshipPL ? [] : parseScorers(flagshipMatch.home_scorers);
+                const awayScorers = isFlagshipPL ? [] : parseScorers(flagshipMatch.away_scorers);
+                
+                return (
+                  <div 
+                    onClick={() => navigate('/match/' + flagshipMatch.id)}
+                    className="relative z-20 mt-8 cursor-pointer max-w-xl rounded-3xl border-2 border-yellow-500/30 bg-gradient-to-r from-yellow-950/40 via-yellow-900/20 to-yellow-950/40 p-6 hover:border-yellow-400/50 hover:scale-[1.02] transition-all shadow-xl shadow-yellow-500/10"
+                  >
+                    <div className="grid grid-cols-[1fr_auto_1fr] items-start gap-4">
+                      <div className="min-w-0">
+                        <div className="flex items-center gap-4">
+                          {isFlagshipPL ? (
+                            flagshipMatch.homeTeam?.crest && <img src={flagshipMatch.homeTeam.crest} alt="" className="h-12 w-12 object-contain shadow-lg" />
+                          ) : (
+                            flagshipMatch.home_team?.flag && <img src={flagshipMatch.home_team.flag} alt="" className="h-12 w-16 rounded-xl object-cover shadow-lg" />
+                          )}
+                          <span className="truncate text-lg font-black text-white">
+                            {isFlagshipPL ? (flagshipMatch.homeTeam?.shortName || flagshipMatch.homeTeam?.name) : flagshipMatch.home_team_name_en}
+                          </span>
+                        </div>
+                        {isFlagshipFinished && !isFlagshipPL && homeScorers.length > 0 && (
+                          <div className="mt-3 ml-16 space-y-1">
+                            {homeScorers.map((goal, idx) => (
+                              <div key={idx} className="text-xs text-white/60">
+                                {goal.name} {goal.minute}'
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                      <div className="rounded-2xl bg-white px-6 py-3 text-center shadow-2xl border-2 border-yellow-500/30">
+                        <div className="text-2xl font-black text-gray-950 tracking-wider">
+                          {isFlagshipFinished ? (
+                            isFlagshipPL ? (
+                              `${flagshipMatch.score?.fullTime?.home}-${flagshipMatch.score?.fullTime?.away}`
+                            ) : (
+                              `${flagshipMatch.home_score}-${flagshipMatch.away_score}`
+                            )
+                          ) : 'VS'}
+                        </div>
+                      </div>
+                      <div className="min-w-0">
+                        <div className="flex items-center justify-end gap-4">
+                          <span className="truncate text-right text-lg font-black text-white">
+                            {isFlagshipPL ? (flagshipMatch.awayTeam?.shortName || flagshipMatch.awayTeam?.name) : flagshipMatch.away_team_name_en}
+                          </span>
+                          {isFlagshipPL && flagshipMatch.awayTeam?.crest ? (
+                            <img src={flagshipMatch.awayTeam.crest} alt="" className="h-12 w-12 object-contain shadow-lg" />
+                          ) : !isFlagshipPL && flagshipMatch.away_team?.flag ? (
+                            <img src={flagshipMatch.away_team.flag} alt="" className="h-12 w-16 rounded-xl object-cover shadow-lg" />
+                          ) : null}
+                        </div>
+                        {isFlagshipFinished && !isFlagshipPL && awayScorers.length > 0 && (
+                          <div className="mt-3 mr-16 space-y-1 text-right">
+                            {awayScorers.map((goal, idx) => (
+                              <div key={idx} className="text-xs text-white/60">
+                                {goal.name} {goal.minute}'
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </div>
                   </div>
-                  <div className="rounded-xl bg-white px-3 py-2 text-sm font-black text-gray-950">
-                    {isFlagshipFinished ? (
-                      isFlagshipPL ? (
-                        `${flagshipMatch.score?.fullTime?.home}-${flagshipMatch.score?.fullTime?.away}`
-                      ) : (
-                        `${flagshipMatch.home_score}-${flagshipMatch.away_score}`
-                      )
-                    ) : 'VS'}
-                  </div>
-                  <div className="min-w-0 flex items-center justify-end gap-3">
-                    <span className="truncate text-right text-sm font-black">
-                      {isFlagshipPL ? (flagshipMatch.awayTeam?.shortName || flagshipMatch.awayTeam?.name) : flagshipMatch.away_team_name_en}
-                    </span>
-                    {isFlagshipPL ? (
-                      flagshipMatch.awayTeam?.crest && <img src={flagshipMatch.awayTeam.crest} alt="" className="h-9 w-9 object-contain" />
-                    ) : (
-                      flagshipMatch.away_team?.flag && <img src={flagshipMatch.away_team.flag} alt="" className="h-9 w-12 rounded-lg object-cover" />
-                    )}
-                  </div>
-                </div>
-              )}
+                );
+              })()}
 
               {/* Central Quick Stats grid */}
               <div className="mt-10 grid max-w-xl grid-cols-2 gap-3 sm:grid-cols-4">
@@ -413,32 +467,32 @@ export default function Home() {
                       <div 
                         key={match.id || idx}
                         onClick={() => navigate('/match/' + match.id)}
-                        className="cursor-pointer rounded-xl bg-black/35 p-3.5 hover:bg-white/5 transition border border-white/5"
+                        className="cursor-pointer rounded-xl bg-black/35 p-4 hover:bg-white/5 transition border border-white/5 hover:border-yellow-500/30"
                       >
-                        <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-2">
-                          <div className="flex items-center gap-2 min-w-0">
+                        <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-3">
+                          <div className="flex items-center gap-3 min-w-0">
                             {isPL ? (
-                              homeCrest && <img src={homeCrest} className="h-5 w-5 object-contain" alt="" />
+                              homeCrest && <img src={homeCrest} className="h-7 w-7 object-contain" alt="" />
                             ) : (
-                              homeCrest && <img src={homeCrest} className="h-3.5 w-5 rounded object-cover" alt="" />
+                              homeCrest && <img src={homeCrest} className="h-5 w-7 rounded object-cover" alt="" />
                             )}
-                            <span className="truncate text-xs font-bold">{homeName}</span>
+                            <span className="truncate text-sm font-black text-white">{homeName}</span>
                           </div>
                           
-                          <div className="rounded bg-white/10 px-2 py-1 text-[11px] font-black text-white text-center min-w-[50px]">
+                          <div className="rounded-lg bg-white px-3 py-1.5 text-sm font-black text-gray-950 text-center min-w-[60px] shadow-lg">
                             {isFinished ? scoreText : 'VS'}
                           </div>
 
-                          <div className="flex items-center justify-end gap-2 min-w-0 text-right">
-                            <span className="truncate text-xs font-bold">{awayName}</span>
+                          <div className="flex items-center justify-end gap-3 min-w-0 text-right">
+                            <span className="truncate text-sm font-black text-white">{awayName}</span>
                             {isPL ? (
-                              awayCrest && <img src={awayCrest} className="h-5 w-5 object-contain" alt="" />
+                              awayCrest && <img src={awayCrest} className="h-7 w-7 object-contain" alt="" />
                             ) : (
-                              awayCrest && <img src={awayCrest} className="h-3.5 w-5 rounded object-cover" alt="" />
+                              awayCrest && <img src={awayCrest} className="h-5 w-7 rounded object-cover" alt="" />
                             )}
                           </div>
                         </div>
-                        <div className="mt-2 text-[10px] text-white/35 flex justify-between">
+                        <div className="mt-3 text-[11px] text-white/40 flex justify-between font-bold">
                           <span>{isPL ? `Matchday ${match.matchday}` : `Group ${match.group}`}</span>
                           <span>{isPL ? formatMatchDate(match.utcDate, true) : formatMatchDate(match.local_date, false)}</span>
                         </div>
@@ -484,6 +538,69 @@ export default function Home() {
           {/* Main Content Area (8 columns) */}
           <div className="space-y-8 lg:col-span-8">
             
+            {/* Next Match Card - Above standings */}
+            {(standingsTab === 'pl' ? plUpcoming[0] : wcUpcoming[0]) && (
+              <div>
+                <div className="mb-4">
+                  <p className="text-xs font-black uppercase tracking-[0.26em] text-white/45">Upcoming</p>
+                  <h2 className="mt-1 text-3xl font-black">Next match</h2>
+                </div>
+                {(() => {
+                  const nextMatch = standingsTab === 'pl' ? plUpcoming[0] : wcUpcoming[0];
+                  const isPL = standingsTab === 'pl';
+                  const homeName = isPL ? (nextMatch.homeTeam?.shortName || nextMatch.homeTeam?.name) : nextMatch.home_team_name_en;
+                  const awayName = isPL ? (nextMatch.awayTeam?.shortName || nextMatch.awayTeam?.name) : nextMatch.away_team_name_en;
+                  const homeFlag = isPL ? nextMatch.homeTeam?.crest : nextMatch.home_team?.flag;
+                  const awayFlag = isPL ? nextMatch.awayTeam?.crest : nextMatch.away_team?.flag;
+                  const matchDate = isPL ? formatMatchDate(nextMatch.utcDate, true) : formatMatchDate(nextMatch.local_date, false);
+                  const matchTime = isPL ? formatMatchTime(nextMatch.utcDate, true) : formatMatchTime(nextMatch.local_date, false);
+
+                  return (
+                    <div 
+                      onClick={() => navigate('/match/' + nextMatch.id)}
+                      className="cursor-pointer rounded-2xl border border-white/10 bg-white/[0.045] p-6 hover:border-yellow-500/30 transition"
+                    >
+                      <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-6">
+                        <div className="flex items-center gap-4">
+                          {homeFlag && (
+                            <img src={homeFlag} alt={homeName} className={`h-14 w-14 object-contain ${isPL ? '' : 'rounded-xl'} shadow-lg`} />
+                          )}
+                          <div>
+                            <h3 className="text-lg font-black text-white">{homeName}</h3>
+                            {isPL && nextMatch.homeTeam?.name && (
+                              <p className="text-xs text-white/40">{nextMatch.homeTeam.name}</p>
+                            )}
+                          </div>
+                        </div>
+                        
+                        <div className="text-center">
+                          <div className="rounded-xl bg-black/30 px-6 py-3 border border-white/10">
+                            <div className="text-2xl font-black text-white">VS</div>
+                          </div>
+                          <div className="mt-3 space-y-1">
+                            <p className="text-xs font-bold text-white/40">{matchDate}</p>
+                            <p className="text-sm font-black text-yellow-300">{matchTime}</p>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center justify-end gap-4">
+                          <div className="text-right">
+                            <h3 className="text-lg font-black text-white">{awayName}</h3>
+                            {isPL && nextMatch.awayTeam?.name && (
+                              <p className="text-xs text-white/40">{nextMatch.awayTeam.name}</p>
+                            )}
+                          </div>
+                          {awayFlag && (
+                            <img src={awayFlag} alt={awayName} className={`h-14 w-14 object-contain ${isPL ? '' : 'rounded-xl'} shadow-lg`} />
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })()}
+              </div>
+            )}
+
             {/* Dynamic Standings Section */}
             <div>
               <div className="mb-4 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
@@ -546,48 +663,51 @@ export default function Home() {
                   ))}
                 </div>
               ) : (
-                /* World Cup Groups Standings View */
-                <div className="space-y-4">
-                  <div className="flex justify-between items-center bg-black/25 p-3 rounded-2xl border border-white/10">
-                    <span className="text-xs font-bold text-white/40">Select Group:</span>
-                    <select 
-                      value={selectedWcGroup}
-                      onChange={(e) => setSelectedWcGroup(e.target.value)}
-                      className="rounded-lg bg-black px-3 py-1.5 text-xs font-bold text-yellow-300 border border-white/10 outline-none cursor-pointer"
-                    >
-                      {wcData?.groups?.map(g => (
-                        <option key={g.name} value={g.name} className="bg-black text-white">{g.name}</option>
-                      ))}
-                    </select>
+                /* World Cup Top Teams Standings View - Top 10 across all groups */
+                <div className="rounded-2xl border border-white/10 bg-white/[0.045] overflow-hidden">
+                  <div className="grid grid-cols-12 px-4 py-3 text-[11px] font-bold uppercase tracking-widest text-white/40 border-b border-white/10">
+                    <span className="col-span-1">#</span>
+                    <span className="col-span-4">Nation</span>
+                    <span className="col-span-1 text-center">Grp</span>
+                    <span className="col-span-1 text-center">GP</span>
+                    <span className="col-span-1 text-center">W</span>
+                    <span className="col-span-1 text-center">D</span>
+                    <span className="col-span-1 text-center">L</span>
+                    <span className="col-span-1 text-center">GD</span>
+                    <span className="col-span-1 text-center text-white">Pts</span>
                   </div>
-
-                  <div className="rounded-2xl border border-white/10 bg-white/[0.045] overflow-hidden">
-                    <div className="grid grid-cols-12 px-4 py-3 text-[11px] font-bold uppercase tracking-widest text-white/40 border-b border-white/10">
-                      <span className="col-span-1">Pos</span>
-                      <span className="col-span-4">Nation</span>
-                      <span className="col-span-1 text-center">GP</span>
-                      <span className="col-span-1 text-center">W</span>
-                      <span className="col-span-1 text-center">D</span>
-                      <span className="col-span-1 text-center">L</span>
-                      <span className="col-span-1 text-center">GD</span>
-                      <span className="col-span-2 text-center text-white">Pts</span>
-                    </div>
-                    {(wcData?.groups?.find(g => g.name === selectedWcGroup) || wcData?.groups?.[0])?.teams?.map((row, idx) => (
+                  {(() => {
+                    // Flatten all teams from all groups and sort by points
+                    const allTeams = [];
+                    wcData?.groups?.forEach(group => {
+                      group.teams.forEach(team => {
+                        allTeams.push({
+                          ...team,
+                          groupName: group.name
+                        });
+                      });
+                    });
+                    const topTeams = allTeams.sort((a, b) => Number(b.pts) - Number(a.pts) || Number(b.gd) - Number(a.gd)).slice(0, 10);
+                    
+                    return topTeams.map((row, idx) => (
                       <div key={row.team_id || idx} className="grid grid-cols-12 items-center px-4 py-3 border-b border-white/5 hover:bg-white/5 transition">
-                        <span className={`col-span-1 text-sm font-black ${idx < 2 ? 'text-yellow-300' : 'text-white/40'}`}>{idx + 1}</span>
+                        <span className={'col-span-1 text-sm font-black ' + (idx < 3 ? 'text-yellow-300' : 'text-white/40')}>{idx + 1}</span>
                         <div className="col-span-4 flex items-center gap-2 min-w-0">
-                          {row.team?.flag ? <img src={row.team.flag} className="h-3.5 w-5 object-cover rounded-sm" alt="" /> : <div className="h-3.5 w-5 bg-white/10 rounded-sm" />}
+                          {row.team?.flag ? <img src={row.team.flag} className="h-5 w-7 rounded object-cover flex-shrink-0" alt={row.team?.name_en} /> : <div className="h-5 w-7 bg-white/10 rounded flex-shrink-0" />}
                           <span className="truncate text-sm font-bold">{row.team?.name_en || 'Unknown'}</span>
                         </div>
+                        <span className="col-span-1 text-center text-xs text-white/40">{row.groupName}</span>
                         <span className="col-span-1 text-center text-sm text-white/60">{row.mp}</span>
                         <span className="col-span-1 text-center text-sm text-white/60">{row.w}</span>
                         <span className="col-span-1 text-center text-sm text-white/60">{row.d}</span>
                         <span className="col-span-1 text-center text-sm text-white/60">{row.l}</span>
-                        <span className="col-span-1 text-center text-sm text-white/60">{Number(row.gd) > 0 ? `+${row.gd}` : row.gd}</span>
-                        <span className="col-span-2 text-center font-black text-sm text-yellow-300">{row.pts}</span>
+                        <span className={'col-span-1 text-center text-sm ' + (Number(row.gd) > 0 ? 'text-emerald-300' : Number(row.gd) < 0 ? 'text-red-300' : 'text-white/40')}>
+                          {Number(row.gd) > 0 ? '+' : ''}{row.gd}
+                        </span>
+                        <span className={'col-span-1 text-center font-black text-sm ' + (idx < 3 ? 'text-yellow-300' : 'text-white')}>{row.pts}</span>
                       </div>
-                    ))}
-                  </div>
+                    ));
+                  })()}
                 </div>
               )}
             </div>
@@ -622,38 +742,38 @@ export default function Home() {
                     <div 
                       key={match.id || idx}
                       onClick={() => navigate('/match/' + match.id)}
-                      className="group cursor-pointer rounded-2xl border border-white/10 bg-white/[0.045] p-5 transition hover:border-emerald-300/50"
+                      className="group cursor-pointer rounded-2xl border border-white/10 bg-white/[0.045] p-6 transition hover:border-yellow-500/40 hover:scale-[1.01]"
                     >
-                      <span className="rounded-full bg-black/25 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-white/45">
+                      <span className="rounded-full bg-yellow-500/20 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-yellow-300 border border-yellow-500/20">
                         {isPL ? `Matchday ${match.matchday}` : `Group ${match.group}`}
                       </span>
 
-                      <div className="mt-5 grid grid-cols-[1fr_auto_1fr] items-center gap-3">
-                        <div className="min-w-0 flex flex-col items-center text-center">
+                      <div className="mt-5 grid grid-cols-[1fr_auto_1fr] items-center gap-4">
+                        <div className="min-w-0 flex items-center gap-3">
                           {isPL ? (
-                            homeCrest && <img src={homeCrest} className="h-10 w-10 object-contain mb-2" alt="" />
+                            homeCrest && <img src={homeCrest} className="h-12 w-12 object-contain shadow-lg" alt="" />
                           ) : (
-                            homeCrest && <img src={homeCrest} className="h-7 w-11 rounded object-cover mb-2" alt="" />
+                            homeCrest && <img src={homeCrest} className="h-9 w-12 rounded-xl object-cover shadow-lg" alt="" />
                           )}
-                          <h4 className="truncate w-full text-xs font-black">{homeName}</h4>
+                          <h4 className="truncate text-sm font-black text-white">{homeName}</h4>
                         </div>
                         
-                        <div className="rounded-xl bg-black/30 px-3 py-2 text-center text-xs font-black text-white/40 min-w-[55px]">
+                        <div className="rounded-xl bg-black/30 px-4 py-2 text-center text-sm font-black text-white/60 min-w-[65px] border border-white/10">
                           {isPL ? formatMatchTime(match.utcDate, true) : formatMatchTime(match.local_date, false)}
                         </div>
 
-                        <div className="min-w-0 flex flex-col items-center text-center">
+                        <div className="min-w-0 flex items-center justify-end gap-3">
+                          <h4 className="truncate text-sm font-black text-white">{awayName}</h4>
                           {isPL ? (
-                            awayCrest && <img src={awayCrest} className="h-10 w-10 object-contain mb-2" alt="" />
+                            awayCrest && <img src={awayCrest} className="h-12 w-12 object-contain shadow-lg" alt="" />
                           ) : (
-                            awayCrest && <img src={awayCrest} className="h-7 w-11 rounded object-cover mb-2" alt="" />
+                            awayCrest && <img src={awayCrest} className="h-9 w-12 rounded-xl object-cover shadow-lg" alt="" />
                           )}
-                          <h4 className="truncate w-full text-xs font-black">{awayName}</h4>
                         </div>
                       </div>
 
-                      <div className="mt-4 pt-3 border-t border-white/5 text-center text-[10px] text-white/40">
-                        Kickoff: {isPL ? formatMatchDate(match.utcDate, true) : formatMatchDate(match.local_date, false)}
+                      <div className="mt-4 pt-3 border-t border-white/5 text-center text-[11px] text-white/40 font-bold">
+                        {isPL ? formatMatchDate(match.utcDate, true) : formatMatchDate(match.local_date, false)}
                       </div>
                     </div>
                   );
