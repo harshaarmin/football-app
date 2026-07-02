@@ -1,0 +1,571 @@
+// import { useEffect, useMemo, useState } from 'react'
+// import { useNavigate } from 'react-router-dom'
+// import axios from 'axios'
+
+// const API_BASE = 'http://localhost:3000/api'
+
+// const HERO_PLAYERS = [
+//   {
+//     name: 'Cole Palmer',
+//     club: 'Chelsea',
+//     image: 'https://resources.premierleague.com/premierleague/photos/players/250x250/p244851.png',
+//     flag: 'https://flagcdn.com/w80/gb-eng.png',
+//   },
+//   {
+//     name: 'Erling Haaland',
+//     club: 'Manchester City',
+//     image: 'https://resources.premierleague.com/premierleague/photos/players/250x250/p223094.png',
+//     flag: 'https://flagcdn.com/w80/no.png',
+//   },
+//   {
+//     name: 'Bukayo Saka',
+//     club: 'Arsenal',
+//     image: 'https://resources.premierleague.com/premierleague/photos/players/250x250/p223340.png',
+//     flag: 'https://flagcdn.com/w80/gb-eng.png',
+//   },
+// ]
+
+// const LEAGUES = [
+//   { key: 'all', label: 'All', path: '/' },
+//   { key: 'worldcup', label: 'World Cup', path: '/worldcup' },
+//   { key: 'premier', label: 'Premier League', path: '/pl' },
+//   { key: 'fixtures', label: 'Fixtures', path: '/worldcup/fixtures' },
+// ]
+
+// const FALLBACK_NEWS = [
+//   {
+//     title: 'Liverpool push for another attacking signing before the window closes',
+//     content: 'Clubs across Europe are moving quickly as managers shape their squads for the next run of fixtures.',
+//     link: '#',
+//     image: 'https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=1400&q=80',
+//   },
+//   {
+//     title: 'Premier League clubs prepare for a busy week of medicals and announcements',
+//     content: 'Recruitment teams are pushing to close deals before squads travel for summer tours.',
+//     link: '#',
+//     image: 'https://images.unsplash.com/photo-1517927033932-b3d18e61fb3a?auto=format&fit=crop&w=1200&q=80',
+//   },
+//   {
+//     title: 'World Cup contenders reveal refreshed squads and new generation stars',
+//     content: 'National teams are shaping early plans around pace, pressing and younger attacking profiles.',
+//     link: '#',
+//     image: 'https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=1200&q=80',
+//   },
+// ]
+
+// const FALLBACK_TRANSFERS = [
+//   { player: 'Alexander Isak', from: 'Newcastle', to: 'Liverpool', status: 'Rumour', detail: 'Forward shortlist' },
+//   { player: 'Victor Osimhen', from: 'Napoli', to: 'Chelsea', status: 'Talks', detail: 'Striker search' },
+//   { player: 'Florian Wirtz', from: 'Leverkusen', to: 'Man City', status: 'Linked', detail: 'Creative midfield' },
+//   { player: 'Nico Williams', from: 'Athletic Club', to: 'Arsenal', status: 'Watching', detail: 'Wide option' },
+// ]
+
+// const FALLBACK_SCORERS = [
+//   { name: 'Kylian Mbappe', team: 'France', goals: 8 },
+//   { name: 'Harry Kane', team: 'England', goals: 6 },
+//   { name: 'Lionel Messi', team: 'Argentina', goals: 5 },
+//   { name: 'Julian Alvarez', team: 'Argentina', goals: 4 },
+//   { name: 'Cody Gakpo', team: 'Netherlands', goals: 3 },
+// ]
+
+// const flagUrl = (code) => code ? `https://flagcdn.com/w80/${code}.png` : ''
+
+// function parseScorers(str) {
+//   if (!str || str === 'null') return []
+
+//   return str
+//     .replace(/[{}"]/g, '')
+//     .split(',')
+//     .map((item) => item.trim())
+//     .filter(Boolean)
+//     .map((item) => item.replace(/\s+\d+['’]?$/g, '').trim())
+// }
+
+// function formatDate(value) {
+//   if (!value) return 'TBC'
+//   const date = new Date(value)
+//   if (Number.isNaN(date.getTime())) return String(value).split(' ')[0]
+//   return date.toLocaleDateString(undefined, { month: 'short', day: 'numeric' })
+// }
+
+// function formatTime(value) {
+//   if (!value) return ''
+//   const date = new Date(value)
+//   if (Number.isNaN(date.getTime())) {
+//     const parts = String(value).split(' ')
+//     return parts[1] || ''
+//   }
+//   return date.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' })
+// }
+
+// function buildTopScorers(matches) {
+//   const scorerMap = new Map()
+
+//   matches.forEach((match) => {
+//     const rows = [
+//       [parseScorers(match.home_scorers), match.home_team_name_en],
+//       [parseScorers(match.away_scorers), match.away_team_name_en],
+//     ]
+
+//     rows.forEach(([scorers, team]) => {
+//       scorers.forEach((name) => {
+//         const current = scorerMap.get(name) || { name, team, goals: 0 }
+//         scorerMap.set(name, { ...current, goals: current.goals + 1 })
+//       })
+//     })
+//   })
+
+//   const scorers = [...scorerMap.values()]
+//     .sort((a, b) => b.goals - a.goals || a.name.localeCompare(b.name))
+//     .slice(0, 6)
+
+//   return scorers.length ? scorers : FALLBACK_SCORERS
+// }
+
+// function buildTransfers(news) {
+//   const transferWords = ['sign', 'transfer', 'deal', 'join', 'move', 'bid', 'medical']
+//   const items = news
+//     .filter((story) => transferWords.some((word) => story.title?.toLowerCase().includes(word)))
+//     .slice(0, 6)
+//     .map((story, index) => ({
+//       player: story.title.split(':').pop().trim().split(' ').slice(0, 5).join(' '),
+//       from: index % 2 ? 'European club' : 'Current club',
+//       to: index % 2 ? 'Premier League' : 'Top division',
+//       status: index % 3 === 0 ? 'Breaking' : index % 3 === 1 ? 'Talks' : 'Linked',
+//       detail: 'Latest report',
+//       link: story.link,
+//       title: story.title,
+//     }))
+
+//   return items.length ? items : FALLBACK_TRANSFERS
+// }
+
+// function MatchRow({ match, mode, onClick }) {
+//   const isFinished = match.finished === 'TRUE'
+
+//   return (
+//     <button
+//       onClick={onClick}
+//       className="group w-full rounded-2xl border border-white/10 bg-white/[0.045] p-4 text-left transition hover:-translate-y-0.5 hover:border-emerald-300/50 hover:bg-white/[0.07]"
+//     >
+//       <div className="mb-3 flex items-center justify-between gap-3">
+//         <span className="rounded-full bg-black/25 px-3 py-1 text-[11px] font-bold uppercase tracking-widest text-white/45">
+//           Group {match.group || 'A'} · MD {match.matchday || '-'}
+//         </span>
+//         <span className={`rounded-full px-3 py-1 text-[11px] font-black uppercase tracking-widest ${isFinished ? 'bg-white/10 text-white/60' : 'bg-emerald-300 text-gray-950'}`}>
+//           {isFinished ? 'FT' : mode === 'upcoming' ? formatTime(match.local_date) || 'TBC' : 'Live'}
+//         </span>
+//       </div>
+
+//       <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-3">
+//         <div className="min-w-0">
+//           <div className="flex items-center gap-2">
+//             {match.home_team?.flag && <img src={match.home_team.flag} alt="" className="h-6 w-9 rounded object-cover" />}
+//             <span className="truncate text-sm font-black text-white">{match.home_team_name_en}</span>
+//           </div>
+//         </div>
+
+//         <div className="min-w-[82px] rounded-xl bg-black/30 px-3 py-2 text-center">
+//           {isFinished ? (
+//             <span className="text-xl font-black text-white">
+//               {match.home_score}<span className="mx-1 text-white/25">-</span>{match.away_score}
+//             </span>
+//           ) : (
+//             <span className="text-sm font-black uppercase text-white/45">vs</span>
+//           )}
+//         </div>
+
+//         <div className="min-w-0">
+//           <div className="flex items-center justify-end gap-2">
+//             <span className="truncate text-right text-sm font-black text-white">{match.away_team_name_en}</span>
+//             {match.away_team?.flag && <img src={match.away_team.flag} alt="" className="h-6 w-9 rounded object-cover" />}
+//           </div>
+//         </div>
+//       </div>
+//     </button>
+//   )
+// }
+
+// export default function Home() {
+//   const [matches, setMatches] = useState([])
+//   const [news, setNews] = useState([])
+//   const [activeFeed, setActiveFeed] = useState('scores')
+//   const [selectedLeague, setSelectedLeague] = useState('all')
+//   const [loading, setLoading] = useState(true)
+//   const navigate = useNavigate()
+
+//   useEffect(() => {
+//     let mounted = true
+
+//     axios.get(`${API_BASE}/worldcup/matches`).then((res) => {
+//       if (!mounted) return
+//       setMatches(res.data || [])
+//       setLoading(false)
+//     }).catch(() => {
+//       if (!mounted) return
+//       setLoading(false)
+//     })
+
+//     axios.get(`${API_BASE}/news`).then((res) => {
+//       if (!mounted) return
+//       setNews(res.data || [])
+//     }).catch(() => {
+//       if (!mounted) return
+//       setNews([])
+//     })
+
+//     return () => {
+//       mounted = false
+//     }
+//   }, [])
+
+//   const finished = useMemo(
+//     () => matches.filter((match) => match.finished === 'TRUE').sort((a, b) => new Date(b.local_date) - new Date(a.local_date)),
+//     [matches],
+//   )
+//   const upcoming = useMemo(
+//     () => matches.filter((match) => match.finished !== 'TRUE').sort((a, b) => new Date(a.local_date) - new Date(b.local_date)),
+//     [matches],
+//   )
+//   const topScorers = useMemo(() => buildTopScorers(finished), [finished])
+//   const transfers = useMemo(() => buildTransfers(news), [news])
+//   const stories = news.length ? news : FALLBACK_NEWS
+//   const lastMatch = finished[0]
+//   const nextMatch = upcoming[0]
+//   const heroMatch = lastMatch || nextMatch || matches[0]
+//   const displayMatches = activeFeed === 'scores' ? finished.slice(0, 6) : upcoming.slice(0, 6)
+//   const totalGoals = finished.reduce((sum, match) => sum + Number(match.home_score || 0) + Number(match.away_score || 0), 0)
+//   const tickerItems = [
+//     ...stories.slice(0, 4).map((story) => story.title),
+//     'Fixtures, scores, scorers and headlines updated through the matchday',
+//   ]
+
+//   if (loading) {
+//     return (
+//       <div className="flex min-h-[70vh] items-center justify-center bg-[#06070a] px-4">
+//         <div className="w-full max-w-md rounded-2xl border border-white/10 bg-white/[0.04] p-7 text-center">
+//           <div className="mx-auto mb-5 h-12 w-12 rounded-full border-4 border-emerald-300 border-t-transparent animate-spin" />
+//           <p className="text-sm font-black uppercase tracking-[0.28em] text-emerald-300">Loading matchday</p>
+//         </div>
+//       </div>
+//     )
+//   }
+
+//   return (
+//     <main className="min-h-screen bg-[#06070a] text-white">
+//       <section className="relative overflow-hidden">
+//         <div className="absolute inset-0 bg-[radial-gradient(circle_at_12%_12%,rgba(16,185,129,0.24),transparent_30%),radial-gradient(circle_at_88%_8%,rgba(59,130,246,0.22),transparent_32%),linear-gradient(135deg,#07110d_0%,#0d1320_48%,#050608_100%)]" />
+//         <img
+//           src="https://images.unsplash.com/photo-1577223625816-7546f13df25d?auto=format&fit=crop&w=1800&q=80"
+//           alt=""
+//           className="absolute inset-0 h-full w-full object-cover opacity-[0.16]"
+//         />
+//         <div className="absolute inset-x-0 bottom-0 h-44 bg-gradient-to-t from-[#06070a] to-transparent" />
+
+//         <div className="relative mx-auto max-w-7xl px-4 pb-8 pt-7 lg:px-6">
+//           <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
+//             <div className="flex flex-wrap gap-2">
+//               {LEAGUES.map((league) => (
+//                 <button
+//                   key={league.key}
+//                   onClick={() => {
+//                     setSelectedLeague(league.key)
+//                     if (league.path !== '/') navigate(league.path)
+//                   }}
+//                   className={`rounded-full border px-4 py-2 text-xs font-black uppercase tracking-widest transition ${
+//                     selectedLeague === league.key
+//                       ? 'border-emerald-300 bg-emerald-300 text-gray-950'
+//                       : 'border-white/10 bg-white/10 text-white/70 hover:border-white/30 hover:text-white'
+//                   }`}
+//                 >
+//                   {league.label}
+//                 </button>
+//               ))}
+//             </div>
+//             <button onClick={() => navigate('/worldcup/fixtures')} className="rounded-full border border-white/10 bg-white/10 px-4 py-2 text-xs font-black uppercase tracking-widest text-white/70 hover:border-emerald-300 hover:text-white">
+//               Full fixtures
+//             </button>
+//           </div>
+
+//           <div className="grid gap-6 lg:grid-cols-[1fr_390px]">
+//             <div className="relative min-h-[520px] overflow-hidden rounded-[32px] border border-white/10 bg-white/[0.045] p-5 sm:p-8">
+//               <div className="absolute inset-0 bg-[linear-gradient(115deg,rgba(16,185,129,0.18),transparent_45%),linear-gradient(20deg,rgba(239,68,68,0.16),transparent_34%)]" />
+//               <img src={flagUrl('gb-eng')} alt="" className="absolute left-7 top-8 h-14 w-24 rotate-[-8deg] rounded-xl object-cover opacity-75 shadow-xl" />
+//               <img src={flagUrl('br')} alt="" className="absolute right-8 top-10 h-14 w-24 rotate-[8deg] rounded-xl object-cover opacity-75 shadow-xl" />
+//               <img src={flagUrl('ar')} alt="" className="absolute bottom-32 left-10 h-14 w-24 rotate-[7deg] rounded-xl object-cover opacity-65 shadow-xl" />
+
+//               <div className="relative z-20 max-w-2xl">
+//                 <span className="rounded-full bg-emerald-300 px-4 py-2 text-xs font-black uppercase tracking-[0.3em] text-gray-950">
+//                   Matchday central
+//                 </span>
+//                 <h1 className="mt-6 max-w-3xl text-5xl font-black leading-[0.95] sm:text-7xl">
+//                   Scores, stories and every big football moment.
+//                 </h1>
+//                 <p className="mt-5 max-w-xl text-base leading-7 text-white/65 sm:text-lg">
+//                   Follow results, upcoming games, scorers, transfers and football news from one match-first home screen.
+//                 </p>
+//               </div>
+
+//               <div className="absolute bottom-8 left-5 right-5 z-30 sm:left-8 sm:right-8">
+//                 <div className="rounded-3xl border border-white/10 bg-black/55 p-4 shadow-2xl backdrop-blur-xl">
+//                   <div className="mb-4 flex items-center justify-between gap-4">
+//                     <div>
+//                       <p className="text-xs font-black uppercase tracking-[0.26em] text-emerald-300">
+//                         {heroMatch?.finished === 'TRUE' ? 'Latest score' : 'Next kickoff'}
+//                       </p>
+//                       <p className="mt-1 text-sm text-white/45">
+//                         {heroMatch?.group ? `Group ${heroMatch.group}` : 'Featured match'} · {formatDate(heroMatch?.local_date)}
+//                       </p>
+//                     </div>
+//                     <button
+//                       onClick={() => heroMatch?.id ? navigate(`/match/${heroMatch.id}`) : navigate('/worldcup')}
+//                       className="rounded-xl bg-white px-4 py-3 text-sm font-black text-gray-950 transition hover:bg-emerald-300"
+//                     >
+//                       Match center
+//                     </button>
+//                   </div>
+
+//                   <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-4">
+//                     <div className="min-w-0">
+//                       {heroMatch?.home_team?.flag && <img src={heroMatch.home_team.flag} alt="" className="mb-3 h-12 w-16 rounded-xl object-cover" />}
+//                       <h2 className="truncate text-2xl font-black">{heroMatch?.home_team_name_en || 'England'}</h2>
+//                     </div>
+//                     <div className="rounded-2xl bg-white px-4 py-3 text-center text-gray-950">
+//                       {heroMatch?.finished === 'TRUE' ? (
+//                         <div className="text-3xl font-black">{heroMatch.home_score}<span className="mx-1 text-gray-400">-</span>{heroMatch.away_score}</div>
+//                       ) : (
+//                         <>
+//                           <div className="text-2xl font-black">VS</div>
+//                           <div className="text-[10px] font-black uppercase tracking-widest text-gray-500">{formatTime(heroMatch?.local_date) || 'TBC'}</div>
+//                         </>
+//                       )}
+//                     </div>
+//                     <div className="min-w-0 text-right">
+//                       {heroMatch?.away_team?.flag && <img src={heroMatch.away_team.flag} alt="" className="ml-auto mb-3 h-12 w-16 rounded-xl object-cover" />}
+//                       <h2 className="truncate text-2xl font-black">{heroMatch?.away_team_name_en || 'Brazil'}</h2>
+//                     </div>
+//                   </div>
+//                 </div>
+//               </div>
+
+//               <div className="absolute bottom-40 right-0 top-20 z-10 hidden w-[58%] items-end justify-end gap-2 pr-5 md:flex">
+//                 {HERO_PLAYERS.map((player, index) => (
+//                   <div key={player.name} className={`relative flex h-[330px] flex-1 items-end overflow-hidden rounded-[28px] bg-gradient-to-t ${index === 0 ? 'from-blue-500/30' : index === 1 ? 'from-cyan-400/30 mb-12' : 'from-amber-400/30'} to-transparent`}>
+//                     <img src={player.flag} alt="" className="absolute left-3 top-3 h-8 w-12 rounded-md object-cover opacity-75" />
+//                     <img src={player.image} alt={player.name} className="relative z-10 h-[285px] w-full object-contain object-bottom drop-shadow-[0_22px_26px_rgba(0,0,0,0.72)]" />
+//                     <div className="absolute inset-x-2 bottom-2 z-20 rounded-xl bg-black/35 px-2 py-2 text-center backdrop-blur">
+//                       <div className="truncate text-[11px] font-black">{player.name}</div>
+//                       <div className="truncate text-[9px] uppercase tracking-widest text-white/45">{player.club}</div>
+//                     </div>
+//                   </div>
+//                 ))}
+//               </div>
+//             </div>
+
+//             <div className="rounded-[28px] border border-white/10 bg-white/[0.045] p-5">
+//               <div className="mb-4 flex items-center justify-between">
+//                 <div>
+//                   <p className="text-xs font-black uppercase tracking-[0.26em] text-emerald-300">Today</p>
+//                   <h2 className="mt-1 text-2xl font-black">Match feed</h2>
+//                 </div>
+//                 <div className="rounded-full bg-emerald-300 px-3 py-1 text-xs font-black text-gray-950">{finished.length} FT</div>
+//               </div>
+
+//               <div className="mb-4 grid grid-cols-2 rounded-2xl bg-black/25 p-1">
+//                 {[
+//                   { key: 'scores', label: 'Scores' },
+//                   { key: 'upcoming', label: 'Upcoming' },
+//                 ].map((tab) => (
+//                   <button
+//                     key={tab.key}
+//                     onClick={() => setActiveFeed(tab.key)}
+//                     className={`rounded-xl px-3 py-2 text-sm font-black transition ${activeFeed === tab.key ? 'bg-white text-gray-950' : 'text-white/50 hover:text-white'}`}
+//                   >
+//                     {tab.label}
+//                   </button>
+//                 ))}
+//               </div>
+
+//               <div className="space-y-3">
+//                 {displayMatches.slice(0, 4).map((match, index) => (
+//                   <MatchRow key={match.id || index} match={match} mode={activeFeed} onClick={() => navigate(`/match/${match.id}`)} />
+//                 ))}
+//               </div>
+//             </div>
+//           </div>
+//         </div>
+//       </section>
+
+//       <section className="border-y border-white/10 bg-emerald-300 text-gray-950">
+//         <div className="kickoff-ticker flex overflow-hidden whitespace-nowrap py-3 text-sm font-black uppercase tracking-wider">
+//           {[...tickerItems, ...tickerItems].map((item, index) => (
+//             <span key={`${item}-${index}`} className="mx-6 inline-flex items-center gap-3">
+//               <span className="h-2 w-2 rounded-full bg-gray-950" />
+//               {item}
+//             </span>
+//           ))}
+//         </div>
+//       </section>
+
+//       <div className="mx-auto max-w-7xl px-4 py-8 lg:px-6">
+//         <section className="mb-8 grid grid-cols-2 gap-3 md:grid-cols-4">
+//           {[
+//             { label: 'Matches played', value: finished.length },
+//             { label: 'Upcoming', value: upcoming.length },
+//             { label: 'Goals', value: totalGoals },
+//             { label: 'Avg goals', value: (totalGoals / Math.max(finished.length, 1)).toFixed(1) },
+//           ].map((item) => (
+//             <div key={item.label} className="rounded-2xl border border-white/10 bg-white/[0.045] p-5">
+//               <div className="text-3xl font-black">{item.value}</div>
+//               <div className="mt-1 text-xs font-bold uppercase tracking-widest text-white/40">{item.label}</div>
+//             </div>
+//           ))}
+//         </section>
+
+//         <section className="grid grid-cols-1 gap-6 lg:grid-cols-12">
+//           <div className="space-y-6 lg:col-span-8">
+//             <div>
+//               <div className="mb-4 flex items-end justify-between gap-4">
+//                 <div>
+//                   <p className="text-xs font-black uppercase tracking-[0.26em] text-emerald-300">Fixtures</p>
+//                   <h2 className="mt-1 text-3xl font-black">Coming up next</h2>
+//                 </div>
+//                 <button onClick={() => navigate('/worldcup/fixtures')} className="rounded-xl border border-white/10 px-4 py-2 text-sm font-bold text-white/65 hover:border-emerald-300 hover:text-white">
+//                   View all
+//                 </button>
+//               </div>
+//               <div className="grid gap-3 md:grid-cols-2">
+//                 {(upcoming.length ? upcoming : matches).slice(0, 4).map((match, index) => (
+//                   <MatchRow key={match.id || index} match={match} mode="upcoming" onClick={() => navigate(`/match/${match.id}`)} />
+//                 ))}
+//               </div>
+//             </div>
+
+//             <div>
+//               <div className="mb-4 flex items-end justify-between gap-4">
+//                 <div>
+//                   <p className="text-xs font-black uppercase tracking-[0.26em] text-emerald-300">Latest news</p>
+//                   <h2 className="mt-1 text-3xl font-black">Football headlines</h2>
+//                 </div>
+//               </div>
+//               <div className="grid gap-4 md:grid-cols-3">
+//                 {stories.slice(0, 3).map((story, index) => (
+//                   <a key={`${story.title}-${index}`} href={story.link} target="_blank" rel="noopener noreferrer" className={`${index === 0 ? 'md:col-span-2 md:row-span-2' : ''} group overflow-hidden rounded-2xl border border-white/10 bg-white/[0.045] transition hover:-translate-y-0.5 hover:border-emerald-300/50`}>
+//                     <div
+//                       className={`${index === 0 ? 'h-72' : 'h-40'} bg-cover bg-center transition duration-500 group-hover:scale-[1.03]`}
+//                       style={{ backgroundImage: `url(${story.image || FALLBACK_NEWS[index % FALLBACK_NEWS.length].image})` }}
+//                     />
+//                     <div className="p-5">
+//                       <span className="text-xs font-black uppercase tracking-widest text-emerald-300">Football</span>
+//                       <h3 className={`${index === 0 ? 'text-3xl' : 'text-lg'} mt-2 font-black leading-tight`}>{story.title}</h3>
+//                       {index === 0 && <p className="mt-3 line-clamp-3 text-sm leading-6 text-white/55">{story.content}</p>}
+//                     </div>
+//                   </a>
+//                 ))}
+//               </div>
+//             </div>
+
+//             <div>
+//               <div className="mb-4 flex items-end justify-between gap-4">
+//                 <div>
+//                   <p className="text-xs font-black uppercase tracking-[0.26em] text-emerald-300">Transfers</p>
+//                   <h2 className="mt-1 text-3xl font-black">Market watch</h2>
+//                 </div>
+//               </div>
+//               <div className="grid auto-cols-[minmax(260px,1fr)] grid-flow-col gap-4 overflow-x-auto pb-2">
+//                 {transfers.map((item, index) => {
+//                   const content = (
+//                     <div className="min-h-[180px] rounded-2xl border border-white/10 bg-white/[0.045] p-5 transition hover:border-emerald-300/50">
+//                       <div className="mb-5 flex items-center justify-between gap-3">
+//                         <span className="rounded-full bg-emerald-300 px-3 py-1 text-xs font-black uppercase text-gray-950">{item.status}</span>
+//                         <span className="text-xs font-bold text-white/40">{item.detail}</span>
+//                       </div>
+//                       <h3 className="line-clamp-2 text-xl font-black leading-tight">{item.player}</h3>
+//                       <div className="mt-5 grid grid-cols-[1fr_auto_1fr] items-center gap-2 text-xs">
+//                         <span className="truncate rounded-xl bg-black/25 px-3 py-2 text-white/60">{item.from}</span>
+//                         <span className="font-black text-emerald-300">to</span>
+//                         <span className="truncate rounded-xl bg-black/25 px-3 py-2 text-white/60">{item.to}</span>
+//                       </div>
+//                     </div>
+//                   )
+
+//                   return item.link ? (
+//                     <a key={`${item.player}-${index}`} href={item.link} target="_blank" rel="noopener noreferrer" title={item.title}>{content}</a>
+//                   ) : (
+//                     <div key={`${item.player}-${index}`}>{content}</div>
+//                   )
+//                 })}
+//               </div>
+//             </div>
+//           </div>
+
+//           <aside className="space-y-6 lg:col-span-4">
+//             <div className="rounded-2xl border border-white/10 bg-white/[0.045] p-5">
+//               <div className="mb-4 flex items-center justify-between gap-4">
+//                 <div>
+//                   <p className="text-xs font-black uppercase tracking-[0.26em] text-emerald-300">Players</p>
+//                   <h2 className="mt-1 text-2xl font-black">Top scorers</h2>
+//                 </div>
+//                 <button onClick={() => navigate('/worldcup/players')} className="rounded-xl bg-white px-3 py-2 text-xs font-black text-gray-950 hover:bg-emerald-300">
+//                   All
+//                 </button>
+//               </div>
+//               <div className="space-y-3">
+//                 {topScorers.map((scorer, index) => (
+//                   <div key={`${scorer.name}-${index}`} className="flex items-center gap-3 rounded-xl bg-black/25 p-3">
+//                     <div className={`flex h-10 w-10 items-center justify-center rounded-xl text-sm font-black ${index === 0 ? 'bg-amber-300 text-gray-950' : 'bg-white/10 text-white'}`}>
+//                       {index + 1}
+//                     </div>
+//                     <div className="min-w-0 flex-1">
+//                       <div className="truncate font-black">{scorer.name}</div>
+//                       <div className="truncate text-xs text-white/45">{scorer.team}</div>
+//                     </div>
+//                     <div className="text-2xl font-black text-emerald-300">{scorer.goals}</div>
+//                   </div>
+//                 ))}
+//               </div>
+//             </div>
+
+//             <div className="rounded-2xl border border-white/10 bg-white/[0.045] p-5">
+//               <p className="text-xs font-black uppercase tracking-[0.26em] text-emerald-300">Winners</p>
+//               <h2 className="mt-1 text-2xl font-black">Tournament pulse</h2>
+//               <div className="mt-5 grid grid-cols-2 gap-3">
+//                 {[
+//                   { label: 'Played', value: finished.length },
+//                   { label: 'Remaining', value: upcoming.length },
+//                   { label: 'Goals', value: totalGoals },
+//                   { label: 'Best scorer', value: topScorers[0]?.goals || 0 },
+//                 ].map((item) => (
+//                   <div key={item.label} className="rounded-xl bg-black/25 p-3">
+//                     <div className="text-2xl font-black">{item.value}</div>
+//                     <div className="mt-1 text-[10px] font-bold uppercase tracking-widest text-white/35">{item.label}</div>
+//                   </div>
+//                 ))}
+//               </div>
+//               <button onClick={() => navigate('/worldcup/standings')} className="mt-4 w-full rounded-xl border border-white/10 px-4 py-3 text-sm font-black text-white/70 hover:border-emerald-300 hover:text-white">
+//                 View standings
+//               </button>
+//             </div>
+
+//             <div className="rounded-2xl border border-white/10 bg-white/[0.045] p-5">
+//               <p className="text-xs font-black uppercase tracking-[0.26em] text-emerald-300">Explore</p>
+//               <div className="mt-4 grid gap-2">
+//                 {[
+//                   { label: 'World Cup overview', path: '/worldcup' },
+//                   { label: 'Group standings', path: '/worldcup/standings' },
+//                   { label: 'Premier League table', path: '/pl/standings' },
+//                   { label: 'Premier League fixtures', path: '/pl/fixtures' },
+//                 ].map((link) => (
+//                   <button key={link.path} onClick={() => navigate(link.path)} className="flex items-center justify-between rounded-xl bg-black/25 px-4 py-3 text-left text-sm font-bold text-white/70 hover:bg-white/10 hover:text-white">
+//                     {link.label}
+//                     <span>→</span>
+//                   </button>
+//                 ))}
+//               </div>
+//             </div>
+//           </aside>
+//         </section>
+//       </div>
+//     </main>
+//   )
+// }

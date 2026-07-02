@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@keyframes kickoffTicker {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.kickoff-ticker {
+  animation: kickoffTicker 34s linear infinite;
+}
+
+.kickoff-ticker:hover {
+  animation-play-state: paused;
+}

@@ -1,30 +1,66 @@
-const express = require('express')
-const cors = require('cors')
-const dotenv = require('dotenv')
+const express = require("express");
+const cors = require("cors");
+const dotenv = require("dotenv");
 
-// Load your .env variables
-dotenv.config()
+dotenv.config();
 
-const app = express()
-const PORT = process.env.PORT || 3000
+const app = express();
+const PORT = process.env.PORT || 3000;
 
-// Middleware — runs on every request
-app.use(cors())          // allow frontend to talk to this server
-app.use(express.json())  // parse incoming JSON
+app.use(cors());
+app.use(express.json());
 
-// Health check route — just to confirm server is alive
-app.get('/', (req, res) => {
-    res.json({ message: 'Football app backend is running!' })
-})
+// ================= ROUTES =================
 
-// Import routes (we'll create these next)
-const matchesRouter = require('./routes/matches')
-const standingsRouter = require('./routes/standings')
+const homeRouter = require("./routes/home");
+const competitionsRouter = require("./routes/competitions");
+const worldcupRouter = require("./routes/worldcup");
+const newsRouter = require("./routes/news");
+const searchRouter = require("./routes/search");
+const matchRouter = require("./routes/match");
+const plRouter = require("./routes/pl");
 
-app.use('/api/matches', matchesRouter)
-app.use('/api/standings', standingsRouter)
+// ================= ROOT =================
 
-// Start the server
+app.get("/", (req, res) => {
+
+    res.json({
+
+        app: "Football Hub API",
+
+        version: "2.0.0",
+
+        status: "Running"
+
+    });
+
+});
+
+// ================= API =================
+
+app.use("/api/home", homeRouter);
+
+app.use("/api/competitions", competitionsRouter);
+
+app.use("/api/worldcup", worldcupRouter);
+
+app.use("/api/news", newsRouter);
+
+app.use("/api/search", searchRouter);
+
+app.use("/api/match", matchRouter);
+
+app.use("/api/pl", plRouter);
+
+// ================= SERVER =================
+
 app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`)
-})
+
+    console.log("");
+    console.log("=====================================");
+    console.log("⚽ Football Hub Backend Started");
+    console.log(`🚀 http://localhost:${PORT}`);
+    console.log("=====================================");
+    console.log("");
+
+});
