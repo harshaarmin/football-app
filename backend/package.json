@@ -12,12 +12,14 @@
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
+    "@prisma/client": "^6.19.3",
     "axios": "^1.18.1",
     "cheerio": "^1.2.0",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
     "node-cron": "^4.5.0",
+    "prisma": "^6.19.3",
     "rss-parser": "^3.13.0"
   },
   "devDependencies": {
