@@ -34,7 +34,7 @@ export default function TopPlayers({ players, competition }) {
 
             <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
 
-                {players.slice(0,6).map((player,index)=>(
+                {players.slice(0, 6).map((player, index) => (
 
                     <div
 
@@ -48,7 +48,7 @@ export default function TopPlayers({ players, competition }) {
 
                         <div className="relative z-10 p-5">
 
-                                                        {/* RANK */}
+                            {/* RANK */}
 
                             <div className="flex items-center justify-between">
 

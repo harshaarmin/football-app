@@ -456,11 +456,10 @@ export default function MatchDetail() {
             <button
               key={key}
               onClick={() => setActiveTab(key)}
-              className={`min-w-max border-b-2 px-5 py-4 text-sm font-black transition ${
-                activeTab === key
+              className={`min-w-max border-b-2 px-5 py-4 text-sm font-black transition ${activeTab === key
                   ? 'border-yellow-300 text-white'
                   : 'border-transparent text-white/45 hover:text-white'
-              }`}
+                }`}
             >
               {label}
             </button>

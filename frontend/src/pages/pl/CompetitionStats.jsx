@@ -118,34 +118,34 @@ export default function CompetitionStats({ standings, matches, competition }) {
 
                     return (
 
-                    <div
-                        key={card.title}
-                        className="relative min-h-[156px] overflow-hidden rounded-2xl border border-white/10 bg-white/[0.045] p-5 transition duration-300 hover:border-cyan-300/40"
-                    >
+                        <div
+                            key={card.title}
+                            className="relative min-h-[156px] overflow-hidden rounded-2xl border border-white/10 bg-white/[0.045] p-5 transition duration-300 hover:border-cyan-300/40"
+                        >
 
-                        <div className="absolute inset-0 bg-[linear-gradient(130deg,rgba(255,255,255,0.06),transparent_42%)]" />
+                            <div className="absolute inset-0 bg-[linear-gradient(130deg,rgba(255,255,255,0.06),transparent_42%)]" />
 
-                        <div className="relative z-10 flex h-full flex-col justify-between">
+                            <div className="relative z-10 flex h-full flex-col justify-between">
 
-                            <Icon className={card.color} size={26} />
+                                <Icon className={card.color} size={26} />
 
-                            <div>
-                                <div className="text-4xl font-black text-white">
+                                <div>
+                                    <div className="text-4xl font-black text-white">
 
-                                    {card.value}
+                                        {card.value}
 
+                                    </div>
+
+                                    <div className="mt-1 text-sm font-bold text-white/50">
+
+                                        {card.title}
+
+                                    </div>
                                 </div>
 
-                                <div className="mt-1 text-sm font-bold text-white/50">
-
-                                    {card.title}
-
-                                </div>
                             </div>
 
                         </div>
-
-                    </div>
 
                     );
                 })}

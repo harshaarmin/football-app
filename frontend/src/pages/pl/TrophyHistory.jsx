@@ -45,61 +45,61 @@ export default function TrophyHistory() {
 
     return (
 
-<section className="mb-20">
+        <section className="mb-20">
 
-<div className="flex items-center justify-between mb-8">
+            <div className="flex items-center justify-between mb-8">
 
-<div>
+                <div>
 
-<div className="uppercase tracking-[5px] text-purple-400 text-sm">
+                    <div className="uppercase tracking-[5px] text-purple-400 text-sm">
 
-History
+                        History
 
-</div>
+                    </div>
 
-<h2 className="text-5xl font-black text-white">
+                    <h2 className="text-5xl font-black text-white">
 
-Premier League Champions
+                        Premier League Champions
 
-</h2>
+                    </h2>
 
-</div>
+                </div>
 
-<button
+                <button
 
-onClick={()=>navigate("/pl/history")}
+                    onClick={() => navigate("/pl/history")}
 
-className="text-purple-400 hover:text-white"
+                    className="text-purple-400 hover:text-white"
 
->
+                >
 
-View All →
+                    View All →
 
-</button>
+                </button>
 
-</div>
+            </div>
 
-<div className="relative">
+            <div className="relative">
 
-{/* Timeline */}
+                {/* Timeline */}
 
-<div className="absolute top-20 left-0 right-0 h-[2px] bg-gradient-to-r from-purple-500 via-cyan-400 to-pink-500"/>
+                <div className="absolute top-20 left-0 right-0 h-[2px] bg-gradient-to-r from-purple-500 via-cyan-400 to-pink-500" />
 
-<div className="grid lg:grid-cols-5 gap-8 relative">
+                <div className="grid lg:grid-cols-5 gap-8 relative">
 
-{winners.map((club,index)=>(
+                    {winners.map((club, index) => (
 
-<div
+                        <div
 
-key={club.season}
+                            key={club.season}
 
-className="group text-center"
+                            className="group text-center"
 
->
+                        >
 
-<div className="relative">
+                            <div className="relative">
 
-<div className="
+                                <div className="
 absolute
 left-1/2
 -top-2
@@ -113,7 +113,7 @@ border-[#090B16]
 z-20
 "/>
 
-<div className={`
+                                <div className={`
 mt-10
 rounded-[28px]
 bg-gradient-to-br
@@ -127,45 +127,45 @@ transition-all
 duration-300
 `}>
 
-<img
+                                    <img
 
-src={club.crest}
+                                        src={club.crest}
 
-className="w-20 h-20 mx-auto object-contain drop-shadow-2xl"
+                                        className="w-20 h-20 mx-auto object-contain drop-shadow-2xl"
 
-/>
+                                    />
 
-<h3 className="text-white font-black text-2xl mt-5">
+                                    <h3 className="text-white font-black text-2xl mt-5">
 
-{club.club}
+                                        {club.club}
 
-</h3>
+                                    </h3>
 
-<p className="text-gray-400 mt-2">
+                                    <p className="text-gray-400 mt-2">
 
-Premier League Winner
+                                        Premier League Winner
 
-</p>
+                                    </p>
 
-<div className="mt-6 inline-flex rounded-full bg-white/10 px-4 py-2 text-sm text-purple-300">
+                                    <div className="mt-6 inline-flex rounded-full bg-white/10 px-4 py-2 text-sm text-purple-300">
 
-🏆 {club.season}
+                                        🏆 {club.season}
 
-</div>
+                                    </div>
 
-</div>
+                                </div>
 
-</div>
+                            </div>
 
-</div>
+                        </div>
 
-))}
+                    ))}
 
-</div>
+                </div>
 
-</div>
+            </div>
 
-</section>
+        </section>
 
     );
 

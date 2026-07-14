@@ -10,8 +10,8 @@ export default function LiveMatchBanner({ match, tournament = 'worldcup' }) {
   const awayName = isWorldCup ? match.away_team_name_en : match.awayTeam?.shortName || match.awayTeam?.name;
   const homeFlag = isWorldCup ? match.home_team?.flag : match.homeTeam?.crest;
   const awayFlag = isWorldCup ? match.away_team?.flag : match.awayTeam?.crest;
-  const scoreText = isWorldCup 
-    ? `${match.home_score} - ${match.away_score}` 
+  const scoreText = isWorldCup
+    ? `${match.home_score} - ${match.away_score}`
     : `${match.score?.fullTime?.home ?? 0} - ${match.score?.fullTime?.away ?? 0}`;
   const isLive = isWorldCup ? match.finished !== 'TRUE' : match.status === 'LIVE';
 
@@ -54,7 +54,7 @@ export default function LiveMatchBanner({ match, tournament = 'worldcup' }) {
       {/* Animated background gradient */}
       <div className="absolute inset-0 bg-[linear-gradient(45deg,rgba(239,68,68,0.15),transparent_50%,rgba(239,68,68,0.15))] animate-pulse" />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(239,68,68,0.2),transparent_50%)]" />
-      
+
       <div className="relative z-10">
         {/* Header with LIVE indicator */}
         <div className="mb-6 flex items-center justify-between">

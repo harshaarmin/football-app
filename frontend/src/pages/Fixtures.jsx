@@ -35,8 +35,8 @@ function Fixtures() {
                 <button
                     onClick={() => setActiveTab('pl')}
                     className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${activeTab === 'pl'
-                            ? 'bg-green-500 text-black'
-                            : 'bg-gray-800 text-gray-400 hover:text-white'
+                        ? 'bg-green-500 text-black'
+                        : 'bg-gray-800 text-gray-400 hover:text-white'
                         }`}
                 >
                     Premier League
@@ -44,8 +44,8 @@ function Fixtures() {
                 <button
                     onClick={() => setActiveTab('cl')}
                     className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${activeTab === 'cl'
-                            ? 'bg-green-500 text-black'
-                            : 'bg-gray-800 text-gray-400 hover:text-white'
+                        ? 'bg-green-500 text-black'
+                        : 'bg-gray-800 text-gray-400 hover:text-white'
                         }`}
                 >
                     Champions League

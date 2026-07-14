@@ -187,69 +187,68 @@ export default function PLFixtures() {
                             </div>
                             <div className="grid gap-4">
                                 {matches.map((match) => {
-                        const isResult = match.status === "FINISHED";
+                                    const isResult = match.status === "FINISHED";
 
-                        return (
-                            <article
-                                key={match.id}
-                                className="rounded-2xl border border-white/10 bg-white/[0.045] p-4 transition hover:-translate-y-0.5 hover:border-cyan-300/40 sm:p-5"
-                            >
-                                <div className="grid gap-5 lg:grid-cols-[190px_1fr_150px] lg:items-center">
-                                    <div>
-                                        <div className="inline-flex items-center gap-2 rounded-full bg-cyan-300/10 px-4 py-2 text-cyan-200">
-                                            <CalendarDays size={16} />
-                                            <span className="text-sm font-black">{formatDate(match.utcDate)}</span>
-                                        </div>
-                                        <div className="mt-3 inline-flex items-center gap-2 text-sm font-bold text-white/45">
-                                            <Clock3 size={15} />
-                                            {isResult ? "Full time" : formatTime(match.utcDate)}
-                                        </div>
-                                    </div>
+                                    return (
+                                        <article
+                                            key={match.id}
+                                            className="rounded-2xl border border-white/10 bg-white/[0.045] p-4 transition hover:-translate-y-0.5 hover:border-cyan-300/40 sm:p-5"
+                                        >
+                                            <div className="grid gap-5 lg:grid-cols-[190px_1fr_150px] lg:items-center">
+                                                <div>
+                                                    <div className="inline-flex items-center gap-2 rounded-full bg-cyan-300/10 px-4 py-2 text-cyan-200">
+                                                        <CalendarDays size={16} />
+                                                        <span className="text-sm font-black">{formatDate(match.utcDate)}</span>
+                                                    </div>
+                                                    <div className="mt-3 inline-flex items-center gap-2 text-sm font-bold text-white/45">
+                                                        <Clock3 size={15} />
+                                                        {isResult ? "Full time" : formatTime(match.utcDate)}
+                                                    </div>
+                                                </div>
 
-                                    <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-3">
-                                        <div className="min-w-0 flex items-center gap-3">
-                                            <img src={match.homeTeam.crest} alt="" className="h-12 w-12 flex-shrink-0 object-contain" />
-                                            <div className="min-w-0">
-                                                <p className="truncate text-lg font-black">{teamName(match.homeTeam)}</p>
-                                                <p className="text-xs font-bold text-white/40">Home</p>
+                                                <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-3">
+                                                    <div className="min-w-0 flex items-center gap-3">
+                                                        <img src={match.homeTeam.crest} alt="" className="h-12 w-12 flex-shrink-0 object-contain" />
+                                                        <div className="min-w-0">
+                                                            <p className="truncate text-lg font-black">{teamName(match.homeTeam)}</p>
+                                                            <p className="text-xs font-bold text-white/40">Home</p>
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="rounded-xl bg-white px-4 py-2 text-center text-base font-black text-gray-950">
+                                                        {isResult ? (
+                                                            <>
+                                                                {match.score.fullTime.home}
+                                                                <span className="mx-1 text-gray-400">-</span>
+                                                                {match.score.fullTime.away}
+                                                            </>
+                                                        ) : (
+                                                            "VS"
+                                                        )}
+                                                    </div>
+
+                                                    <div className="min-w-0 flex items-center justify-end gap-3">
+                                                        <div className="min-w-0 text-right">
+                                                            <p className="truncate text-lg font-black">{teamName(match.awayTeam)}</p>
+                                                            <p className="text-xs font-bold text-white/40">Away</p>
+                                                        </div>
+                                                        <img src={match.awayTeam.crest} alt="" className="h-12 w-12 flex-shrink-0 object-contain" />
+                                                    </div>
+                                                </div>
+
+                                                <div className="text-left lg:text-right">
+                                                    <span className={`inline-flex rounded-full px-4 py-2 text-xs font-black uppercase tracking-widest ${isResult
+                                                            ? "bg-emerald-300/15 text-emerald-200"
+                                                            : "bg-cyan-300/15 text-cyan-200"
+                                                        }`}>
+                                                        {isResult ? "Result" : match.status}
+                                                    </span>
+                                                    <p className="mt-2 text-sm font-bold text-white/40">Matchday {match.matchday || "--"}</p>
+                                                </div>
                                             </div>
-                                        </div>
-
-                                        <div className="rounded-xl bg-white px-4 py-2 text-center text-base font-black text-gray-950">
-                                            {isResult ? (
-                                                <>
-                                                    {match.score.fullTime.home}
-                                                    <span className="mx-1 text-gray-400">-</span>
-                                                    {match.score.fullTime.away}
-                                                </>
-                                            ) : (
-                                                "VS"
-                                            )}
-                                        </div>
-
-                                        <div className="min-w-0 flex items-center justify-end gap-3">
-                                            <div className="min-w-0 text-right">
-                                                <p className="truncate text-lg font-black">{teamName(match.awayTeam)}</p>
-                                                <p className="text-xs font-bold text-white/40">Away</p>
-                                            </div>
-                                            <img src={match.awayTeam.crest} alt="" className="h-12 w-12 flex-shrink-0 object-contain" />
-                                        </div>
-                                    </div>
-
-                                    <div className="text-left lg:text-right">
-                                        <span className={`inline-flex rounded-full px-4 py-2 text-xs font-black uppercase tracking-widest ${
-                                            isResult
-                                                ? "bg-emerald-300/15 text-emerald-200"
-                                                : "bg-cyan-300/15 text-cyan-200"
-                                        }`}>
-                                            {isResult ? "Result" : match.status}
-                                        </span>
-                                        <p className="mt-2 text-sm font-bold text-white/40">Matchday {match.matchday || "--"}</p>
-                                    </div>
-                                </div>
-                            </article>
-                        );
-                    })}
+                                        </article>
+                                    );
+                                })}
                             </div>
                         </div>
                     ))}

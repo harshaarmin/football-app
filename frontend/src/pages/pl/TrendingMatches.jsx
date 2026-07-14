@@ -27,11 +27,10 @@ export default function TrendingMatches({ matches }) {
                         >
                             <div className="mb-4 flex items-center justify-between">
                                 <span
-                                    className={`rounded-full px-3 py-1 text-[10px] font-black uppercase tracking-widest ${
-                                        isFinished
+                                    className={`rounded-full px-3 py-1 text-[10px] font-black uppercase tracking-widest ${isFinished
                                             ? "bg-emerald-300/15 text-emerald-200"
                                             : "bg-cyan-300/15 text-cyan-200"
-                                    }`}
+                                        }`}
                                 >
                                     {isFinished ? "Full time" : match.status}
                                 </span>

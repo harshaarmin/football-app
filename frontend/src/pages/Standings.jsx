@@ -44,8 +44,8 @@ function Standings() {
                     <div
                         key={row.team.id}
                         className={`grid grid-cols-12 items-center px-4 py-3 border-b border-gray-800 hover:bg-gray-800 transition-colors ${index < 4 ? 'border-l-2 border-l-blue-500' :
-                                index < 6 ? 'border-l-2 border-l-orange-500' :
-                                    index >= 17 ? 'border-l-2 border-l-red-500' : ''
+                            index < 6 ? 'border-l-2 border-l-orange-500' :
+                                index >= 17 ? 'border-l-2 border-l-red-500' : ''
                             }`}
                     >
                         <span className="col-span-1 text-gray-400 text-sm">{row.position}</span>

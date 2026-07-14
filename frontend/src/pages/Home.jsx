@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { 
-  ChevronRight, 
-  Activity 
+import {
+  ChevronRight,
+  Activity
 } from 'lucide-react';
 import LiveMatchBanner from '../components/LiveMatchBanner';
 
@@ -107,7 +107,7 @@ export default function Home() {
   const [standingsTab, setStandingsTab] = useState('wc'); // 'pl' or 'wc'
   const [fixturesTab, setFixturesTab] = useState('wc'); // 'pl' or 'wc'
   const [scorersTab, setScorersTab] = useState('wc'); // 'pl' or 'wc'
-  
+
   const [selectedWcGroup, setSelectedWcGroup] = useState('Group A');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -182,9 +182,9 @@ export default function Home() {
   const liveWcMatch = useMemo(() => {
     if (!wcData?.matches) return null;
     const today = new Date().toISOString().slice(0, 10);
-    return wcData.matches.find(m => 
-      m.finished !== 'TRUE' && 
-      m.local_date && 
+    return wcData.matches.find(m =>
+      m.finished !== 'TRUE' &&
+      m.local_date &&
       String(m.local_date).includes(today)
     );
   }, [wcData]);
@@ -214,8 +214,8 @@ export default function Home() {
   const wcFeaturedHero = wcFinished[0] || wcUpcoming[0];
   const flagshipMatch = heroMatchFeed === 'pl' ? plFeaturedHero : wcFeaturedHero;
   const isFlagshipPL = heroMatchFeed === 'pl';
-  const isFlagshipFinished = isFlagshipPL 
-    ? flagshipMatch?.status === 'FINISHED' 
+  const isFlagshipFinished = isFlagshipPL
+    ? flagshipMatch?.status === 'FINISHED'
     : flagshipMatch?.finished === 'TRUE';
 
   // Stats Counters
@@ -235,7 +235,7 @@ export default function Home() {
           </div>
           <p className="text-xs font-black uppercase tracking-[0.3em] text-red-400">Connection Failed</p>
           <p className="mt-2 text-sm text-white/60">{error}</p>
-          <button 
+          <button
             onClick={() => window.location.reload()}
             className="mt-6 w-full rounded-xl bg-white px-4 py-2.5 text-xs font-black uppercase tracking-widest text-black hover:bg-cyan-400 transition"
           >
@@ -266,23 +266,21 @@ export default function Home() {
 
         <div className="relative mx-auto max-w-7xl px-4 pb-12 pt-8 lg:px-6">
           <div className="mb-7 flex flex-wrap items-center gap-3">
-            <button 
+            <button
               onClick={() => setHeroMatchFeed('wc')}
-              className={`rounded-full border px-4 py-2 text-xs font-black uppercase tracking-widest transition ${
-                heroMatchFeed === 'wc' 
-                  ? 'border-yellow-500 bg-yellow-500 text-black' 
+              className={`rounded-full border px-4 py-2 text-xs font-black uppercase tracking-widest transition ${heroMatchFeed === 'wc'
+                  ? 'border-yellow-500 bg-yellow-500 text-black'
                   : 'border-white/10 bg-white/10 text-white/65 hover:text-white'
-              }`}
+                }`}
             >
               World Cup
             </button>
-            <button 
+            <button
               onClick={() => setHeroMatchFeed('pl')}
-              className={`rounded-full border px-4 py-2 text-xs font-black uppercase tracking-widest transition ${
-                heroMatchFeed === 'pl' 
-                  ? 'border-purple-600 bg-purple-600 text-white' 
+              className={`rounded-full border px-4 py-2 text-xs font-black uppercase tracking-widest transition ${heroMatchFeed === 'pl'
+                  ? 'border-purple-600 bg-purple-600 text-white'
                   : 'border-white/10 bg-white/10 text-white/65 hover:text-white'
-              }`}
+                }`}
             >
               Premier League
             </button>
@@ -300,14 +298,14 @@ export default function Home() {
             {/* Left Main Hero Panel */}
             <div className="relative min-h-[460px] overflow-hidden rounded-[32px] border border-white/10 bg-[#0a0f0d] p-6 sm:p-9">
               <div className="absolute inset-0 bg-[linear-gradient(115deg,rgba(16,185,129,0.12),transparent_45%),linear-gradient(20deg,rgba(139,92,246,0.10),transparent_34%)]" />
-              
+
               <div className="relative z-20 max-w-2xl">
                 <h1 className="mt-7 max-w-3xl text-4xl font-black leading-[1.02] sm:text-6xl">
                   {isFlagshipPL ? 'Premier League Football Central' : 'World Cup Football Central'}
                 </h1>
                 <p className="mt-4 max-w-xl text-sm leading-6 text-white/50">
-                  {isFlagshipPL 
-                    ? 'Live standings, fixtures, schedules, and top scorers.' 
+                  {isFlagshipPL
+                    ? 'Live standings, fixtures, schedules, and top scorers.'
                     : 'Live standings, fixtures, schedules, and top scorers.'}
                 </p>
               </div>
@@ -316,9 +314,9 @@ export default function Home() {
               {flagshipMatch && (() => {
                 const homeScorers = isFlagshipPL ? [] : parseScorers(flagshipMatch.home_scorers);
                 const awayScorers = isFlagshipPL ? [] : parseScorers(flagshipMatch.away_scorers);
-                
+
                 return (
-                  <div 
+                  <div
                     onClick={() => navigate('/match/' + flagshipMatch.id)}
                     className="relative z-20 mt-8 cursor-pointer max-w-xl rounded-3xl border-2 border-yellow-500/30 bg-gradient-to-r from-yellow-950/40 via-yellow-900/20 to-yellow-950/40 p-6 hover:border-yellow-400/50 hover:scale-[1.02] transition-all shadow-xl shadow-yellow-500/10"
                   >
@@ -409,19 +407,17 @@ export default function Home() {
 
                 {/* Tournament switch tab */}
                 <div className="grid grid-cols-2 rounded-2xl bg-black/25 p-1 mb-3">
-                  <button 
+                  <button
                     onClick={() => { setHeroMatchState('scores') }}
-                    className={`rounded-xl px-3 py-1.5 text-xs font-black transition ${
-                      heroMatchState === 'scores' ? 'bg-white text-gray-950' : 'text-white/50 hover:text-white'
-                    }`}
+                    className={`rounded-xl px-3 py-1.5 text-xs font-black transition ${heroMatchState === 'scores' ? 'bg-white text-gray-950' : 'text-white/50 hover:text-white'
+                      }`}
                   >
                     Scores
                   </button>
-                  <button 
+                  <button
                     onClick={() => { setHeroMatchState('upcoming') }}
-                    className={`rounded-xl px-3 py-1.5 text-xs font-black transition ${
-                      heroMatchState === 'upcoming' ? 'bg-white text-gray-950' : 'text-white/50 hover:text-white'
-                    }`}
+                    className={`rounded-xl px-3 py-1.5 text-xs font-black transition ${heroMatchState === 'upcoming' ? 'bg-white text-gray-950' : 'text-white/50 hover:text-white'
+                      }`}
                   >
                     Upcoming
                   </button>
@@ -429,19 +425,17 @@ export default function Home() {
 
                 {/* Sub-tab: Premier League vs World Cup */}
                 <div className="grid grid-cols-2 rounded-xl bg-white/5 p-1 mb-4 text-xs">
-                  <button 
+                  <button
                     onClick={() => { setFixturesTab('pl') }}
-                    className={`rounded-lg py-1 font-bold transition ${
-                      fixturesTab === 'pl' ? 'bg-purple-600 text-white' : 'text-white/60 hover:text-white'
-                    }`}
+                    className={`rounded-lg py-1 font-bold transition ${fixturesTab === 'pl' ? 'bg-purple-600 text-white' : 'text-white/60 hover:text-white'
+                      }`}
                   >
                     Premier League
                   </button>
-                  <button 
+                  <button
                     onClick={() => { setFixturesTab('wc') }}
-                    className={`rounded-lg py-1 font-bold transition ${
-                      fixturesTab === 'wc' ? 'bg-yellow-500 text-black font-extrabold' : 'text-white/60 hover:text-white'
-                    }`}
+                    className={`rounded-lg py-1 font-bold transition ${fixturesTab === 'wc' ? 'bg-yellow-500 text-black font-extrabold' : 'text-white/60 hover:text-white'
+                      }`}
                   >
                     World Cup
                   </button>
@@ -449,8 +443,8 @@ export default function Home() {
 
                 {/* Render Selected feed matches */}
                 <div className="space-y-3">
-                  {(fixturesTab === 'pl' 
-                    ? (heroMatchState === 'scores' ? plFinished : plUpcoming) 
+                  {(fixturesTab === 'pl'
+                    ? (heroMatchState === 'scores' ? plFinished : plUpcoming)
                     : (heroMatchState === 'scores' ? wcFinished : wcUpcoming)
                   ).slice(0, 3).map((match, idx) => {
                     const isPL = fixturesTab === 'pl';
@@ -458,13 +452,13 @@ export default function Home() {
                     const awayName = isPL ? (match.awayTeam?.shortName || match.awayTeam?.name) : match.away_team_name_en;
                     const homeCrest = isPL ? match.homeTeam?.crest : match.home_team?.flag;
                     const awayCrest = isPL ? match.awayTeam?.crest : match.away_team?.flag;
-                    const scoreText = isPL 
-                      ? `${match.score?.fullTime?.home ?? 0} - ${match.score?.fullTime?.away ?? 0}` 
+                    const scoreText = isPL
+                      ? `${match.score?.fullTime?.home ?? 0} - ${match.score?.fullTime?.away ?? 0}`
                       : `${match.home_score} - ${match.away_score}`;
                     const isFinished = isPL ? match.status === 'FINISHED' : match.finished === 'TRUE';
 
                     return (
-                      <div 
+                      <div
                         key={match.id || idx}
                         onClick={() => navigate('/match/' + match.id)}
                         className="cursor-pointer rounded-xl bg-black/35 p-4 hover:bg-white/5 transition border border-white/5 hover:border-yellow-500/30"
@@ -478,7 +472,7 @@ export default function Home() {
                             )}
                             <span className="truncate text-sm font-black text-white">{homeName}</span>
                           </div>
-                          
+
                           <div className="rounded-lg bg-white px-3 py-1.5 text-sm font-black text-gray-950 text-center min-w-[60px] shadow-lg">
                             {isFinished ? scoreText : 'VS'}
                           </div>
@@ -499,16 +493,16 @@ export default function Home() {
                       </div>
                     );
                   })}
-                  {((fixturesTab === 'pl' 
-                    ? (heroMatchState === 'scores' ? plFinished : plUpcoming) 
+                  {((fixturesTab === 'pl'
+                    ? (heroMatchState === 'scores' ? plFinished : plUpcoming)
                     : (heroMatchState === 'scores' ? wcFinished : wcUpcoming)
                   ).length === 0) && (
-                    <div className="py-8 text-center text-xs text-white/30">No matches scheduled</div>
-                  )}
+                      <div className="py-8 text-center text-xs text-white/30">No matches scheduled</div>
+                    )}
                 </div>
               </div>
 
-              <button 
+              <button
                 onClick={() => navigate(fixturesTab === 'pl' ? '/pl' : '/worldcup')}
                 className="mt-4 w-full rounded-xl border border-white/10 px-4 py-3 text-xs font-black uppercase tracking-widest text-white/70 hover:border-emerald-300 hover:text-white"
               >
@@ -534,10 +528,10 @@ export default function Home() {
       {/* 3. MAIN DASHBOARD CONTENT (8-cols Left, 4-cols Right Sidebar layout matching tournament pages) */}
       <div className="mx-auto max-w-7xl px-4 py-12 lg:px-6">
         <section className="grid grid-cols-1 gap-8 lg:grid-cols-12">
-          
+
           {/* Main Content Area (8 columns) */}
           <div className="space-y-8 lg:col-span-8">
-            
+
             {/* Next Match Card - Above standings */}
             {(standingsTab === 'pl' ? plUpcoming[0] : wcUpcoming[0]) && (
               <div>
@@ -556,7 +550,7 @@ export default function Home() {
                   const matchTime = isPL ? formatMatchTime(nextMatch.utcDate, true) : formatMatchTime(nextMatch.local_date, false);
 
                   return (
-                    <div 
+                    <div
                       onClick={() => navigate('/match/' + nextMatch.id)}
                       className="cursor-pointer rounded-2xl border border-white/10 bg-white/[0.045] p-6 hover:border-yellow-500/30 transition"
                     >
@@ -572,7 +566,7 @@ export default function Home() {
                             )}
                           </div>
                         </div>
-                        
+
                         <div className="text-center">
                           <div className="rounded-xl bg-black/30 px-6 py-3 border border-white/10">
                             <div className="text-2xl font-black text-white">VS</div>
@@ -608,25 +602,23 @@ export default function Home() {
                   <p className="text-xs font-black uppercase tracking-[0.26em] text-white/45">Standings</p>
                   <h2 className="mt-1 text-3xl font-black">League & Group Tables</h2>
                 </div>
-                
+
                 <div className="flex gap-2">
-                  <button 
+                  <button
                     onClick={() => setStandingsTab('pl')}
-                    className={`rounded-xl border px-4 py-2 text-xs font-bold transition ${
-                      standingsTab === 'pl' 
-                        ? 'bg-purple-600 border-purple-500 text-white shadow' 
+                    className={`rounded-xl border px-4 py-2 text-xs font-bold transition ${standingsTab === 'pl'
+                        ? 'bg-purple-600 border-purple-500 text-white shadow'
                         : 'border-white/10 bg-white/5 text-white/60 hover:text-white'
-                    }`}
+                      }`}
                   >
                     Premier League Table
                   </button>
-                  <button 
+                  <button
                     onClick={() => setStandingsTab('wc')}
-                    className={`rounded-xl border px-4 py-2 text-xs font-bold transition ${
-                      standingsTab === 'wc' 
-                        ? 'bg-yellow-500 border-yellow-500 text-black font-black' 
+                    className={`rounded-xl border px-4 py-2 text-xs font-bold transition ${standingsTab === 'wc'
+                        ? 'bg-yellow-500 border-yellow-500 text-black font-black'
                         : 'border-white/10 bg-white/5 text-white/60 hover:text-white'
-                    }`}
+                      }`}
                   >
                     World Cup Groups
                   </button>
@@ -688,7 +680,7 @@ export default function Home() {
                       });
                     });
                     const topTeams = allTeams.sort((a, b) => Number(b.pts) - Number(a.pts) || Number(b.gd) - Number(a.gd)).slice(0, 10);
-                    
+
                     return topTeams.map((row, idx) => (
                       <div key={row.team_id || idx} className="grid grid-cols-12 items-center px-4 py-3 border-b border-white/5 hover:bg-white/5 transition">
                         <span className={'col-span-1 text-sm font-black ' + (idx < 3 ? 'text-yellow-300' : 'text-white/40')}>{idx + 1}</span>
@@ -719,9 +711,9 @@ export default function Home() {
                   <p className="text-xs font-black uppercase tracking-[0.26em] text-white/45">Matches</p>
                   <h2 className="mt-1 text-3xl font-black">Upcoming fixtures</h2>
                 </div>
-                
+
                 <div className="flex gap-2 text-xs">
-                  <button 
+                  <button
                     onClick={() => navigate(fixturesTab === 'pl' ? '/pl/fixtures' : '/worldcup/fixtures')}
                     className="rounded-xl border border-white/10 px-4 py-2 font-bold text-white hover:border-emerald-300 transition"
                   >
@@ -739,7 +731,7 @@ export default function Home() {
                   const awayCrest = isPL ? match.awayTeam?.crest : match.away_team?.flag;
 
                   return (
-                    <div 
+                    <div
                       key={match.id || idx}
                       onClick={() => navigate('/match/' + match.id)}
                       className="group cursor-pointer rounded-2xl border border-white/10 bg-white/[0.045] p-6 transition hover:border-yellow-500/40 hover:scale-[1.01]"
@@ -757,7 +749,7 @@ export default function Home() {
                           )}
                           <h4 className="truncate text-sm font-black text-white">{homeName}</h4>
                         </div>
-                        
+
                         <div className="rounded-xl bg-black/30 px-4 py-2 text-center text-sm font-black text-white/60 min-w-[65px] border border-white/10">
                           {isPL ? formatMatchTime(match.utcDate, true) : formatMatchTime(match.local_date, false)}
                         </div>
@@ -788,7 +780,7 @@ export default function Home() {
                   <p className="text-xs font-black uppercase tracking-[0.26em] text-white/45">Latest news</p>
                   <h2 className="mt-1 text-3xl font-black">Headlines hub</h2>
                 </div>
-                
+
                 <div className="flex flex-wrap gap-2 text-xs">
                   {[
                     { id: 'all', label: 'All News' },
@@ -798,11 +790,10 @@ export default function Home() {
                     <button
                       key={tab.id}
                       onClick={() => handleNewsTabChange(tab.id)}
-                      className={`rounded-lg px-3 py-1.5 font-bold transition ${
-                        newsTab === tab.id 
-                          ? 'bg-emerald-300 text-gray-950 font-black shadow' 
+                      className={`rounded-lg px-3 py-1.5 font-bold transition ${newsTab === tab.id
+                          ? 'bg-emerald-300 text-gray-950 font-black shadow'
                           : 'bg-white/5 text-white/60 hover:text-white'
-                      }`}
+                        }`}
                     >
                       {tab.label}
                     </button>
@@ -817,15 +808,15 @@ export default function Home() {
               ) : (
                 <div className="grid gap-4 md:grid-cols-3">
                   {(news.length ? news : FALLBACK_NEWS).slice(0, 3).map((story, index) => (
-                    <a 
-                      key={story.title + index} 
-                      href={story.link} 
-                      target="_blank" 
-                      rel="noopener noreferrer" 
+                    <a
+                      key={story.title + index}
+                      href={story.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className={(index === 0 ? 'md:col-span-2 md:row-span-2 ' : '') + 'group overflow-hidden rounded-2xl border border-white/10 bg-white/[0.045] transition hover:border-emerald-300/50 flex flex-col justify-between'}
                     >
                       <div>
-                        <div 
+                        <div
                           className={(index === 0 ? 'h-72' : 'h-36') + ' bg-cover bg-center transition duration-500 group-hover:scale-[1.03]'}
                           style={{ backgroundImage: 'url(' + (story.image || FALLBACK_NEWS[index % FALLBACK_NEWS.length].image) + ')' }}
                         />
@@ -854,7 +845,7 @@ export default function Home() {
                 <p className="text-xs font-black uppercase tracking-[0.26em] text-white/45">Transfers</p>
                 <h2 className="mt-1 text-3xl font-black">Market watch</h2>
               </div>
-              
+
               <div className="grid auto-cols-[minmax(250px,1fr)] grid-flow-col gap-4 overflow-x-auto pb-2 scrollbar-thin">
                 {FALLBACK_TRANSFERS.map((item, index) => (
                   <div key={item.player + index} className="min-h-[170px] rounded-2xl border border-white/10 bg-white/[0.045] p-5 transition hover:border-emerald-300/40">
@@ -877,7 +868,7 @@ export default function Home() {
 
           {/* Sidebar Area (4 columns - aside) */}
           <aside className="space-y-8 lg:col-span-4">
-            
+
             {/* Top Scorers Widget */}
             <div className="rounded-2xl border border-white/10 bg-white/[0.045] p-5 space-y-4">
               <div className="flex items-center justify-between border-b border-white/5 pb-3">
@@ -887,19 +878,17 @@ export default function Home() {
                 </div>
 
                 <div className="flex bg-black/25 p-0.5 rounded-lg text-[10px] border border-white/10">
-                  <button 
+                  <button
                     onClick={() => setScorersTab('pl')}
-                    className={`rounded px-2.5 py-1 font-bold transition ${
-                      scorersTab === 'pl' ? 'bg-purple-600 text-white' : 'text-white/50 hover:text-white'
-                    }`}
+                    className={`rounded px-2.5 py-1 font-bold transition ${scorersTab === 'pl' ? 'bg-purple-600 text-white' : 'text-white/50 hover:text-white'
+                      }`}
                   >
                     PL
                   </button>
-                  <button 
+                  <button
                     onClick={() => setScorersTab('wc')}
-                    className={`rounded px-2.5 py-1 font-bold transition ${
-                      scorersTab === 'wc' ? 'bg-yellow-500 text-black' : 'text-white/50 hover:text-white'
-                    }`}
+                    className={`rounded px-2.5 py-1 font-bold transition ${scorersTab === 'wc' ? 'bg-yellow-500 text-black' : 'text-white/50 hover:text-white'
+                      }`}
                   >
                     WC
                   </button>
@@ -910,9 +899,8 @@ export default function Home() {
                 {scorersTab === 'pl' ? (
                   plData?.players?.slice(0, 5).map((row, idx) => (
                     <div key={row.player.id || idx} className="flex items-center gap-3 rounded-xl bg-black/25 p-3">
-                      <div className={`flex h-8 w-8 items-center justify-center rounded-lg text-xs font-black ${
-                        idx === 0 ? 'bg-amber-300 text-gray-950' : 'bg-white/10 text-white'
-                      }`}>
+                      <div className={`flex h-8 w-8 items-center justify-center rounded-lg text-xs font-black ${idx === 0 ? 'bg-amber-300 text-gray-950' : 'bg-white/10 text-white'
+                        }`}>
                         {idx + 1}
                       </div>
                       <div className="min-w-0 flex-1">
@@ -925,9 +913,8 @@ export default function Home() {
                 ) : (
                   wcTopScorers.slice(0, 5).map((row, idx) => (
                     <div key={row.name + idx} className="flex items-center gap-3 rounded-xl bg-black/25 p-3">
-                      <div className={`flex h-8 w-8 items-center justify-center rounded-lg text-xs font-black ${
-                        idx === 0 ? 'bg-amber-300 text-gray-950' : 'bg-white/10 text-white'
-                      }`}>
+                      <div className={`flex h-8 w-8 items-center justify-center rounded-lg text-xs font-black ${idx === 0 ? 'bg-amber-300 text-gray-950' : 'bg-white/10 text-white'
+                        }`}>
                         {idx + 1}
                       </div>
                       <div className="min-w-0 flex-1">
@@ -951,7 +938,7 @@ export default function Home() {
             <div className="rounded-2xl border border-white/10 bg-white/[0.045] p-5">
               <p className="text-xs font-black uppercase tracking-[0.26em] text-white/45">Overview</p>
               <h2 className="mt-1 text-xl font-black">Tournament pulse</h2>
-              
+
               <div className="mt-4 space-y-4">
                 <div className="rounded-xl bg-black/25 p-4 space-y-3">
                   <div className="flex items-center justify-between text-xs font-bold text-purple-300">
@@ -993,7 +980,7 @@ export default function Home() {
             <div className="rounded-2xl border border-white/10 bg-white/[0.045] p-5">
               <p className="text-xs font-black uppercase tracking-[0.26em] text-white/45">Explore</p>
               <h2 className="mt-1 text-xl font-black">Direct navigation</h2>
-              
+
               <div className="mt-4 grid gap-2">
                 {[
                   { label: 'World Cup Overview', path: '/worldcup' },
@@ -1001,9 +988,9 @@ export default function Home() {
                   { label: 'Premier League Overview', path: '/pl' },
                   { label: 'Premier League Fixtures', path: '/pl/fixtures' },
                 ].map((link) => (
-                  <button 
-                    key={link.path} 
-                    onClick={() => navigate(link.path)} 
+                  <button
+                    key={link.path}
+                    onClick={() => navigate(link.path)}
                     className="flex items-center justify-between rounded-xl bg-black/25 px-4 py-3.5 text-left text-xs font-bold text-white/70 hover:bg-white/10 hover:text-white transition"
                   >
                     <span>{link.label}</span>

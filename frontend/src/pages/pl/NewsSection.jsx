@@ -89,7 +89,7 @@ export default function NewsSection() {
 
             <div className="grid lg:grid-cols-3 gap-8">
 
-                {articles.slice(0,6).map((article,index)=>(
+                {articles.slice(0, 6).map((article, index) => (
 
                     <a
 
@@ -106,7 +106,7 @@ export default function NewsSection() {
                     >
 
                         <div className="relative h-60 overflow-hidden">
-                                                        <img
+                            <img
                                 src={
                                     article.image ||
                                     "https://images.unsplash.com/photo-1547347298-4074fc3086f0?w=1200"

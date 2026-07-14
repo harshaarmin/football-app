@@ -115,18 +115,17 @@ export default function LeagueTable({ standings, competition }) {
                                     <div
                                         className={`flex h-9 w-9 items-center justify-center rounded-xl text-sm font-black
 
-                                        ${
-                                            topFour
+                                        ${topFour
                                                 ? "bg-emerald-400 text-gray-950"
 
                                                 : europa
-                                                ? "bg-blue-400 text-gray-950"
+                                                    ? "bg-blue-400 text-gray-950"
 
-                                                : relegation
-                                                ? "bg-red-500 text-white"
+                                                    : relegation
+                                                        ? "bg-red-500 text-white"
 
-                                                : "bg-white/10 text-white"
-                                        }`}
+                                                        : "bg-white/10 text-white"
+                                            }`}
                                     >
 
                                         {club.position}
@@ -201,12 +200,11 @@ export default function LeagueTable({ standings, competition }) {
                                 <div
                                     className={`text-center text-sm font-bold
 
-                                    ${
-                                        club.goalDifference >= 0
+                                    ${club.goalDifference >= 0
                                             ? "text-cyan-300"
 
                                             : "text-red-300"
-                                    }`}
+                                        }`}
                                 >
 
                                     {club.goalDifference > 0
