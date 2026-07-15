@@ -3,12 +3,14 @@ FROM node:22-alpine
 WORKDIR /app
 
 COPY package*.json ./
+COPY prisma.config.ts ./
+COPY prisma ./prisma
 
 RUN npm ci
 
 COPY . .
 
-RUN npx prisma generate --schema=./prisma/schema.prisma
+RUN npm run prisma:generate
 
 EXPOSE 3000
 
