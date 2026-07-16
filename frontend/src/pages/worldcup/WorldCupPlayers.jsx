@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import axios from 'axios'
+import API_BASE_URL from '../../utils/api'
 
 const parseScorerNames = (str) => {
     if (!str || str === 'null') return []
@@ -16,7 +17,7 @@ export default function WorldCupPlayers() {
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        axios.get('http://localhost:3000/api/worldcup/home')
+        axios.get(`${API_BASE_URL}/worldcup/home`)
             .then(res => {
                 setMatches(res.data.matches || [])
                 setLoading(false)

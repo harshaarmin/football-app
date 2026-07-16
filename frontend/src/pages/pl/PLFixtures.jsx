@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { CalendarDays, Clock3, Flame, Goal, Shield, Trophy } from "lucide-react";
+import API_BASE_URL from "../../utils/api";
 
 const teamName = (team) => team?.shortName || team?.name || "TBC";
 
@@ -25,7 +26,7 @@ export default function PLFixtures() {
     useEffect(() => {
         const fetchFixtures = async () => {
             try {
-                const res = await axios.get("http://localhost:3000/api/pl/home");
+                const res = await axios.get(`${API_BASE_URL}/pl/home`);
                 setData(res.data);
             } catch (err) {
                 console.log(err);

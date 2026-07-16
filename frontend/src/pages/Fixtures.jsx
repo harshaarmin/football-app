@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import MatchCard from '../components/MatchCard'
+import API_BASE_URL from '../utils/api'
 
 function Fixtures() {
     const [fixtures, setFixtures] = useState({ premierLeague: [], championsLeague: [] })
@@ -8,7 +9,7 @@ function Fixtures() {
     const [activeTab, setActiveTab] = useState('pl')
 
     useEffect(() => {
-        axios.get('http://localhost:3000/api/matches/upcoming')
+        axios.get(`${API_BASE_URL}/matches/upcoming`)
             .then(res => {
                 setFixtures(res.data)
                 setLoading(false)

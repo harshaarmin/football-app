@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
+import API_BASE_URL from '../utils/api'
 
 function Standings() {
     const [table, setTable] = useState([])
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        axios.get('http://localhost:3000/api/standings/pl')
+        axios.get(`${API_BASE_URL}/standings/pl`)
             .then(res => {
                 setTable(res.data)
                 setLoading(false)

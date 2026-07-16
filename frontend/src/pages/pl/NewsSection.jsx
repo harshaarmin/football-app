@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { ArrowRight } from "lucide-react";
+import API_BASE_URL from "../../utils/api";
 
 export default function NewsSection() {
 
@@ -14,7 +15,7 @@ export default function NewsSection() {
             try {
 
                 const res = await axios.get(
-                    "http://localhost:3000/api/news/pl"
+                    `${API_BASE_URL}/news/pl`
                 );
 
                 setArticles(res.data);

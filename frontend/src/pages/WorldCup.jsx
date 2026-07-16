@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
+import API_BASE_URL from '../utils/api'
 
 function WorldCup() {
     const [groups, setGroups] = useState([])
@@ -7,7 +8,7 @@ function WorldCup() {
     const [error, setError] = useState(null)
 
     useEffect(() => {
-        axios.get('http://localhost:3000/api/worldcup/groups')
+        axios.get(`${API_BASE_URL}/worldcup/groups`)
             .then(res => {
                 setGroups(res.data)
                 setLoading(false)

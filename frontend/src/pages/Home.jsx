@@ -6,8 +6,7 @@ import {
   Activity
 } from 'lucide-react';
 import LiveMatchBanner from '../components/LiveMatchBanner';
-
-const API_BASE = 'http://localhost:3000/api';
+import API_BASE_URL from '../utils/api';
 
 // Fallback data in case APIs fail
 const FALLBACK_NEWS = [
@@ -117,9 +116,9 @@ export default function Home() {
     let mounted = true;
 
     Promise.all([
-      axios.get(`${API_BASE}/pl/home`),
-      axios.get(`${API_BASE}/worldcup/home`),
-      axios.get(`${API_BASE}/news`)
+      axios.get(`${API_BASE_URL}/pl/home`),
+      axios.get(`${API_BASE_URL}/worldcup/home`),
+      axios.get(`${API_BASE_URL}/news`)
     ]).then(([plRes, wcRes, newsRes]) => {
       if (!mounted) return;
       setPlData(plRes.data || null);
@@ -143,7 +142,7 @@ export default function Home() {
     setLoadingNews(true);
     try {
       const endpoint = tab === 'all' ? '/news' : `/news/${tab}`;
-      const res = await axios.get(`${API_BASE}${endpoint}`);
+      const res = await axios.get(`${API_BASE_URL}${endpoint}`);
       setNews(res.data || []);
     } catch (err) {
       console.error(err);

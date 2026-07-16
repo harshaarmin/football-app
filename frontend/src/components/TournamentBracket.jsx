@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
+import API_BASE_URL from '../utils/api'
 
 export default function TournamentBracket() {
   const [groups, setGroups] = useState([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    axios.get('http://localhost:3000/api/worldcup/groups')
+    axios.get(`${API_BASE_URL}/worldcup/groups`)
       .then(res => { setGroups(res.data); setLoading(false) })
       .catch(() => setLoading(false))
   }, [])

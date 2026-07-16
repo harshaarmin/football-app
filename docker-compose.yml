@@ -8,7 +8,16 @@ services:
   frontend:
     build: ./frontend
     container_name: football-frontend
-    ports:
-      - "5173:5173"
+    expose:
+      - "80"
     depends_on:
+      - backend
+
+  nginx:
+    build: ./nginx
+    container_name: football-nginx
+    ports:
+      - "5173:80"
+    depends_on:
+      - frontend
       - backend

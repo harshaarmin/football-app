@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import API_BASE_URL from '../utils/api'
 
 const parseScorers = (str) => {
   if (!str || str === 'null') return []
@@ -151,8 +152,8 @@ export default function MatchDetail() {
 
   useEffect(() => {
     Promise.all([
-      axios.get('http://localhost:3000/api/worldcup/matches'),
-      axios.get('http://localhost:3000/api/news/worldcup')
+      axios.get(`${API_BASE_URL}/worldcup/matches`),
+      axios.get(`${API_BASE_URL}/news/worldcup`)
     ])
       .then(([matchRes, newsRes]) => {
         setMatch(matchRes.data.find(m => m.id === id))

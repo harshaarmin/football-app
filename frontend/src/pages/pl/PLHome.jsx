@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import API_BASE_URL from "../../utils/api";
 
 import Hero from "./Hero";
 import FeatureStrip from "./FeatureStrip";
@@ -26,7 +27,7 @@ export default function PLHome() {
             try {
 
                 const res = await axios.get(
-                    "http://localhost:3000/api/pl/home"
+                    `${API_BASE_URL}/pl/home`
                 );
 
                 setData(res.data);

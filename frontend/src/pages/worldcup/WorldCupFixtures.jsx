@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import API_BASE_URL from '../../utils/api'
 
 export default function WorldCupFixtures() {
     const [matches, setMatches] = useState([])
@@ -9,7 +10,7 @@ export default function WorldCupFixtures() {
     const navigate = useNavigate()
 
     useEffect(() => {
-        axios.get('http://localhost:3000/api/worldcup/matches')
+        axios.get(`${API_BASE_URL}/worldcup/matches`)
             .then(res => { setMatches(res.data); setLoading(false) })
             .catch(() => setLoading(false))
     }, [])

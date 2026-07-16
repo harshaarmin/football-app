@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import API_BASE_URL from '../../utils/api'
 
 const flagUrl = (code) => code ? 'https://flagcdn.com/w80/' + code + '.png' : ''
 
@@ -13,8 +14,8 @@ export default function WorldCupHome() {
 
   useEffect(() => {
     Promise.all([
-      axios.get('http://localhost:3000/api/worldcup/home'),
-      axios.get('http://localhost:3000/api/news/worldcup')
+      axios.get(`${API_BASE_URL}/worldcup/home`),
+      axios.get(`${API_BASE_URL}/news/worldcup`)
     ]).then(([homeRes, newsRes]) => {
       setMatches(homeRes.data.matches || [])
       setGroups(homeRes.data.groups || [])
