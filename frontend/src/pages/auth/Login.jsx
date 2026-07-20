@@ -36,8 +36,6 @@ function Login({ switchScreen }) {
             navigate("/", {
                 replace: true,
             });
-
-            navigate("/");
         } catch (err) {
             alert(err.message);
         } finally {
@@ -193,7 +191,7 @@ function Login({ switchScreen }) {
                         <p className="mt-6 text-center text-sm text-slate-400">
                             Don't have an account?
                             <button
-                                onClick={switchScreen}
+                                onClick={() => switchScreen ? switchScreen() : navigate("/register")}
                                 className="ml-1.5 font-semibold text-cyan-400 hover:text-cyan-300"
                             >
                                 Create one

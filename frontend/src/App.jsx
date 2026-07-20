@@ -6,6 +6,7 @@ import {
 } from "react-router-dom";
 
 import Navbar from "./components/Navbar";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 import Home from "./pages/Home";
 
@@ -19,8 +20,13 @@ import WorldCupPlayers from "./pages/worldcup/WorldCupPlayers";
 
 import PLHome from "./pages/pl/PLHome";
 import PLFixtures from "./pages/pl/PLFixtures";
-
+import CompetitionsHub from "./pages/CompetitionsHub";
+import CompetitionDetail from "./pages/CompetitionDetail";
+import TeamPage from "./pages/TeamPage";
+import Dashboard from "./pages/Dashboard";
 import MatchDetail from "./pages/MatchDetail";
+import Matches from "./pages/Matches";
+import Search from "./pages/Search";
 
 function Layout() {
   const location = useLocation();
@@ -41,6 +47,25 @@ function Layout() {
         <Route path="/login" element={<Login />} />
 
         <Route path="/register" element={<Register />} />
+
+        <Route path="/competitions" element={<CompetitionsHub />} />
+
+        <Route path="/competitions/:code" element={<CompetitionDetail />} />
+
+        <Route path="/teams/:id" element={<TeamPage />} />
+
+        <Route path="/matches" element={<Matches />} />
+
+        <Route path="/search" element={<Search />} />
+
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
 
         <Route path="/worldcup" element={<WorldCupHome />} />
 

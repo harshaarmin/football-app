@@ -1,4 +1,8 @@
+import { useNavigate } from "react-router-dom";
+
 export default function TopClubs({ clubs, competition }) {
+    const navigate = useNavigate();
+
     if (!clubs || !clubs.length) return null;
 
     return (
@@ -23,7 +27,8 @@ export default function TopClubs({ clubs, competition }) {
                     return (
                         <article
                             key={club.id}
-                            className="group relative flex min-h-[386px] flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/[0.045] p-5 transition hover:-translate-y-0.5 hover:border-cyan-300/40"
+                            onClick={() => navigate(`/teams/${club.id}`)}
+                            className="group relative flex min-h-[386px] cursor-pointer flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/[0.045] p-5 transition hover:-translate-y-0.5 hover:border-cyan-300/40"
                         >
                             <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(34,211,238,0.08),transparent_40%),linear-gradient(30deg,rgba(250,204,21,0.07),transparent_36%)] opacity-80" />
 
@@ -68,7 +73,7 @@ export default function TopClubs({ clubs, competition }) {
 
                                 <div className="mt-auto pt-5">
                                     <div className="rounded-xl border border-white/10 bg-black/25 px-4 py-3 text-center text-xs font-black uppercase tracking-widest text-white/55">
-                                        Last finish: #{facts.lastSeasonFinish || "--"}
+                                        Open team profile · #{facts.lastSeasonFinish || "--"}
                                     </div>
                                 </div>
                             </div>
