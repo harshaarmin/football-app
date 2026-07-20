@@ -16,7 +16,7 @@ export default function TopClubs({ clubs, competition }) {
                 </span>
             </div>
 
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 2xl:grid-cols-4">
                 {clubs.map((club) => {
                     const facts = club.facts || {};
 
@@ -39,7 +39,7 @@ export default function TopClubs({ clubs, competition }) {
                                 </div>
 
                                 <div className="mt-5 min-h-[76px] text-center">
-                                    <h3 className="mx-auto flex min-h-[56px] max-w-[220px] items-center justify-center text-2xl font-black leading-tight text-white">
+                                    <h3 className="mx-auto flex min-h-[56px] max-w-[220px] items-center justify-center text-xl font-black leading-tight text-white sm:text-2xl">
                                         {club.shortName || club.name}
                                     </h3>
                                     <p className="text-sm font-bold text-white/45">
@@ -50,7 +50,7 @@ export default function TopClubs({ clubs, competition }) {
                                 <div className="mt-5 space-y-3 text-sm">
                                     <div className="grid grid-cols-[96px_1fr] gap-3 border-b border-white/10 pb-3">
                                         <span className="text-white/40">Venue</span>
-                                        <span className="text-right font-bold text-white">{facts.venue || club.venue || "TBA"}</span>
+                                        <span className="break-words text-right font-bold text-white">{facts.venue || club.venue || "TBA"}</span>
                                     </div>
                                     <div className="grid grid-cols-[96px_1fr] gap-3 border-b border-white/10 pb-3">
                                         <span className="text-white/40">Founded</span>
@@ -62,7 +62,7 @@ export default function TopClubs({ clubs, competition }) {
                                     </div>
                                     <div className="grid grid-cols-[96px_1fr] gap-3">
                                         <span className="text-white/40">Honours</span>
-                                        <span className="text-right font-bold text-yellow-200">{facts.majorHonours || "Top-flight club"}</span>
+                                        <span className="break-words text-right font-bold text-yellow-200">{facts.majorHonours || "Top-flight club"}</span>
                                     </div>
                                 </div>
 

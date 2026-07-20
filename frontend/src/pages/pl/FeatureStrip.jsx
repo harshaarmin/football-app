@@ -46,14 +46,14 @@ export default function FeatureStrip({ competition, matches, players }) {
 
     return (
         <section className="mt-8">
-            <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+            <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
                 {cards.map((card) => {
                     const Icon = card.icon;
 
                     return (
                         <div
                             key={card.title}
-                            className="relative min-h-[168px] overflow-hidden rounded-2xl border border-white/10 bg-white/[0.045] p-5 transition hover:-translate-y-0.5 hover:border-cyan-300/40"
+                            className="relative min-h-[168px] overflow-hidden rounded-2xl border border-white/10 bg-white/[0.045] p-4 transition hover:-translate-y-0.5 hover:border-cyan-300/40 sm:p-5"
                         >
                             <div className="absolute inset-0 bg-[linear-gradient(130deg,rgba(255,255,255,0.06),transparent_42%)]" />
                             <div className="relative flex h-full flex-col justify-between">
@@ -62,7 +62,7 @@ export default function FeatureStrip({ competition, matches, players }) {
                                     <Icon className={card.color} size={22} />
                                 </div>
                                 <div>
-                                    <h3 className="min-h-[64px] text-2xl font-black leading-tight text-white">{card.value}</h3>
+                                    <h3 className="min-h-[64px] text-xl font-black leading-tight text-white sm:text-2xl">{card.value}</h3>
                                     <p className="mt-2 text-sm font-bold text-white/45">{card.subtitle}</p>
                                 </div>
                             </div>
@@ -71,7 +71,7 @@ export default function FeatureStrip({ competition, matches, players }) {
                 })}
             </div>
 
-            <div className="mt-4 grid gap-4 lg:grid-cols-[1fr_340px]">
+            <div className="mt-4 grid gap-4 xl:grid-cols-[minmax(0,1fr)_320px]">
                 <div className="rounded-2xl border border-white/10 bg-white/[0.045] p-5">
                     <div className="mb-4 flex items-center justify-between gap-4">
                         <div>

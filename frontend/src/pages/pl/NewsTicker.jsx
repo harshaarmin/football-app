@@ -24,7 +24,7 @@ export default function NewsTicker({ matches }) {
 
     return (
 
-        <section className="border-y border-white/10 bg-cyan-300 text-gray-950">
+        <section className="border-y border-white/10 bg-cyan-300 text-gray-950 overflow-hidden">
 
             <div className="kickoff-ticker flex whitespace-nowrap py-3 font-black uppercase tracking-wider">
                 {[...ticker, ...ticker].map((item, index) => (

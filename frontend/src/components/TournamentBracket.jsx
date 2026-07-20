@@ -22,9 +22,9 @@ export default function TournamentBracket() {
 
   return (
     <div>
-      <div className="text-center mb-6">
-        <div className="inline-flex items-center gap-3 bg-gray-900 border border-yellow-500/20 rounded-2xl px-8 py-3">
-          <span className="text-yellow-400 font-bold text-lg tracking-wide">🏆 FIFA World Cup 2026 — Group Stage</span>
+      <div className="mb-6 text-center">
+        <div className="inline-flex max-w-full items-center gap-3 rounded-2xl border border-yellow-500/20 bg-gray-900 px-4 py-3 sm:px-8">
+          <span className="text-center text-base font-bold tracking-wide text-yellow-400 sm:text-lg">🏆 FIFA World Cup 2026 — Group Stage</span>
         </div>
         <p className="text-gray-600 text-xs mt-2">Top 2 from each group advance · Live standings</p>
       </div>
@@ -82,8 +82,8 @@ export default function TournamentBracket() {
               })}
             </div>
 
-            <div className="px-3 py-2 bg-gray-950 border-t border-gray-800 flex items-center justify-between">
-              <div className="flex items-center gap-3 text-xs">
+            <div className="flex flex-wrap items-center justify-between gap-2 border-t border-gray-800 bg-gray-950 px-3 py-2">
+              <div className="flex flex-wrap items-center gap-3 text-xs">
                 <span className="flex items-center gap-1 text-yellow-400"><span className="w-1.5 h-1.5 bg-yellow-400 rounded-full inline-block"></span>1st</span>
                 <span className="flex items-center gap-1 text-green-400"><span className="w-1.5 h-1.5 bg-green-500 rounded-full inline-block"></span>2nd</span>
                 <span className="flex items-center gap-1 text-gray-600"><span className="w-1.5 h-1.5 bg-gray-700 rounded-full inline-block"></span>Out</span>
@@ -94,7 +94,7 @@ export default function TournamentBracket() {
         ))}
       </div>
 
-      <div className="mt-4 bg-gray-900 border border-gray-800 rounded-xl p-3 flex items-center justify-between text-xs text-gray-600">
+      <div className="mt-4 flex flex-wrap items-center justify-between gap-2 rounded-xl border border-gray-800 bg-gray-900 p-3 text-xs text-gray-600">
         <span>48 teams · 12 groups · Top 2 per group advance to Round of 32</span>
         <span>🔄 Live</span>
       </div>

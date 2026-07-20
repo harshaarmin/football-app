@@ -71,8 +71,8 @@ export default function Hero({ competition, matches }) {
                     </button>
                 </div>
 
-                <div className="grid gap-6 lg:grid-cols-[1fr_390px]">
-                    <div className="relative min-h-[420px] overflow-hidden rounded-[32px] border border-white/10 bg-[#071018] p-5 sm:p-8">
+                <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_360px]">
+                    <div className="relative overflow-hidden rounded-[28px] border border-white/10 bg-[#071018] p-4 sm:rounded-[32px] sm:p-6 lg:p-8">
                         <div className="absolute inset-0 bg-[linear-gradient(115deg,rgba(34,211,238,0.12),transparent_45%),linear-gradient(20deg,rgba(250,204,21,0.10),transparent_34%)]" />
 
                         {competition.emblem && (
@@ -83,7 +83,7 @@ export default function Hero({ competition, matches }) {
                             />
                         )}
 
-                        <div className="absolute right-6 bottom-7 hidden w-[300px] grid-cols-2 gap-3 lg:grid">
+                        <div className="absolute bottom-7 right-6 hidden w-[300px] grid-cols-2 gap-3 xl:grid">
                             {heroTeams.slice(0, 4).map((team, index) => (
                                 <div
                                     key={`${team.id}-${index}`}
@@ -104,10 +104,10 @@ export default function Hero({ competition, matches }) {
                             <span className="rounded-full bg-cyan-300 px-4 py-2 text-xs font-black uppercase tracking-[0.3em] text-gray-950">
                                 Premier League {competition.displaySeason}
                             </span>
-                            <h1 className="mt-6 max-w-3xl text-5xl font-black leading-[0.95] sm:text-6xl">
+                            <h1 className="mt-5 max-w-3xl text-[2rem] font-black leading-[0.94] sm:text-5xl lg:text-6xl">
                                 Every rivalry,<br />every table swing,<br />every weekend.
                             </h1>
-                            <p className="mt-5 max-w-xl text-base leading-7 text-white/65 sm:text-lg">
+                            <p className="mt-4 max-w-xl text-sm leading-6 text-white/65 sm:text-base sm:leading-7 lg:text-lg">
                                 Fixtures, final standings, top scorers and club intelligence in one focused Premier League experience.
                             </p>
 
@@ -117,7 +117,7 @@ export default function Hero({ competition, matches }) {
                                 </p>
                             )}
 
-                            <div className="mt-7 flex flex-wrap gap-3">
+                            <div className="mt-6 flex flex-wrap gap-3">
                                 <button
                                     onClick={() => navigate("/pl/fixtures")}
                                     className="inline-flex items-center gap-3 rounded-xl bg-white px-5 py-3 text-sm font-black text-gray-950 transition hover:bg-cyan-300"
@@ -136,17 +136,17 @@ export default function Hero({ competition, matches }) {
                             </div>
                         </div>
 
-                        <div className="relative z-20 mt-8 grid max-w-xl grid-cols-2 gap-3 sm:grid-cols-4">
+                        <div className="relative z-20 mt-8 grid max-w-2xl grid-cols-2 gap-3 lg:grid-cols-4">
                             {stats.map((stat) => (
-                                <div key={stat.label} className="rounded-2xl border border-white/10 bg-black/30 p-4 text-center">
-                                    <div className={`text-2xl font-black ${stat.color}`}>{stat.value}</div>
+                                <div key={stat.label} className="rounded-2xl border border-white/10 bg-black/30 p-3 text-center sm:p-4">
+                                    <div className={`text-xl font-black sm:text-2xl ${stat.color}`}>{stat.value}</div>
                                     <div className="mt-1 text-[10px] uppercase tracking-widest text-white/40">{stat.label}</div>
                                 </div>
                             ))}
                         </div>
                     </div>
 
-                    <div className="rounded-[28px] border border-white/10 bg-white/[0.045] p-5">
+                    <div className="rounded-[28px] border border-white/10 bg-white/[0.045] p-4 sm:p-5">
                         <div className="mb-4 flex items-center justify-between">
                             <div>
                                 <p className="text-xs font-black uppercase tracking-[0.26em] text-cyan-300">
@@ -160,7 +160,7 @@ export default function Hero({ competition, matches }) {
                         {latest ? (
                             <div className="rounded-2xl bg-black/30 p-4">
                                 <p className="mb-3 text-xs text-white/45">Full time</p>
-                                <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-3">
+                                <div className="grid gap-3 sm:grid-cols-[1fr_auto_1fr] sm:items-center">
                                     <div className="min-w-0">
                                         <img src={latest.homeTeam.crest} alt="" className="mb-2 h-12 w-12 object-contain" />
                                         <h3 className="truncate text-lg font-black">{teamName(latest.homeTeam)}</h3>
@@ -172,7 +172,7 @@ export default function Hero({ competition, matches }) {
                                             {latest.score.fullTime.away}
                                         </div>
                                     </div>
-                                    <div className="min-w-0 text-right">
+                                    <div className="min-w-0 sm:text-right">
                                         <img src={latest.awayTeam.crest} alt="" className="ml-auto mb-2 h-12 w-12 object-contain" />
                                         <h3 className="truncate text-lg font-black">{teamName(latest.awayTeam)}</h3>
                                     </div>
@@ -187,14 +187,14 @@ export default function Hero({ competition, matches }) {
                         {next && (
                             <div className="mt-4 rounded-2xl border border-emerald-400/20 bg-emerald-400/5 p-4">
                                 <p className="mb-3 text-xs font-black uppercase tracking-widest text-emerald-300">Next kickoff</p>
-                                <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-3">
+                                <div className="grid gap-3 sm:grid-cols-[1fr_auto_1fr] sm:items-center">
                                     <div className="min-w-0 flex items-center gap-2">
                                         <img src={next.homeTeam.crest} alt="" className="h-8 w-8 object-contain" />
                                         <span className="truncate text-sm font-bold">{teamName(next.homeTeam)}</span>
                                     </div>
                                     <span className="text-xs font-black text-emerald-300">VS</span>
-                                    <div className="min-w-0 flex items-center justify-end gap-2">
-                                        <span className="truncate text-right text-sm font-bold">{teamName(next.awayTeam)}</span>
+                                    <div className="min-w-0 flex items-center gap-2 sm:justify-end">
+                                        <span className="truncate text-sm font-bold sm:text-right">{teamName(next.awayTeam)}</span>
                                         <img src={next.awayTeam.crest} alt="" className="h-8 w-8 object-contain" />
                                     </div>
                                 </div>

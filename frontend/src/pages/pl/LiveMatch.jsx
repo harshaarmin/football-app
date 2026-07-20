@@ -6,7 +6,7 @@ function MatchRow({ match, mode }) {
     const isResult = mode === "result";
 
     return (
-        <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-3 border-b border-white/5 px-4 py-4 transition hover:bg-white/5 sm:px-5">
+        <div className="grid gap-3 border-b border-white/5 px-4 py-4 transition hover:bg-white/5 sm:grid-cols-[1fr_auto_1fr] sm:items-center sm:px-5">
             <div className="min-w-0 flex items-center gap-3">
                 <img src={match.homeTeam.crest} alt="" className="h-9 w-9 flex-shrink-0 object-contain" />
                 <span className="truncate text-sm font-bold text-white">{teamName(match.homeTeam)}</span>
@@ -27,8 +27,8 @@ function MatchRow({ match, mode }) {
                 </div>
             </div>
 
-            <div className="min-w-0 flex items-center justify-end gap-3">
-                <span className="truncate text-right text-sm font-bold text-white">{teamName(match.awayTeam)}</span>
+            <div className="min-w-0 flex items-center gap-3 sm:justify-end">
+                <span className="truncate text-sm font-bold text-white sm:text-right">{teamName(match.awayTeam)}</span>
                 <img src={match.awayTeam.crest} alt="" className="h-9 w-9 flex-shrink-0 object-contain" />
             </div>
         </div>
@@ -58,7 +58,7 @@ export default function LiveMatch({ matches }) {
                 </div>
             </div>
 
-            <div className="grid gap-4 lg:grid-cols-2">
+            <div className="grid gap-4 xl:grid-cols-2">
                 <div className="overflow-hidden rounded-2xl border border-red-300/20 bg-red-300/5">
                     <div className="flex items-center justify-between border-b border-white/10 px-5 py-4">
                         <div className="flex items-center gap-3">

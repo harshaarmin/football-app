@@ -93,14 +93,14 @@ export default function WorldCupPlayers() {
         <main className="min-h-screen bg-[#06070a] text-white">
             <section className="relative overflow-hidden border-b border-white/10">
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_12%_12%,rgba(250,204,21,0.16),transparent_30%),radial-gradient(circle_at_88%_8%,rgba(16,185,129,0.16),transparent_32%),linear-gradient(135deg,#100d05_0%,#0d1320_48%,#050608_100%)]" />
-                <div className="relative mx-auto max-w-7xl px-4 py-10 lg:px-6">
+                <div className="relative mx-auto max-w-7xl px-4 py-8 sm:py-10 lg:px-6">
                     <span className="rounded-full bg-yellow-300 px-4 py-2 text-xs font-black uppercase tracking-[0.3em] text-gray-950">
                         World Cup Players
                     </span>
-                    <h1 className="mt-6 max-w-3xl text-5xl font-black leading-[0.95] sm:text-6xl">
+                    <h1 className="mt-5 max-w-3xl text-[2rem] font-black leading-[0.94] sm:text-5xl lg:text-6xl">
                         Pick a flag. See the players shaping the tournament.
                     </h1>
-                    <p className="mt-5 max-w-2xl text-base leading-7 text-white/65 sm:text-lg">
+                    <p className="mt-4 max-w-2xl text-sm leading-6 text-white/65 sm:text-base sm:leading-7 lg:text-lg">
                         This page uses available free match data, so player lists are built from recorded scorer events rather than fake full squads.
                     </p>
 
@@ -120,7 +120,7 @@ export default function WorldCupPlayers() {
             </section>
 
             <section className="mx-auto max-w-7xl px-4 py-8 lg:px-6">
-                <div className="mb-4 flex items-end justify-between gap-4">
+                <div className="mb-4 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
                     <div>
                         <p className="text-xs font-black uppercase tracking-[0.26em] text-yellow-300">Countries</p>
                         <h2 className="mt-1 text-3xl font-black">Filter by flag</h2>
@@ -137,7 +137,7 @@ export default function WorldCupPlayers() {
                     </button>
                 </div>
 
-                <div className="flex gap-3 overflow-x-auto pb-3">
+                <div className="hide-scrollbar flex gap-3 overflow-x-auto pb-3">
                     {topTeams.map(team => (
                         <button
                             key={team.name}
@@ -155,9 +155,9 @@ export default function WorldCupPlayers() {
                     ))}
                 </div>
 
-                <div className="mt-8 grid gap-6 lg:grid-cols-12">
+                <div className="mt-8 grid gap-6 xl:grid-cols-12">
                     <div className="lg:col-span-8">
-                        <div className="mb-4 flex items-end justify-between gap-4">
+                        <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
                             <div>
                                 <p className="text-xs font-black uppercase tracking-[0.26em] text-yellow-300">
                                     {selectedTeam === 'all' ? 'Golden boot' : selectedTeam}
@@ -172,6 +172,8 @@ export default function WorldCupPlayers() {
                         </div>
 
                         <div className="overflow-hidden rounded-2xl border border-white/10 bg-white/[0.045]">
+                            <div className="overflow-x-auto hide-scrollbar">
+                            <div className="min-w-[720px]">
                             <div className="grid grid-cols-12 border-b border-white/10 px-4 py-3 text-[11px] font-bold uppercase tracking-widest text-white/40">
                                 <span className="col-span-1">#</span>
                                 <span className="col-span-6">Player</span>
@@ -190,6 +192,8 @@ export default function WorldCupPlayers() {
                                     <span className="col-span-2 text-center text-lg font-black text-yellow-300">{player.goals}</span>
                                 </div>
                             ))}
+                            </div>
+                            </div>
 
                             {selectedPlayers.length === 0 && (
                                 <div className="p-6 text-center text-sm font-bold text-white/45">
@@ -199,7 +203,7 @@ export default function WorldCupPlayers() {
                         </div>
                     </div>
 
-                    <aside className="space-y-6 lg:col-span-4">
+                    <aside className="space-y-6 xl:col-span-4">
                         <div className="rounded-2xl border border-white/10 bg-white/[0.045] p-5">
                             <p className="text-xs font-black uppercase tracking-[0.26em] text-yellow-300">Country card</p>
                             {selectedTeamInfo ? (

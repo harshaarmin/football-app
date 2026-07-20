@@ -44,7 +44,7 @@ export default function NewsSection() {
 
         return (
 
-            <section className="mt-28">
+            <section className="mt-20 sm:mt-28">
 
                 <div className="text-center text-white py-20">
 
@@ -60,13 +60,13 @@ export default function NewsSection() {
 
     return (
 
-        <section className="mt-28">
+        <section className="mt-20 sm:mt-28">
 
-            <div className="flex items-center justify-between mb-10">
+            <div className="mb-8 flex flex-col gap-4 sm:mb-10 sm:flex-row sm:items-center sm:justify-between">
 
                 <div>
 
-                    <h2 className="text-5xl font-black text-white">
+                    <h2 className="text-3xl font-black text-white sm:text-4xl lg:text-5xl">
 
                         Latest News
 
@@ -80,7 +80,7 @@ export default function NewsSection() {
 
                 </div>
 
-                <button className="rounded-2xl border border-white/10 bg-white/5 px-6 py-3 text-white hover:bg-white/10 transition">
+                <button className="w-full rounded-2xl border border-white/10 bg-white/5 px-6 py-3 text-sm font-bold text-white transition hover:bg-white/10 sm:w-auto">
 
                     View All
 
@@ -88,7 +88,7 @@ export default function NewsSection() {
 
             </div>
 
-            <div className="grid lg:grid-cols-3 gap-8">
+            <div className="grid gap-6 lg:grid-cols-2 2xl:grid-cols-3 lg:gap-8">
 
                 {articles.slice(0, 6).map((article, index) => (
 
@@ -106,7 +106,7 @@ export default function NewsSection() {
 
                     >
 
-                        <div className="relative h-60 overflow-hidden">
+                        <div className="relative h-52 overflow-hidden sm:h-60">
                             <img
                                 src={
                                     article.image ||
@@ -126,15 +126,15 @@ export default function NewsSection() {
 
                         </div>
 
-                        <div className="p-7">
+                        <div className="p-5 sm:p-7">
 
-                            <h3 className="line-clamp-2 text-2xl font-black leading-snug text-white transition-colors group-hover:text-cyan-300">
+                            <h3 className="line-clamp-2 text-xl font-black leading-snug text-white transition-colors group-hover:text-cyan-300 sm:text-2xl">
 
                                 {article.title}
 
                             </h3>
 
-                            <p className="mt-4 line-clamp-3 text-white/60 leading-7">
+                            <p className="mt-4 line-clamp-3 text-sm leading-6 text-white/60 sm:text-base sm:leading-7">
 
                                 {article.content}
 

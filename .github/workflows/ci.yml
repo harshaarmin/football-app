@@ -1,0 +1,54 @@
+name: Football App CI
+
+on:
+  push:
+    branches:
+      - main
+
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      # ---------- Backend ----------
+
+      - name: Install Backend Dependencies
+        working-directory: backend
+        run: npm ci
+
+      - name: Generate Prisma Client
+        working-directory: backend
+        run: npx prisma generate
+
+      # ---------- Frontend ----------
+
+      - name: Install Frontend Dependencies
+        working-directory: frontend
+        run: npm ci
+
+      - name: Build Frontend
+        working-directory: frontend
+        run: npm run build
+
+      # ---------- Docker ----------
+
+      - name: Build Backend Docker Image
+        run: docker build -t football-backend ./backend
+
+      - name: Build Frontend Docker Image
+        run: docker build -t football-frontend ./frontend
+
+      - name: Build Nginx Docker Image
+        run: docker build -t football-nginx ./nginx

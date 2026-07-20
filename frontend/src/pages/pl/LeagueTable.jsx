@@ -33,6 +33,8 @@ export default function LeagueTable({ standings, competition }) {
             </div>
 
             <div className="overflow-hidden rounded-2xl border border-white/10 bg-white/[0.045]">
+                <div className="overflow-x-auto hide-scrollbar">
+                    <div className="min-w-[720px]">
 
                 {/* HEADER */}
 
@@ -232,12 +234,14 @@ export default function LeagueTable({ standings, competition }) {
                     })}
 
                 </div>
+                    </div>
+                </div>
 
             </div>
 
             {/* LEGEND */}
 
-            <div className="mt-5 flex flex-wrap gap-5 text-sm">
+            <div className="mt-5 flex flex-wrap gap-4 text-xs sm:text-sm">
 
                 <div className="flex items-center gap-2">
 

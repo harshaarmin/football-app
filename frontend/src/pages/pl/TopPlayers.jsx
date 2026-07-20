@@ -32,7 +32,7 @@ export default function TopPlayers({ players, competition }) {
 
             </div>
 
-            <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+            <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
 
                 {players.slice(0, 6).map((player, index) => (
 
@@ -69,7 +69,7 @@ export default function TopPlayers({ players, competition }) {
 
                             <div className="mt-6 min-h-[88px]">
 
-                                <h3 className="text-2xl font-black leading-tight text-white">
+                                <h3 className="text-xl font-black leading-tight text-white sm:text-2xl">
 
                                     {player.player.name}
 
@@ -125,7 +125,7 @@ export default function TopPlayers({ players, competition }) {
 
                             <div className="mt-5 space-y-3 text-sm">
 
-                                <div className="flex items-center justify-between">
+                                <div className="flex items-center justify-between gap-3">
 
                                     <span className="text-white/45">
 
@@ -141,7 +141,7 @@ export default function TopPlayers({ players, competition }) {
 
                                 </div>
 
-                                <div className="flex items-center justify-between">
+                                <div className="flex items-center justify-between gap-3">
 
                                     <span className="text-white/45">
 

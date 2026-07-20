@@ -30,7 +30,7 @@ function Layout() {
     location.pathname === "/register";
 
   return (
-    <div className="min-h-screen bg-[#050816] text-white">
+    <div className="min-h-screen w-full max-w-full overflow-x-clip bg-[#050816] text-white">
 
       {!hideNavbar && <Navbar />}
 

@@ -30,8 +30,8 @@ export default function WorldCupStandings() {
     )
 
     return (
-        <div className="max-w-6xl mx-auto px-4 py-8">
-            <h2 className="text-2xl font-bold text-white mb-2">📊 Group Stage Standings</h2>
+        <div className="mx-auto max-w-6xl px-4 py-8 sm:py-10">
+            <h2 className="mb-2 text-2xl font-bold text-white sm:text-3xl">📊 Group Stage Standings</h2>
             <p className="text-gray-500 text-sm mb-8">Top 2 from each group advance to Round of 32</p>
 
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
@@ -88,7 +88,7 @@ export default function WorldCupStandings() {
                 ))}
             </div>
 
-            <div className="mt-8 flex gap-6 text-xs text-gray-500">
+            <div className="mt-8 flex flex-wrap gap-4 text-xs text-gray-500">
                 <span><span className="inline-block w-2 h-2 bg-yellow-400 rounded-sm mr-1"></span>Qualifies to Round of 32</span>
                 <span><span className="inline-block w-2 h-2 bg-gray-700 rounded-sm mr-1"></span>Eliminated</span>
             </div>

@@ -122,7 +122,7 @@ function Pitch({ home, away, homeFlag, awayFlag }) {
             style={{ left: `${player.x}%`, top: `${player.y}%` }}
           >
             <div className="mx-auto flex h-8 w-8 items-center justify-center rounded-full bg-yellow-300 text-xs font-black text-gray-950">{player.number}</div>
-            <p className="mt-1 max-w-[72px] truncate text-[10px] font-black text-white">{player.name}</p>
+            <p className="mt-1 max-w-[56px] truncate text-[9px] font-black text-white sm:max-w-[72px] sm:text-[10px]">{player.name}</p>
           </div>
         ))}
 
@@ -133,7 +133,7 @@ function Pitch({ home, away, homeFlag, awayFlag }) {
             style={{ left: `${100 - player.x}%`, top: `${100 - player.y}%` }}
           >
             <div className="mx-auto flex h-8 w-8 items-center justify-center rounded-full bg-cyan-300 text-xs font-black text-gray-950">{player.number}</div>
-            <p className="mt-1 max-w-[72px] truncate text-[10px] font-black text-white">{player.name}</p>
+            <p className="mt-1 max-w-[56px] truncate text-[9px] font-black text-white sm:max-w-[72px] sm:text-[10px]">{player.name}</p>
           </div>
         ))}
       </div>

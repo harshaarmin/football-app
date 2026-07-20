@@ -256,18 +256,18 @@ export default function Home() {
     );
   }
 
-  return (
-    <main className="min-h-screen bg-[#06070a] text-white">
+    return (
+      <main className="min-h-screen w-full max-w-full overflow-x-clip bg-[#06070a] text-white">
       {/* 1. HERO SECTION (Layout aligned with WorldCupHome / PLHome) */}
-      <section className="relative overflow-hidden">
+      <section className="relative overflow-x-clip overflow-y-visible">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_12%_12%,rgba(16,185,129,0.15),transparent_30%),radial-gradient(circle_at_88%_8%,rgba(139,92,246,0.15),transparent_32%),linear-gradient(135deg,#07110d_0%,#0d1320_48%,#050608_100%)]" />
         <div className="absolute inset-x-0 bottom-0 h-44 bg-gradient-to-t from-[#06070a] to-transparent" />
 
-        <div className="relative mx-auto max-w-7xl px-4 pb-12 pt-8 lg:px-6">
-          <div className="mb-7 flex flex-wrap items-center gap-3">
+        <div className="relative mx-auto max-w-7xl px-4 pb-10 pt-6 sm:pb-12 sm:pt-8 lg:px-6">
+          <div className="mb-6 flex flex-wrap items-center gap-2 sm:gap-3">
             <button
               onClick={() => setHeroMatchFeed('wc')}
-              className={`rounded-full border px-4 py-2 text-xs font-black uppercase tracking-widest transition ${heroMatchFeed === 'wc'
+              className={`rounded-full border px-3 py-2 text-[11px] font-black uppercase tracking-[0.22em] transition sm:px-4 sm:text-xs ${heroMatchFeed === 'wc'
                   ? 'border-yellow-500 bg-yellow-500 text-black'
                   : 'border-white/10 bg-white/10 text-white/65 hover:text-white'
                 }`}
@@ -276,7 +276,7 @@ export default function Home() {
             </button>
             <button
               onClick={() => setHeroMatchFeed('pl')}
-              className={`rounded-full border px-4 py-2 text-xs font-black uppercase tracking-widest transition ${heroMatchFeed === 'pl'
+              className={`rounded-full border px-3 py-2 text-[11px] font-black uppercase tracking-[0.22em] transition sm:px-4 sm:text-xs ${heroMatchFeed === 'pl'
                   ? 'border-purple-600 bg-purple-600 text-white'
                   : 'border-white/10 bg-white/10 text-white/65 hover:text-white'
                 }`}
@@ -293,16 +293,19 @@ export default function Home() {
           )}
 
 
-          <div className="grid gap-8 lg:grid-cols-[1fr_390px]">
+          <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_360px]">
             {/* Left Main Hero Panel */}
-            <div className="relative min-h-[460px] overflow-hidden rounded-[32px] border border-white/10 bg-[#0a0f0d] p-6 sm:p-9">
+            <div className="relative overflow-hidden rounded-[28px] border border-white/10 bg-[#0a0f0d] p-4 sm:rounded-[32px] sm:p-6 lg:p-8">
               <div className="absolute inset-0 bg-[linear-gradient(115deg,rgba(16,185,129,0.12),transparent_45%),linear-gradient(20deg,rgba(139,92,246,0.10),transparent_34%)]" />
 
               <div className="relative z-20 max-w-2xl">
-                <h1 className="mt-7 max-w-3xl text-4xl font-black leading-[1.02] sm:text-6xl">
+                <p className="text-[11px] font-black uppercase tracking-[0.32em] text-emerald-300/85 sm:text-xs">
+                  Unified football desk
+                </p>
+                <h1 className="mt-4 max-w-3xl text-[2rem] font-black leading-[0.95] sm:mt-5 sm:text-5xl lg:text-6xl">
                   {isFlagshipPL ? 'Premier League Football Central' : 'World Cup Football Central'}
                 </h1>
-                <p className="mt-4 max-w-xl text-sm leading-6 text-white/50">
+                <p className="mt-3 max-w-xl text-sm leading-6 text-white/55 sm:text-base sm:leading-7">
                   {isFlagshipPL
                     ? 'Live standings, fixtures, schedules, and top scorers.'
                     : 'Live standings, fixtures, schedules, and top scorers.'}
@@ -317,22 +320,22 @@ export default function Home() {
                 return (
                   <div
                     onClick={() => navigate('/match/' + flagshipMatch.id)}
-                    className="relative z-20 mt-8 cursor-pointer max-w-xl rounded-3xl border-2 border-yellow-500/30 bg-gradient-to-r from-yellow-950/40 via-yellow-900/20 to-yellow-950/40 p-6 hover:border-yellow-400/50 hover:scale-[1.02] transition-all shadow-xl shadow-yellow-500/10"
+                    className="relative z-20 mt-6 cursor-pointer rounded-[26px] border border-yellow-500/30 bg-gradient-to-r from-yellow-950/40 via-yellow-900/20 to-yellow-950/40 p-4 shadow-xl shadow-yellow-500/10 transition-all hover:border-yellow-400/50 sm:mt-8 sm:max-w-2xl sm:p-6"
                   >
-                    <div className="grid grid-cols-[1fr_auto_1fr] items-start gap-4">
+                    <div className="grid gap-4 sm:grid-cols-[1fr_auto_1fr] sm:items-start">
                       <div className="min-w-0">
                         <div className="flex items-center gap-4">
                           {isFlagshipPL ? (
-                            flagshipMatch.homeTeam?.crest && <img src={flagshipMatch.homeTeam.crest} alt="" className="h-12 w-12 object-contain shadow-lg" />
+                            flagshipMatch.homeTeam?.crest && <img src={flagshipMatch.homeTeam.crest} alt="" className="h-10 w-10 object-contain shadow-lg sm:h-12 sm:w-12" />
                           ) : (
-                            flagshipMatch.home_team?.flag && <img src={flagshipMatch.home_team.flag} alt="" className="h-12 w-16 rounded-xl object-cover shadow-lg" />
+                            flagshipMatch.home_team?.flag && <img src={flagshipMatch.home_team.flag} alt="" className="h-10 w-14 rounded-xl object-cover shadow-lg sm:h-12 sm:w-16" />
                           )}
-                          <span className="truncate text-lg font-black text-white">
+                          <span className="truncate text-base font-black text-white sm:text-lg">
                             {isFlagshipPL ? (flagshipMatch.homeTeam?.shortName || flagshipMatch.homeTeam?.name) : flagshipMatch.home_team_name_en}
                           </span>
                         </div>
                         {isFlagshipFinished && !isFlagshipPL && homeScorers.length > 0 && (
-                          <div className="mt-3 ml-16 space-y-1">
+                          <div className="mt-3 ml-14 space-y-1 sm:ml-16">
                             {homeScorers.map((goal, idx) => (
                               <div key={idx} className="text-xs text-white/60">
                                 {goal.name} {goal.minute}'
@@ -341,8 +344,8 @@ export default function Home() {
                           </div>
                         )}
                       </div>
-                      <div className="rounded-2xl bg-white px-6 py-3 text-center shadow-2xl border-2 border-yellow-500/30">
-                        <div className="text-2xl font-black text-gray-950 tracking-wider">
+                      <div className="rounded-2xl border border-yellow-500/30 bg-white px-4 py-2 text-center shadow-2xl sm:px-6 sm:py-3">
+                        <div className="text-xl font-black tracking-wider text-gray-950 sm:text-2xl">
                           {isFlagshipFinished ? (
                             isFlagshipPL ? (
                               `${flagshipMatch.score?.fullTime?.home}-${flagshipMatch.score?.fullTime?.away}`
@@ -352,19 +355,19 @@ export default function Home() {
                           ) : 'VS'}
                         </div>
                       </div>
-                      <div className="min-w-0">
-                        <div className="flex items-center justify-end gap-4">
-                          <span className="truncate text-right text-lg font-black text-white">
+                      <div className="min-w-0 sm:text-right">
+                        <div className="flex items-center gap-4 sm:justify-end">
+                          <span className="truncate text-base font-black text-white sm:text-right sm:text-lg">
                             {isFlagshipPL ? (flagshipMatch.awayTeam?.shortName || flagshipMatch.awayTeam?.name) : flagshipMatch.away_team_name_en}
                           </span>
                           {isFlagshipPL && flagshipMatch.awayTeam?.crest ? (
-                            <img src={flagshipMatch.awayTeam.crest} alt="" className="h-12 w-12 object-contain shadow-lg" />
+                            <img src={flagshipMatch.awayTeam.crest} alt="" className="h-10 w-10 object-contain shadow-lg sm:h-12 sm:w-12" />
                           ) : !isFlagshipPL && flagshipMatch.away_team?.flag ? (
-                            <img src={flagshipMatch.away_team.flag} alt="" className="h-12 w-16 rounded-xl object-cover shadow-lg" />
+                            <img src={flagshipMatch.away_team.flag} alt="" className="h-10 w-14 rounded-xl object-cover shadow-lg sm:h-12 sm:w-16" />
                           ) : null}
                         </div>
                         {isFlagshipFinished && !isFlagshipPL && awayScorers.length > 0 && (
-                          <div className="mt-3 mr-16 space-y-1 text-right">
+                          <div className="mt-3 space-y-1 sm:mr-16 sm:text-right">
                             {awayScorers.map((goal, idx) => (
                               <div key={idx} className="text-xs text-white/60">
                                 {goal.name} {goal.minute}'
@@ -379,15 +382,15 @@ export default function Home() {
               })()}
 
               {/* Central Quick Stats grid */}
-              <div className="mt-10 grid max-w-xl grid-cols-2 gap-3 sm:grid-cols-4">
+              <div className="mt-8 grid max-w-2xl grid-cols-2 gap-3 lg:grid-cols-4">
                 {[
                   { val: plFinishedCount, label: 'PL Played', color: 'text-purple-300' },
                   { val: plUpcoming.length, label: 'PL Pending', color: 'text-cyan-300' },
                   { val: wcFinishedCount, label: 'WC Played', color: 'text-yellow-300' },
                   { val: totalWcGoals, label: 'WC Goals', color: 'text-emerald-300' },
                 ].map(s => (
-                  <div key={s.label} className="rounded-2xl border border-white/10 bg-black/30 p-4 text-center">
-                    <div className={'text-2xl font-black ' + s.color}>{s.val}</div>
+                  <div key={s.label} className="rounded-2xl border border-white/10 bg-black/30 p-3 text-center sm:p-4">
+                    <div className={'text-xl font-black sm:text-2xl ' + s.color}>{s.val}</div>
                     <div className="mt-1 text-[10px] uppercase tracking-widest text-white/40">{s.label}</div>
                   </div>
                 ))}
@@ -395,12 +398,12 @@ export default function Home() {
             </div>
 
             {/* Right Aside Card (Match center sidebar feed) */}
-            <div className="rounded-[28px] border border-white/10 bg-white/[0.045] p-6 flex flex-col justify-between min-h-[460px]">
+            <div className="flex flex-col justify-between rounded-[28px] border border-white/10 bg-white/[0.045] p-4 sm:p-5 xl:min-h-[460px]">
               <div>
                 <div className="mb-4 flex items-center justify-between">
                   <div>
                     <p className="text-xs font-black uppercase tracking-[0.26em] text-white/45">Match center</p>
-                    <h2 className="mt-1 text-2xl font-black">Match feed</h2>
+                    <h2 className="mt-1 text-xl font-black sm:text-2xl">Match feed</h2>
                   </div>
                 </div>
 
@@ -460,9 +463,9 @@ export default function Home() {
                       <div
                         key={match.id || idx}
                         onClick={() => navigate('/match/' + match.id)}
-                        className="cursor-pointer rounded-xl bg-black/35 p-4 hover:bg-white/5 transition border border-white/5 hover:border-yellow-500/30"
+                        className="cursor-pointer rounded-xl border border-white/5 bg-black/35 p-3 transition hover:border-yellow-500/30 hover:bg-white/5 sm:p-4"
                       >
-                        <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-3">
+                        <div className="grid gap-3 sm:grid-cols-[1fr_auto_1fr] sm:items-center">
                           <div className="flex items-center gap-3 min-w-0">
                             {isPL ? (
                               homeCrest && <img src={homeCrest} className="h-7 w-7 object-contain" alt="" />
@@ -472,11 +475,11 @@ export default function Home() {
                             <span className="truncate text-sm font-black text-white">{homeName}</span>
                           </div>
 
-                          <div className="rounded-lg bg-white px-3 py-1.5 text-sm font-black text-gray-950 text-center min-w-[60px] shadow-lg">
+                          <div className="min-w-[60px] rounded-lg bg-white px-3 py-1.5 text-center text-sm font-black text-gray-950 shadow-lg">
                             {isFinished ? scoreText : 'VS'}
                           </div>
 
-                          <div className="flex items-center justify-end gap-3 min-w-0 text-right">
+                          <div className="flex min-w-0 items-center gap-3 sm:justify-end sm:text-right">
                             <span className="truncate text-sm font-black text-white">{awayName}</span>
                             {isPL ? (
                               awayCrest && <img src={awayCrest} className="h-7 w-7 object-contain" alt="" />
@@ -485,7 +488,7 @@ export default function Home() {
                             )}
                           </div>
                         </div>
-                        <div className="mt-3 text-[11px] text-white/40 flex justify-between font-bold">
+                        <div className="mt-3 flex flex-wrap justify-between gap-2 text-[11px] font-bold text-white/40">
                           <span>{isPL ? `Matchday ${match.matchday}` : `Group ${match.group}`}</span>
                           <span>{isPL ? formatMatchDate(match.utcDate, true) : formatMatchDate(match.local_date, false)}</span>
                         </div>
@@ -513,7 +516,7 @@ export default function Home() {
       </section>
 
       {/* 2. TICKER BANNER */}
-      <section className="border-y border-white/10 bg-emerald-300 text-gray-950">
+      <section className="border-y border-white/10 bg-emerald-300 text-gray-950 overflow-hidden">
         <div className="kickoff-ticker flex overflow-hidden whitespace-nowrap py-3 text-sm font-black uppercase tracking-wider">
           {tickerStories.concat(tickerStories).map((item, index) => (
             <span key={index} className="mx-6 inline-flex items-center gap-3">
@@ -525,7 +528,7 @@ export default function Home() {
       </section>
 
       {/* 3. MAIN DASHBOARD CONTENT (8-cols Left, 4-cols Right Sidebar layout matching tournament pages) */}
-      <div className="mx-auto max-w-7xl px-4 py-12 lg:px-6">
+      <div className="mx-auto max-w-7xl px-4 py-10 sm:py-12 lg:px-6">
         <section className="grid grid-cols-1 gap-8 lg:grid-cols-12">
 
           {/* Main Content Area (8 columns) */}
@@ -553,13 +556,13 @@ export default function Home() {
                       onClick={() => navigate('/match/' + nextMatch.id)}
                       className="cursor-pointer rounded-2xl border border-white/10 bg-white/[0.045] p-6 hover:border-yellow-500/30 transition"
                     >
-                      <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-6">
-                        <div className="flex items-center gap-4">
+                      <div className="grid gap-4 sm:grid-cols-[1fr_auto_1fr] sm:items-center">
+                        <div className="min-w-0 flex items-center gap-4">
                           {homeFlag && (
                             <img src={homeFlag} alt={homeName} className={`h-14 w-14 object-contain ${isPL ? '' : 'rounded-xl'} shadow-lg`} />
                           )}
-                          <div>
-                            <h3 className="text-lg font-black text-white">{homeName}</h3>
+                          <div className="min-w-0">
+                            <h3 className="truncate text-lg font-black text-white">{homeName}</h3>
                             {isPL && nextMatch.homeTeam?.name && (
                               <p className="text-xs text-white/40">{nextMatch.homeTeam.name}</p>
                             )}
@@ -576,9 +579,9 @@ export default function Home() {
                           </div>
                         </div>
 
-                        <div className="flex items-center justify-end gap-4">
-                          <div className="text-right">
-                            <h3 className="text-lg font-black text-white">{awayName}</h3>
+                        <div className="min-w-0 flex items-center gap-4 sm:justify-end">
+                          <div className="min-w-0 sm:text-right">
+                            <h3 className="truncate text-lg font-black text-white">{awayName}</h3>
                             {isPL && nextMatch.awayTeam?.name && (
                               <p className="text-xs text-white/40">{nextMatch.awayTeam.name}</p>
                             )}
@@ -602,7 +605,7 @@ export default function Home() {
                   <h2 className="mt-1 text-3xl font-black">League & Group Tables</h2>
                 </div>
 
-                <div className="flex gap-2">
+                <div className="flex flex-wrap gap-2">
                   <button
                     onClick={() => setStandingsTab('pl')}
                     className={`rounded-xl border px-4 py-2 text-xs font-bold transition ${standingsTab === 'pl'
@@ -626,79 +629,86 @@ export default function Home() {
 
               {standingsTab === 'pl' ? (
                 /* Premier League Standings View */
-                <div className="rounded-2xl border border-white/10 bg-white/[0.045] overflow-hidden">
-                  <div className="grid grid-cols-12 px-4 py-3 text-[11px] font-bold uppercase tracking-widest text-white/40 border-b border-white/10">
-                    <span className="col-span-1">Pos</span>
-                    <span className="col-span-4">Club</span>
-                    <span className="col-span-1 text-center">GP</span>
-                    <span className="col-span-1 text-center">W</span>
-                    <span className="col-span-1 text-center">D</span>
-                    <span className="col-span-1 text-center">L</span>
-                    <span className="col-span-1 text-center">GD</span>
-                    <span className="col-span-2 text-center text-white">Pts</span>
-                  </div>
-                  {plData?.standings?.[0]?.table?.slice(0, 10).map((row, i) => (
-                    <div key={row.team.id} className="grid grid-cols-12 items-center px-4 py-3 border-b border-white/5 hover:bg-white/5 transition">
-                      <span className={`col-span-1 text-sm font-black ${i < 4 ? 'text-emerald-400' : 'text-white/40'}`}>{row.position}</span>
-                      <div className="col-span-4 flex items-center gap-2 min-w-0">
-                        {row.team.crest ? <img src={row.team.crest} className="h-5 w-5 object-contain" alt="" /> : <div className="h-5 w-5 bg-white/10 rounded" />}
-                        <span className="truncate text-sm font-bold">{row.team.shortName || row.team.name}</span>
+                <div className="overflow-hidden rounded-2xl border border-white/10 bg-white/[0.045]">
+                  <div className="hide-scrollbar overflow-x-auto">
+                    <div className="min-w-[720px]">
+                      <div className="grid grid-cols-12 px-4 py-3 text-[11px] font-bold uppercase tracking-widest text-white/40 border-b border-white/10">
+                        <span className="col-span-1">Pos</span>
+                        <span className="col-span-4">Club</span>
+                        <span className="col-span-1 text-center">GP</span>
+                        <span className="col-span-1 text-center">W</span>
+                        <span className="col-span-1 text-center">D</span>
+                        <span className="col-span-1 text-center">L</span>
+                        <span className="col-span-1 text-center">GD</span>
+                        <span className="col-span-2 text-center text-white">Pts</span>
                       </div>
-                      <span className="col-span-1 text-center text-sm text-white/60">{row.playedGames}</span>
-                      <span className="col-span-1 text-center text-sm text-white/60">{row.won}</span>
-                      <span className="col-span-1 text-center text-sm text-white/60">{row.draw}</span>
-                      <span className="col-span-1 text-center text-sm text-white/60">{row.lost}</span>
-                      <span className="col-span-1 text-center text-sm text-white/60">{row.goalDifference > 0 ? `+${row.goalDifference}` : row.goalDifference}</span>
-                      <span className="col-span-2 text-center font-black text-sm text-purple-300">{row.points}</span>
+                      {plData?.standings?.[0]?.table?.slice(0, 10).map((row, i) => (
+                        <div key={row.team.id} className="grid grid-cols-12 items-center px-4 py-3 border-b border-white/5 hover:bg-white/5 transition">
+                          <span className={`col-span-1 text-sm font-black ${i < 4 ? 'text-emerald-400' : 'text-white/40'}`}>{row.position}</span>
+                          <div className="col-span-4 flex items-center gap-2 min-w-0">
+                            {row.team.crest ? <img src={row.team.crest} className="h-5 w-5 object-contain" alt="" /> : <div className="h-5 w-5 bg-white/10 rounded" />}
+                            <span className="truncate text-sm font-bold">{row.team.shortName || row.team.name}</span>
+                          </div>
+                          <span className="col-span-1 text-center text-sm text-white/60">{row.playedGames}</span>
+                          <span className="col-span-1 text-center text-sm text-white/60">{row.won}</span>
+                          <span className="col-span-1 text-center text-sm text-white/60">{row.draw}</span>
+                          <span className="col-span-1 text-center text-sm text-white/60">{row.lost}</span>
+                          <span className="col-span-1 text-center text-sm text-white/60">{row.goalDifference > 0 ? `+${row.goalDifference}` : row.goalDifference}</span>
+                          <span className="col-span-2 text-center font-black text-sm text-purple-300">{row.points}</span>
+                        </div>
+                      ))}
                     </div>
-                  ))}
+                  </div>
                 </div>
               ) : (
                 /* World Cup Top Teams Standings View - Top 10 across all groups */
-                <div className="rounded-2xl border border-white/10 bg-white/[0.045] overflow-hidden">
-                  <div className="grid grid-cols-12 px-4 py-3 text-[11px] font-bold uppercase tracking-widest text-white/40 border-b border-white/10">
-                    <span className="col-span-1">#</span>
-                    <span className="col-span-4">Nation</span>
-                    <span className="col-span-1 text-center">Grp</span>
-                    <span className="col-span-1 text-center">GP</span>
-                    <span className="col-span-1 text-center">W</span>
-                    <span className="col-span-1 text-center">D</span>
-                    <span className="col-span-1 text-center">L</span>
-                    <span className="col-span-1 text-center">GD</span>
-                    <span className="col-span-1 text-center text-white">Pts</span>
-                  </div>
-                  {(() => {
-                    // Flatten all teams from all groups and sort by points
-                    const allTeams = [];
-                    wcData?.groups?.forEach(group => {
-                      group.teams.forEach(team => {
-                        allTeams.push({
-                          ...team,
-                          groupName: group.name
-                        });
-                      });
-                    });
-                    const topTeams = allTeams.sort((a, b) => Number(b.pts) - Number(a.pts) || Number(b.gd) - Number(a.gd)).slice(0, 10);
-
-                    return topTeams.map((row, idx) => (
-                      <div key={row.team_id || idx} className="grid grid-cols-12 items-center px-4 py-3 border-b border-white/5 hover:bg-white/5 transition">
-                        <span className={'col-span-1 text-sm font-black ' + (idx < 3 ? 'text-yellow-300' : 'text-white/40')}>{idx + 1}</span>
-                        <div className="col-span-4 flex items-center gap-2 min-w-0">
-                          {row.team?.flag ? <img src={row.team.flag} className="h-5 w-7 rounded object-cover flex-shrink-0" alt={row.team?.name_en} /> : <div className="h-5 w-7 bg-white/10 rounded flex-shrink-0" />}
-                          <span className="truncate text-sm font-bold">{row.team?.name_en || 'Unknown'}</span>
-                        </div>
-                        <span className="col-span-1 text-center text-xs text-white/40">{row.groupName}</span>
-                        <span className="col-span-1 text-center text-sm text-white/60">{row.mp}</span>
-                        <span className="col-span-1 text-center text-sm text-white/60">{row.w}</span>
-                        <span className="col-span-1 text-center text-sm text-white/60">{row.d}</span>
-                        <span className="col-span-1 text-center text-sm text-white/60">{row.l}</span>
-                        <span className={'col-span-1 text-center text-sm ' + (Number(row.gd) > 0 ? 'text-emerald-300' : Number(row.gd) < 0 ? 'text-red-300' : 'text-white/40')}>
-                          {Number(row.gd) > 0 ? '+' : ''}{row.gd}
-                        </span>
-                        <span className={'col-span-1 text-center font-black text-sm ' + (idx < 3 ? 'text-yellow-300' : 'text-white')}>{row.pts}</span>
+                <div className="overflow-hidden rounded-2xl border border-white/10 bg-white/[0.045]">
+                  <div className="hide-scrollbar overflow-x-auto">
+                    <div className="min-w-[720px]">
+                      <div className="grid grid-cols-12 px-4 py-3 text-[11px] font-bold uppercase tracking-widest text-white/40 border-b border-white/10">
+                        <span className="col-span-1">#</span>
+                        <span className="col-span-4">Nation</span>
+                        <span className="col-span-1 text-center">Grp</span>
+                        <span className="col-span-1 text-center">GP</span>
+                        <span className="col-span-1 text-center">W</span>
+                        <span className="col-span-1 text-center">D</span>
+                        <span className="col-span-1 text-center">L</span>
+                        <span className="col-span-1 text-center">GD</span>
+                        <span className="col-span-1 text-center text-white">Pts</span>
                       </div>
-                    ));
-                  })()}
+                      {(() => {
+                        const allTeams = [];
+                        wcData?.groups?.forEach(group => {
+                          group.teams.forEach(team => {
+                            allTeams.push({
+                              ...team,
+                              groupName: group.name
+                            });
+                          });
+                        });
+                        const topTeams = allTeams.sort((a, b) => Number(b.pts) - Number(a.pts) || Number(b.gd) - Number(a.gd)).slice(0, 10);
+
+                        return topTeams.map((row, idx) => (
+                          <div key={row.team_id || idx} className="grid grid-cols-12 items-center px-4 py-3 border-b border-white/5 hover:bg-white/5 transition">
+                            <span className={'col-span-1 text-sm font-black ' + (idx < 3 ? 'text-yellow-300' : 'text-white/40')}>{idx + 1}</span>
+                            <div className="col-span-4 flex items-center gap-2 min-w-0">
+                              {row.team?.flag ? <img src={row.team.flag} className="h-5 w-7 rounded object-cover flex-shrink-0" alt={row.team?.name_en} /> : <div className="h-5 w-7 bg-white/10 rounded flex-shrink-0" />}
+                              <span className="truncate text-sm font-bold">{row.team?.name_en || 'Unknown'}</span>
+                            </div>
+                            <span className="col-span-1 text-center text-xs text-white/40">{row.groupName}</span>
+                            <span className="col-span-1 text-center text-sm text-white/60">{row.mp}</span>
+                            <span className="col-span-1 text-center text-sm text-white/60">{row.w}</span>
+                            <span className="col-span-1 text-center text-sm text-white/60">{row.d}</span>
+                            <span className="col-span-1 text-center text-sm text-white/60">{row.l}</span>
+                            <span className={'col-span-1 text-center text-sm ' + (Number(row.gd) > 0 ? 'text-emerald-300' : Number(row.gd) < 0 ? 'text-red-300' : 'text-white/40')}>
+                              {Number(row.gd) > 0 ? '+' : ''}{row.gd}
+                            </span>
+                            <span className={'col-span-1 text-center font-black text-sm ' + (idx < 3 ? 'text-yellow-300' : 'text-white')}>{row.pts}</span>
+                          </div>
+                        ));
+                      })()}
+                    </div>
+                  </div>
                 </div>
               )}
             </div>
@@ -733,13 +743,13 @@ export default function Home() {
                     <div
                       key={match.id || idx}
                       onClick={() => navigate('/match/' + match.id)}
-                      className="group cursor-pointer rounded-2xl border border-white/10 bg-white/[0.045] p-6 transition hover:border-yellow-500/40 hover:scale-[1.01]"
+                      className="group cursor-pointer rounded-2xl border border-white/10 bg-white/[0.045] p-4 transition hover:border-yellow-500/40 sm:p-6"
                     >
                       <span className="rounded-full bg-yellow-500/20 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-yellow-300 border border-yellow-500/20">
                         {isPL ? `Matchday ${match.matchday}` : `Group ${match.group}`}
                       </span>
 
-                      <div className="mt-5 grid grid-cols-[1fr_auto_1fr] items-center gap-4">
+                      <div className="mt-5 grid gap-4 sm:grid-cols-[1fr_auto_1fr] sm:items-center">
                         <div className="min-w-0 flex items-center gap-3">
                           {isPL ? (
                             homeCrest && <img src={homeCrest} className="h-12 w-12 object-contain shadow-lg" alt="" />
@@ -753,8 +763,8 @@ export default function Home() {
                           {isPL ? formatMatchTime(match.utcDate, true) : formatMatchTime(match.local_date, false)}
                         </div>
 
-                        <div className="min-w-0 flex items-center justify-end gap-3">
-                          <h4 className="truncate text-sm font-black text-white">{awayName}</h4>
+                        <div className="min-w-0 flex items-center gap-3 sm:justify-end">
+                          <h4 className="truncate text-sm font-black text-white sm:text-right">{awayName}</h4>
                           {isPL ? (
                             awayCrest && <img src={awayCrest} className="h-12 w-12 object-contain shadow-lg" alt="" />
                           ) : (
@@ -845,21 +855,25 @@ export default function Home() {
                 <h2 className="mt-1 text-3xl font-black">Market watch</h2>
               </div>
 
-              <div className="grid auto-cols-[minmax(250px,1fr)] grid-flow-col gap-4 overflow-x-auto pb-2 scrollbar-thin">
-                {FALLBACK_TRANSFERS.map((item, index) => (
-                  <div key={item.player + index} className="min-h-[170px] rounded-2xl border border-white/10 bg-white/[0.045] p-5 transition hover:border-emerald-300/40">
-                    <div className="mb-4 flex items-center justify-between gap-3">
-                      <span className="rounded-full bg-emerald-300/10 border border-emerald-300/20 px-2.5 py-0.5 text-[10px] font-black uppercase text-emerald-300">{item.status}</span>
-                      <span className="text-[10px] font-bold text-white/40">{item.detail}</span>
-                    </div>
-                    <h3 className="line-clamp-2 text-base font-black leading-snug">{item.player}</h3>
-                    <div className="mt-4 grid grid-cols-[1fr_auto_1fr] items-center gap-2 text-[10px] font-bold">
-                      <span className="truncate rounded bg-black/25 py-1 px-2 text-white/50 text-center">{item.from}</span>
-                      <span className="font-black text-emerald-300">→</span>
-                      <span className="truncate rounded bg-black/25 py-1 px-2 text-white/50 text-center">{item.to}</span>
-                    </div>
+              <div className="overflow-hidden">
+                <div className="hide-scrollbar -mx-1 overflow-x-auto px-1 pb-2">
+                  <div className="flex min-w-max gap-4 lg:min-w-0 lg:grid lg:grid-cols-4">
+                    {FALLBACK_TRANSFERS.map((item, index) => (
+                      <div key={item.player + index} className="min-h-[170px] w-[250px] rounded-2xl border border-white/10 bg-white/[0.045] p-5 transition hover:border-emerald-300/40 lg:w-auto">
+                        <div className="mb-4 flex items-center justify-between gap-3">
+                          <span className="rounded-full bg-emerald-300/10 border border-emerald-300/20 px-2.5 py-0.5 text-[10px] font-black uppercase text-emerald-300">{item.status}</span>
+                          <span className="text-[10px] font-bold text-white/40">{item.detail}</span>
+                        </div>
+                        <h3 className="line-clamp-2 text-base font-black leading-snug">{item.player}</h3>
+                        <div className="mt-4 grid grid-cols-[1fr_auto_1fr] items-center gap-2 text-[10px] font-bold">
+                          <span className="truncate rounded bg-black/25 px-2 py-1 text-center text-white/50">{item.from}</span>
+                          <span className="font-black text-emerald-300">→</span>
+                          <span className="truncate rounded bg-black/25 px-2 py-1 text-center text-white/50">{item.to}</span>
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                ))}
+                </div>
               </div>
             </div>
 

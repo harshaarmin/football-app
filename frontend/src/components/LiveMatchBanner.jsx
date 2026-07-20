@@ -49,7 +49,7 @@ export default function LiveMatchBanner({ match, tournament = 'worldcup' }) {
   return (
     <div
       onClick={handleClick}
-      className="relative overflow-hidden rounded-[32px] border-2 border-red-500/40 bg-gradient-to-br from-red-950/60 via-red-900/30 to-red-950/60 p-8 cursor-pointer transition-all hover:border-red-400/70 hover:scale-[1.02] hover:shadow-2xl hover:shadow-red-500/20"
+      className="relative w-full overflow-hidden rounded-[28px] border-2 border-red-500/40 bg-gradient-to-br from-red-950/60 via-red-900/30 to-red-950/60 p-4 cursor-pointer transition-all hover:border-red-400/70 hover:shadow-2xl hover:shadow-red-500/20 sm:rounded-[32px] sm:p-6 lg:p-8"
     >
       {/* Animated background gradient */}
       <div className="absolute inset-0 bg-[linear-gradient(45deg,rgba(239,68,68,0.15),transparent_50%,rgba(239,68,68,0.15))] animate-pulse" />
@@ -57,7 +57,7 @@ export default function LiveMatchBanner({ match, tournament = 'worldcup' }) {
 
       <div className="relative z-10">
         {/* Header with LIVE indicator */}
-        <div className="mb-6 flex items-center justify-between">
+        <div className="mb-5 flex flex-wrap items-center justify-between gap-3 sm:mb-6">
           <div className="flex items-center gap-3">
             <div className="relative">
               <div className="absolute inset-0 rounded-full bg-red-500 animate-ping opacity-75" />
@@ -65,59 +65,59 @@ export default function LiveMatchBanner({ match, tournament = 'worldcup' }) {
                 <div className="h-2 w-2 rounded-full bg-white" />
               </div>
             </div>
-            <span className="text-sm font-black uppercase tracking-[0.2em] text-red-400">
+            <span className="text-xs font-black uppercase tracking-[0.2em] text-red-400 sm:text-sm">
               LIVE NOW
             </span>
           </div>
-          <span className="rounded-full bg-red-500/30 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-red-200 border border-red-500/30">
+          <span className="rounded-full border border-red-500/30 bg-red-500/30 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-red-200 sm:px-4 sm:py-1.5 sm:text-xs">
             {isWorldCup ? 'FIFA World Cup 2026' : 'Premier League'}
           </span>
         </div>
 
         {/* Match content */}
-        <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-6">
+        <div className="grid gap-4 sm:grid-cols-[1fr_auto_1fr] sm:items-center sm:gap-6">
           {/* Home team */}
-          <div className="flex items-center gap-4">
+          <div className="flex min-w-0 items-center gap-3 sm:gap-4">
             {homeFlag && (
               <img
                 src={homeFlag}
                 alt={homeName}
-                className={`h-16 w-16 object-contain ${isWorldCup ? 'rounded-xl' : ''} shadow-lg`}
+                className={`h-12 w-12 flex-shrink-0 object-contain shadow-lg sm:h-16 sm:w-16 ${isWorldCup ? 'rounded-xl' : ''}`}
               />
             )}
             <div className="min-w-0">
-              <h3 className="truncate text-xl font-black text-white">{homeName}</h3>
+              <h3 className="truncate text-base font-black text-white sm:text-xl">{homeName}</h3>
               {isWorldCup && match.group && (
-                <p className="text-sm font-bold text-white/60">Group {match.group}</p>
+                <p className="text-xs font-bold text-white/60 sm:text-sm">Group {match.group}</p>
               )}
             </div>
           </div>
 
           {/* Score */}
-          <div className="rounded-2xl bg-white px-8 py-4 text-center shadow-2xl border-4 border-red-500/30">
-            <div className="text-4xl font-black text-gray-950 tracking-wider">{scoreText}</div>
+          <div className="rounded-2xl border-4 border-red-500/30 bg-white px-5 py-3 text-center shadow-2xl sm:px-8 sm:py-4">
+            <div className="text-2xl font-black tracking-wider text-gray-950 sm:text-4xl">{scoreText}</div>
           </div>
 
           {/* Away team */}
-          <div className="flex items-center justify-end gap-4">
-            <div className="min-w-0 text-right">
-              <h3 className="truncate text-xl font-black text-white">{awayName}</h3>
+          <div className="flex min-w-0 items-center gap-3 sm:justify-end sm:gap-4">
+            <div className="min-w-0 sm:text-right">
+              <h3 className="truncate text-base font-black text-white sm:text-xl">{awayName}</h3>
               {isWorldCup && match.group && (
-                <p className="text-sm font-bold text-white/60">Group {match.group}</p>
+                <p className="text-xs font-bold text-white/60 sm:text-sm">Group {match.group}</p>
               )}
             </div>
             {awayFlag && (
               <img
                 src={awayFlag}
                 alt={awayName}
-                className={`h-16 w-16 object-contain ${isWorldCup ? 'rounded-xl' : ''} shadow-lg`}
+                className={`h-12 w-12 flex-shrink-0 object-contain shadow-lg sm:h-16 sm:w-16 ${isWorldCup ? 'rounded-xl' : ''}`}
               />
             )}
           </div>
         </div>
 
         {/* Footer with CTA */}
-        <div className="mt-6 flex items-center justify-between border-t border-red-500/30 pt-4">
+        <div className="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-red-500/30 pt-4 sm:mt-6">
           <div className="flex flex-col gap-1">
             {matchDateTime && (
               <p className="text-xs font-bold text-white/40">
@@ -128,7 +128,7 @@ export default function LiveMatchBanner({ match, tournament = 'worldcup' }) {
               Tap for live match details
             </p>
           </div>
-          <div className="flex items-center gap-2 text-sm font-bold text-red-300">
+          <div className="flex items-center gap-2 text-xs font-bold text-red-300 sm:text-sm">
             <span>View Details</span>
             <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />

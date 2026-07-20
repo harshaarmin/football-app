@@ -111,7 +111,7 @@ export default function CompetitionStats({ standings, matches, competition }) {
 
             </div>
 
-            <div className="grid grid-cols-2 gap-4 lg:grid-cols-3">
+            <div className="grid grid-cols-2 gap-4 xl:grid-cols-3">
 
                 {cards.map((card) => {
                     const Icon = card.icon;
@@ -120,7 +120,7 @@ export default function CompetitionStats({ standings, matches, competition }) {
 
                         <div
                             key={card.title}
-                            className="relative min-h-[156px] overflow-hidden rounded-2xl border border-white/10 bg-white/[0.045] p-5 transition duration-300 hover:border-cyan-300/40"
+                            className="relative min-h-[156px] overflow-hidden rounded-2xl border border-white/10 bg-white/[0.045] p-4 transition duration-300 hover:border-cyan-300/40 sm:p-5"
                         >
 
                             <div className="absolute inset-0 bg-[linear-gradient(130deg,rgba(255,255,255,0.06),transparent_42%)]" />
@@ -130,7 +130,7 @@ export default function CompetitionStats({ standings, matches, competition }) {
                                 <Icon className={card.color} size={26} />
 
                                 <div>
-                                    <div className="text-4xl font-black text-white">
+                                    <div className="text-3xl font-black text-white sm:text-4xl">
 
                                         {card.value}
 

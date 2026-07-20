@@ -33,11 +33,11 @@ export default function WorldCupFixtures() {
     )
 
     return (
-        <div className="max-w-4xl mx-auto px-4 py-8">
-            <h2 className="text-2xl font-bold text-white mb-6">📅 Fixtures & Results</h2>
+        <div className="mx-auto max-w-5xl px-4 py-8 sm:py-10">
+            <h2 className="mb-6 text-2xl font-bold text-white sm:text-3xl">📅 Fixtures & Results</h2>
 
             {/* Group filter */}
-            <div className="flex gap-2 flex-wrap mb-6">
+            <div className="hide-scrollbar mb-6 flex gap-2 overflow-x-auto pb-2 sm:flex-wrap">
                 <button
                     onClick={() => setFilter('all')}
                     className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${filter === 'all' ? 'bg-yellow-500 text-black' : 'bg-gray-800 text-gray-400 hover:text-white'}`}
@@ -89,11 +89,12 @@ function FixtureRow({ match, onClick }) {
     return (
         <div
             onClick={onClick}
-            className="bg-gray-900 border border-gray-800 rounded-xl px-5 py-4 flex items-center justify-between cursor-pointer hover:border-yellow-500/40 transition-all"
+            className="cursor-pointer rounded-2xl border border-gray-800 bg-gray-900 px-4 py-4 transition-all hover:border-yellow-500/40 sm:px-5"
         >
-            <div className="flex items-center gap-3 flex-1">
+            <div className="grid gap-3 sm:grid-cols-[1fr_auto_1fr] sm:items-center">
+            <div className="flex min-w-0 items-center gap-3">
                 {match.home_team?.flag && <img src={match.home_team.flag} className="w-8 h-5 object-cover rounded" />}
-                <span className="text-white text-sm font-semibold">{match.home_team_name_en}</span>
+                <span className="truncate text-white text-sm font-semibold">{match.home_team_name_en}</span>
             </div>
             <div className="text-center min-w-[100px]">
                 {isFinished ? (
@@ -105,9 +106,10 @@ function FixtureRow({ match, onClick }) {
                     </div>
                 )}
             </div>
-            <div className="flex items-center gap-3 flex-1 justify-end">
-                <span className="text-white text-sm font-semibold">{match.away_team_name_en}</span>
+            <div className="flex min-w-0 items-center gap-3 sm:justify-end">
+                <span className="truncate text-white text-sm font-semibold sm:text-right">{match.away_team_name_en}</span>
                 {match.away_team?.flag && <img src={match.away_team.flag} className="w-8 h-5 object-cover rounded" />}
+            </div>
             </div>
         </div>
     )

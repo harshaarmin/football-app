@@ -103,14 +103,14 @@ export default function WorldCupHome() {
   }
 
   return (
-    <main className="min-h-screen bg-[#06070a] text-white">
+    <main className="min-h-screen w-full max-w-full overflow-x-clip bg-[#06070a] text-white">
 
-      <section className="relative overflow-hidden">
+      <section className="relative overflow-x-clip overflow-y-visible">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_12%_12%,rgba(250,204,21,0.16),transparent_30%),radial-gradient(circle_at_88%_8%,rgba(16,185,129,0.18),transparent_32%),linear-gradient(135deg,#100d05_0%,#0d1320_48%,#050608_100%)]" />
         <div className="absolute inset-x-0 bottom-0 h-44 bg-gradient-to-t from-[#06070a] to-transparent" />
 
-        <div className="relative mx-auto max-w-7xl px-4 pb-12 pt-8 lg:px-6">
-          <div className="mb-7 flex flex-wrap items-center justify-between gap-3">
+        <div className="relative mx-auto max-w-7xl px-4 pb-10 pt-6 sm:pb-12 sm:pt-8 lg:px-6">
+          <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
             <span className="rounded-full border border-white/10 bg-white/10 px-4 py-2 text-xs font-black uppercase tracking-widest text-white/65">
               Tournament hub
             </span>
@@ -119,27 +119,27 @@ export default function WorldCupHome() {
             </button>
           </div>
 
-          <div className="grid gap-8 lg:grid-cols-[1fr_390px]">
-            <div className="relative min-h-[460px] overflow-hidden rounded-[32px] border border-white/10 bg-[#0a0d09] p-6 sm:p-9">
+          <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_360px]">
+            <div className="relative overflow-hidden rounded-[28px] border border-white/10 bg-[#0a0d09] p-4 sm:rounded-[32px] sm:p-6 lg:p-8">
               <div className="absolute inset-0 bg-[linear-gradient(115deg,rgba(250,204,21,0.10),transparent_45%),linear-gradient(20deg,rgba(16,185,129,0.10),transparent_34%)]" />
-              <img src={flagUrl('us')} alt="" className="absolute left-7 top-8 h-14 w-24 rotate-[-8deg] rounded-xl object-cover opacity-25 shadow-xl" />
-              <img src={flagUrl('mx')} alt="" className="absolute right-8 top-10 h-14 w-24 rotate-[8deg] rounded-xl object-cover opacity-25 shadow-xl" />
-              <img src={flagUrl('ca')} alt="" className="absolute bottom-32 left-10 h-14 w-24 rotate-[7deg] rounded-xl object-cover opacity-20 shadow-xl" />
+              <img src={flagUrl('us')} alt="" className="absolute left-4 top-5 h-10 w-16 rotate-[-8deg] rounded-xl object-cover opacity-20 shadow-xl sm:left-7 sm:top-8 sm:h-14 sm:w-24" />
+              <img src={flagUrl('mx')} alt="" className="absolute right-4 top-7 h-10 w-16 rotate-[8deg] rounded-xl object-cover opacity-20 shadow-xl sm:right-8 sm:top-10 sm:h-14 sm:w-24" />
+              <img src={flagUrl('ca')} alt="" className="absolute bottom-24 left-6 hidden h-14 w-24 rotate-[7deg] rounded-xl object-cover opacity-20 shadow-xl sm:block" />
 
               <div className="relative z-20 max-w-2xl">
                 <span className="rounded-full bg-yellow-300 px-4 py-2 text-xs font-black uppercase tracking-[0.3em] text-gray-950">
                   FIFA World Cup 2026™
                 </span>
-                <h1 className="mt-7 max-w-3xl text-4xl font-black leading-[1.02] sm:text-6xl">
+                <h1 className="mt-5 max-w-3xl text-[2rem] font-black leading-[0.96] sm:mt-7 sm:text-5xl lg:text-6xl">
                   {heroTitle}
                 </h1>
-                <p className="mt-6 max-w-xl text-base leading-8 text-white/62 sm:text-lg">
+                <p className="mt-4 max-w-xl text-sm leading-6 text-white/62 sm:mt-6 sm:text-base sm:leading-8 lg:text-lg">
                   {heroCopy}
                 </p>
               </div>
 
               {heroMatch && (
-                <div className="relative z-20 mt-8 grid max-w-xl grid-cols-[1fr_auto_1fr] items-center gap-3 rounded-2xl border border-white/10 bg-black/25 p-4">
+                <div className="relative z-20 mt-6 grid gap-3 rounded-2xl border border-white/10 bg-black/25 p-4 sm:mt-8 sm:max-w-xl sm:grid-cols-[1fr_auto_1fr] sm:items-center">
                   <div className="min-w-0 flex items-center gap-3">
                     {heroMatch.home_team?.flag && <img src={heroMatch.home_team.flag} alt="" className="h-9 w-12 rounded-lg object-cover" />}
                     <span className="truncate text-sm font-black">{heroMatch.home_team_name_en}</span>
@@ -147,29 +147,29 @@ export default function WorldCupHome() {
                   <div className="rounded-xl bg-white px-3 py-2 text-sm font-black text-gray-950">
                     {heroMatch.finished === 'TRUE' ? `${heroMatch.home_score}-${heroMatch.away_score}` : 'VS'}
                   </div>
-                  <div className="min-w-0 flex items-center justify-end gap-3">
-                    <span className="truncate text-right text-sm font-black">{heroMatch.away_team_name_en}</span>
+                  <div className="min-w-0 flex items-center gap-3 sm:justify-end">
+                    <span className="truncate text-sm font-black sm:text-right">{heroMatch.away_team_name_en}</span>
                     {heroMatch.away_team?.flag && <img src={heroMatch.away_team.flag} alt="" className="h-9 w-12 rounded-lg object-cover" />}
                   </div>
                 </div>
               )}
 
-              <div className="mt-10 grid max-w-xl grid-cols-2 gap-3 sm:grid-cols-4">
+              <div className="mt-8 grid max-w-2xl grid-cols-2 gap-3 lg:grid-cols-4">
                 {[
                   { val: finished.length, label: 'Played', color: 'text-emerald-300' },
                   { val: upcoming.length, label: 'Remaining', color: 'text-blue-300' },
                   { val: totalGoals, label: 'Goals', color: 'text-yellow-300' },
                   { val: avgGoals, label: 'Avg/match', color: 'text-red-300' },
                 ].map(s => (
-                  <div key={s.label} className="rounded-2xl border border-white/10 bg-black/30 p-4 text-center">
-                    <div className={'text-2xl font-black ' + s.color}>{s.val}</div>
+                  <div key={s.label} className="rounded-2xl border border-white/10 bg-black/30 p-3 text-center sm:p-4">
+                    <div className={'text-xl font-black sm:text-2xl ' + s.color}>{s.val}</div>
                     <div className="mt-1 text-[10px] uppercase tracking-widest text-white/40">{s.label}</div>
                   </div>
                 ))}
               </div>
             </div>
 
-            <div className="rounded-[28px] border border-white/10 bg-white/[0.045] p-6">
+            <div className="rounded-[28px] border border-white/10 bg-white/[0.045] p-4 sm:p-6">
               <div className="mb-4 flex items-center justify-between">
                 <div>
                   <p className="text-xs font-black uppercase tracking-[0.26em] text-white/45">
@@ -180,7 +180,7 @@ export default function WorldCupHome() {
                 {lastMatch && (
                   <button
                     onClick={() => navigate('/match/' + lastMatch.id)}
-                    className="rounded-xl bg-white px-4 py-3 text-sm font-black text-gray-950 transition hover:bg-yellow-300"
+                    className="rounded-xl bg-white px-3 py-2 text-xs font-black text-gray-950 transition hover:bg-yellow-300 sm:px-4 sm:py-3 sm:text-sm"
                   >
                     View
                   </button>
@@ -190,7 +190,7 @@ export default function WorldCupHome() {
               {lastMatch ? (
                 <div onClick={() => navigate('/match/' + lastMatch.id)} className="cursor-pointer rounded-2xl bg-black/30 p-5">
                   <p className="mb-3 text-xs text-white/45">Group {lastMatch.group} · Full time</p>
-                  <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-3">
+                  <div className="grid gap-3 sm:grid-cols-[1fr_auto_1fr] sm:items-center">
                     <div className="min-w-0">
                       {lastMatch.home_team && lastMatch.home_team.flag && <img src={lastMatch.home_team.flag} alt="" className="mb-2 h-10 w-14 rounded-lg object-cover" />}
                       <h3 className="truncate text-lg font-black">{lastMatch.home_team_name_en}</h3>
@@ -198,7 +198,7 @@ export default function WorldCupHome() {
                     <div className="rounded-xl bg-white px-3 py-2 text-center text-gray-950">
                       <div className="text-xl font-black">{lastMatch.home_score}<span className="mx-1 text-gray-400">-</span>{lastMatch.away_score}</div>
                     </div>
-                    <div className="min-w-0 text-right">
+                    <div className="min-w-0 sm:text-right">
                       {lastMatch.away_team && lastMatch.away_team.flag && <img src={lastMatch.away_team.flag} alt="" className="ml-auto mb-2 h-10 w-14 rounded-lg object-cover" />}
                       <h3 className="truncate text-lg font-black">{lastMatch.away_team_name_en}</h3>
                     </div>
@@ -212,7 +212,7 @@ export default function WorldCupHome() {
                 <div className="mt-5 rounded-2xl border border-emerald-400/20 bg-emerald-400/5 p-5">
                   <p className="mb-3 text-xs font-black uppercase tracking-widest text-emerald-200">Next kickoff</p>
                   <div className="grid gap-4">
-                    <div className="grid grid-cols-[1fr_auto] items-center gap-3">
+                    <div className="grid gap-3 sm:grid-cols-[1fr_auto] sm:items-center">
                       <div className="flex min-w-0 items-center gap-2">
                       {nextMatch.home_team && nextMatch.home_team.flag && <img src={nextMatch.home_team.flag} alt="" className="h-5 w-7 rounded object-cover" />}
                       <span className="truncate text-sm font-bold">{nextMatch.home_team_name_en}</span>
@@ -231,8 +231,8 @@ export default function WorldCupHome() {
         </div>
       </section>
 
-      <section className="border-y border-white/10 bg-yellow-300 text-gray-950">
-        <div className="kickoff-ticker flex overflow-hidden whitespace-nowrap py-3 text-sm font-black uppercase tracking-wider">
+      <section className="border-y border-white/10 bg-yellow-300 text-gray-950 overflow-hidden">
+        <div className="kickoff-ticker flex overflow-hidden whitespace-nowrap py-3 text-xs font-black uppercase tracking-wider sm:text-sm">
           {tickerItems.concat(tickerItems).map((item, index) => (
             <span key={item + index} className="mx-6 inline-flex items-center gap-3">
               <span className="h-2 w-2 rounded-full bg-gray-950" />
@@ -257,36 +257,40 @@ export default function WorldCupHome() {
                   All groups
                 </button>
               </div>
-              <div className="rounded-2xl border border-white/10 bg-white/[0.045] overflow-hidden">
-                <div className="grid grid-cols-12 px-4 py-3 text-[11px] font-bold uppercase tracking-widest text-white/40 border-b border-white/10">
-                  <span className="col-span-1">#</span>
-                  <span className="col-span-4">Team</span>
-                  <span className="col-span-1 text-center">Grp</span>
-                  <span className="col-span-1 text-center">P</span>
-                  <span className="col-span-1 text-center">W</span>
-                  <span className="col-span-1 text-center">D</span>
-                  <span className="col-span-1 text-center">L</span>
-                  <span className="col-span-1 text-center">GD</span>
-                  <span className="col-span-1 text-center text-white">Pts</span>
-                </div>
-                {topTeams.map((team, i) => (
-                  <div key={team.name} className="grid grid-cols-12 items-center px-4 py-3 border-b border-white/5 hover:bg-white/5 transition-colors">
-                    <span className={'col-span-1 text-sm font-black ' + (i < 3 ? 'text-yellow-300' : 'text-white/40')}>{i + 1}</span>
-                    <div className="col-span-4 flex items-center gap-2 min-w-0">
-                      {team.flag ? <img src={team.flag} className="h-5 w-7 rounded object-cover flex-shrink-0" alt={team.name} /> : <div className="h-5 w-7 bg-white/10 rounded flex-shrink-0" />}
-                      <span className="truncate text-sm font-bold">{team.name}</span>
+              <div className="overflow-hidden rounded-2xl border border-white/10 bg-white/[0.045]">
+                <div className="hide-scrollbar overflow-x-auto">
+                  <div className="min-w-[720px]">
+                    <div className="grid grid-cols-12 border-b border-white/10 px-4 py-3 text-[11px] font-bold uppercase tracking-widest text-white/40">
+                      <span className="col-span-1">#</span>
+                      <span className="col-span-4">Team</span>
+                      <span className="col-span-1 text-center">Grp</span>
+                      <span className="col-span-1 text-center">P</span>
+                      <span className="col-span-1 text-center">W</span>
+                      <span className="col-span-1 text-center">D</span>
+                      <span className="col-span-1 text-center">L</span>
+                      <span className="col-span-1 text-center">GD</span>
+                      <span className="col-span-1 text-center text-white">Pts</span>
                     </div>
-                    <span className="col-span-1 text-center text-xs text-white/40">{team.group}</span>
-                    <span className="col-span-1 text-center text-sm text-white/60">{team.mp}</span>
-                    <span className="col-span-1 text-center text-sm text-white/60">{team.w}</span>
-                    <span className="col-span-1 text-center text-sm text-white/60">{team.d}</span>
-                    <span className="col-span-1 text-center text-sm text-white/60">{team.l}</span>
-                    <span className={'col-span-1 text-center text-sm ' + (team.gd > 0 ? 'text-emerald-300' : team.gd < 0 ? 'text-red-300' : 'text-white/40')}>
-                      {team.gd > 0 ? '+' : ''}{team.gd}
-                    </span>
-                    <span className={'col-span-1 text-center font-black text-sm ' + (i < 3 ? 'text-yellow-300' : 'text-white')}>{team.pts}</span>
+                    {topTeams.map((team, i) => (
+                      <div key={team.name} className="grid grid-cols-12 items-center border-b border-white/5 px-4 py-3 transition-colors hover:bg-white/5">
+                        <span className={'col-span-1 text-sm font-black ' + (i < 3 ? 'text-yellow-300' : 'text-white/40')}>{i + 1}</span>
+                        <div className="col-span-4 flex min-w-0 items-center gap-2">
+                          {team.flag ? <img src={team.flag} className="h-5 w-7 flex-shrink-0 rounded object-cover" alt={team.name} /> : <div className="h-5 w-7 flex-shrink-0 rounded bg-white/10" />}
+                          <span className="truncate text-sm font-bold">{team.name}</span>
+                        </div>
+                        <span className="col-span-1 text-center text-xs text-white/40">{team.group}</span>
+                        <span className="col-span-1 text-center text-sm text-white/60">{team.mp}</span>
+                        <span className="col-span-1 text-center text-sm text-white/60">{team.w}</span>
+                        <span className="col-span-1 text-center text-sm text-white/60">{team.d}</span>
+                        <span className="col-span-1 text-center text-sm text-white/60">{team.l}</span>
+                        <span className={'col-span-1 text-center text-sm ' + (team.gd > 0 ? 'text-emerald-300' : team.gd < 0 ? 'text-red-300' : 'text-white/40')}>
+                          {team.gd > 0 ? '+' : ''}{team.gd}
+                        </span>
+                        <span className={'col-span-1 text-center text-sm font-black ' + (i < 3 ? 'text-yellow-300' : 'text-white')}>{team.pts}</span>
+                      </div>
+                    ))}
                   </div>
-                ))}
+                </div>
               </div>
             </div>
 
@@ -311,7 +315,7 @@ export default function WorldCupHome() {
                       <span className="text-[11px] font-bold uppercase tracking-widest text-white/40">Group {match.group}</span>
                       <span className="rounded-full bg-white/10 px-2.5 py-0.5 text-[11px] font-black text-white/60">FT</span>
                     </div>
-                    <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-3">
+                    <div className="grid gap-3 sm:grid-cols-[1fr_auto_1fr] sm:items-center">
                       <div className="min-w-0 flex items-center gap-2">
                         {match.home_team && match.home_team.flag && <img src={match.home_team.flag} alt="" className="h-5 w-7 rounded object-cover flex-shrink-0" />}
                         <span className="truncate text-sm font-bold">{match.home_team_name_en}</span>
@@ -319,8 +323,8 @@ export default function WorldCupHome() {
                       <div className="rounded-lg bg-black/30 px-3 py-1.5 text-center text-sm font-black">
                         {match.home_score}<span className="mx-1 text-white/30">-</span>{match.away_score}
                       </div>
-                      <div className="min-w-0 flex items-center justify-end gap-2">
-                        <span className="truncate text-right text-sm font-bold">{match.away_team_name_en}</span>
+                      <div className="min-w-0 flex items-center gap-2 sm:justify-end">
+                        <span className="truncate text-sm font-bold sm:text-right">{match.away_team_name_en}</span>
                         {match.away_team && match.away_team.flag && <img src={match.away_team.flag} alt="" className="h-5 w-7 rounded object-cover flex-shrink-0" />}
                       </div>
                     </div>

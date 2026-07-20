@@ -16,14 +16,14 @@ export default function TrendingMatches({ matches }) {
                 </div>
             </div>
 
-            <div className="flex gap-4 overflow-x-auto pb-3">
+            <div className="hide-scrollbar flex gap-4 overflow-x-auto pb-3">
                 {featuredMatches.map((match) => {
                     const isFinished = match.status === "FINISHED";
 
                     return (
                         <article
                             key={match.id}
-                            className="min-w-[300px] rounded-2xl border border-white/10 bg-white/[0.045] p-4 transition hover:-translate-y-0.5 hover:border-cyan-300/40"
+                            className="min-w-[260px] rounded-2xl border border-white/10 bg-white/[0.045] p-4 transition hover:-translate-y-0.5 hover:border-cyan-300/40 sm:min-w-[300px]"
                         >
                             <div className="mb-4 flex items-center justify-between">
                                 <span

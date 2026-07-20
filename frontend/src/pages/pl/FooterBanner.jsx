@@ -6,7 +6,7 @@ export default function FooterBanner() {
             <div className="relative overflow-hidden rounded-[28px] border border-white/10 bg-[#071018] p-6 sm:p-8">
                 <div className="absolute inset-0 bg-[linear-gradient(115deg,rgba(34,211,238,0.12),transparent_42%),linear-gradient(20deg,rgba(250,204,21,0.10),transparent_36%)]" />
 
-                <div className="relative grid gap-6 lg:grid-cols-[1fr_auto] lg:items-end">
+                <div className="relative grid gap-6 xl:grid-cols-[minmax(0,1fr)_auto] xl:items-end">
                     <div>
                         <p className="text-xs font-black uppercase tracking-[0.26em] text-cyan-300">KickOff focus</p>
                         <h2 className="mt-2 max-w-3xl text-3xl font-black leading-tight text-white sm:text-4xl">
