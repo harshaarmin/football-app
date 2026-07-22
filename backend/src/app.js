@@ -1,13 +1,47 @@
 const express = require("express");
 const cors = require("cors");
+const helmet = require("helmet");
+const morgan = require("morgan");
+
+const errorHandler = require("./middleware/errorHandler");
+
+const {
+  authLimiter,
+  apiLimiter,
+} = require("./middleware/rateLimiter");
 
 const app = express();
 
-const authRouter = require("./routes/auth");
-const profileRouter = require("./routes/profile");
+// ================= SECURITY =================
 
-app.use(cors());
+app.disable("x-powered-by");
+
+app.use(
+  helmet({
+    crossOriginResourcePolicy: false,
+  })
+);
+
+app.use(
+  cors({
+    origin: true,
+    credentials: true,
+  })
+);
+
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+
+app.use(
+  morgan(
+    process.env.NODE_ENV === "production"
+      ? "combined"
+      : "dev"
+  )
+);
+
+app.use(apiLimiter);
 
 // ================= ROUTES =================
 
@@ -19,6 +53,9 @@ const searchRouter = require("./routes/search");
 const matchRouter = require("./routes/match");
 const plRouter = require("./routes/pl");
 const teamsRouter = require("./routes/teams");
+
+const authRouter = require("./routes/auth");
+const profileRouter = require("./routes/profile");
 const favoriteRouter = require("./routes/favorites");
 
 app.use("/api/home", homeRouter);
@@ -29,14 +66,16 @@ app.use("/api/search", searchRouter);
 app.use("/api/match", matchRouter);
 app.use("/api/pl", plRouter);
 app.use("/api/teams", teamsRouter);
-app.use("/api/auth", authRouter);
+
+app.use("/api/auth", authLimiter, authRouter);
 app.use("/api/profile", profileRouter);
 app.use("/api/favorites", favoriteRouter);
 
-// ================= HEALTH CHECK =================
+// ================= HEALTH =================
 
 app.get("/api/health", (req, res) => {
   res.status(200).json({
+    success: true,
     status: "ok",
     uptime: process.uptime(),
     timestamp: new Date().toISOString(),
@@ -48,10 +87,24 @@ app.get("/api/health", (req, res) => {
 
 app.get("/", (req, res) => {
   res.json({
+    success: true,
     app: "Football Hub API",
     version: "2.0.0",
     status: "Running",
   });
 });
+
+// ================= 404 =================
+
+app.use((req, res) => {
+  res.status(404).json({
+    success: false,
+    message: `Route ${req.originalUrl} not found`,
+  });
+});
+
+// ================= GLOBAL ERROR HANDLER =================
+
+app.use(errorHandler);
 
 module.exports = app;
