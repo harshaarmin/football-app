@@ -64,7 +64,7 @@ jobs:
       - name: Push Nginx Docker Image
         run: docker push ${{ secrets.DOCKER_USERNAME }}/football-nginx:latest
 
-    deploy:
+  deploy:
     needs: build
     runs-on: ubuntu-latest
 
