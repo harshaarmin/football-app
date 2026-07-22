@@ -2,9 +2,10 @@ const express = require("express");
 const cors = require("cors");
 const helmet = require("helmet");
 const morgan = require("morgan");
+const swaggerUi = require("swagger-ui-express");
+const swaggerSpec = require("./config/swagger");
 
 const errorHandler = require("./middleware/errorHandler");
-
 const {
   authLimiter,
   apiLimiter,
@@ -31,7 +32,6 @@ app.use(
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
 
 app.use(
   morgan(
@@ -70,6 +70,14 @@ app.use("/api/teams", teamsRouter);
 app.use("/api/auth", authLimiter, authRouter);
 app.use("/api/profile", profileRouter);
 app.use("/api/favorites", favoriteRouter);
+
+// ================= SWAGGER =================
+
+app.use(
+  "/api-docs",
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerSpec)
+);
 
 // ================= HEALTH =================
 
