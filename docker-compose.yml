@@ -37,5 +37,7 @@ services:
       - "80:80"
 
     depends_on:
-      - frontend
-      - backend
+      backend:
+        condition: service_healthy
+      frontend:
+        condition: service_started
