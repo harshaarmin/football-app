@@ -64,18 +64,23 @@ jobs:
       - name: Push Nginx Docker Image
         run: docker push ${{ secrets.DOCKER_USERNAME }}/football-nginx:latest
 
-  deploy:
+    deploy:
     needs: build
     runs-on: ubuntu-latest
 
     steps:
       - name: Debug Secret Length
-  run: |
-    echo "${{ secrets.EC2_SSH_KEY }}" | wc -c
+        run: |
+          echo "${{ secrets.EC2_SSH_KEY }}" | wc -c
 
-     - name: Deploy to EC2
-       uses: appleboy/ssh-action@v1.2.0
-         with:
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@v1.2.0
+        with:
           host: ${{ secrets.EC2_HOST }}
-            username: ${{ secrets.EC2_USER }}
-             key: ${{ secrets.EC2_SSH_KEY }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            cd /home/ubuntu/football-app
+            docker compose pull
+            docker compose up -d --remove-orphans
+            docker image prune -f
