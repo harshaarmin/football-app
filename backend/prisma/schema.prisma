@@ -1,9 +1,7 @@
-
 generator client {
   provider      = "prisma-client-js"
   binaryTargets = ["native", "linux-musl-arm64-openssl-3.0.x", "linux-musl-openssl-3.0.x"]
 }
-
 
 datasource db {
   provider  = "postgresql"
@@ -12,45 +10,41 @@ datasource db {
 }
 
 model User {
-  id               Int               @id @default(autoincrement())
-  name             String
-  email            String            @unique
-  password         String
-  createdAt        DateTime          @default(now())
-
-  favoriteTeams    FavoriteTeam[]
-  favoritePlayers  FavoritePlayer[]
-  favoriteMatches  FavoriteMatch[]
+  id              Int              @id @default(autoincrement())
+  name            String
+  email           String           @unique
+  createdAt       DateTime         @default(now())
+  password        String
+  favoriteMatches FavoriteMatch[]
+  favoritePlayers FavoritePlayer[]
+  favoriteTeams   FavoriteTeam[]
 }
 
 model FavoriteTeam {
-  id        Int      @id @default(autoincrement())
-  teamId    Int
-  teamName  String
-  teamLogo  String?
-
-  userId    Int
-  user      User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id       Int     @id @default(autoincrement())
+  teamId   Int
+  teamName String
+  teamLogo String?
+  userId   Int
+  user     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model FavoritePlayer {
-  id          Int      @id @default(autoincrement())
+  id          Int     @id @default(autoincrement())
   playerId    Int
   playerName  String
   playerPhoto String?
   teamName    String?
-
   userId      Int
-  user        User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user        User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model FavoriteMatch {
-  id         Int      @id @default(autoincrement())
-  matchId    Int
-  homeTeam   String
-  awayTeam   String
-  kickoff    DateTime
-
-  userId     Int
-  user       User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id       Int      @id @default(autoincrement())
+  matchId  Int
+  homeTeam String
+  awayTeam String
+  kickoff  DateTime
+  userId   Int
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

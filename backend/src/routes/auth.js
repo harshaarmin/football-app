@@ -6,6 +6,13 @@ const {
   login,
 } = require("../controllers/authController");
 
+const validate = require("../middleware/validate");
+
+const {
+  registerSchema,
+  loginSchema,
+} = require("../validations/authValidation");
+
 /**
  * @swagger
  * tags:
@@ -47,7 +54,11 @@ const {
  *       409:
  *         description: User already exists
  */
-router.post("/register", register);
+router.post(
+  "/register",
+  validate(registerSchema),
+  register
+);
 
 /**
  * @swagger
@@ -77,6 +88,10 @@ router.post("/register", register);
  *       401:
  *         description: Invalid credentials
  */
-router.post("/login", login);
+router.post(
+  "/login",
+  validate(loginSchema),
+  login
+);
 
 module.exports = router;
