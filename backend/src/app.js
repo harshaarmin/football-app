@@ -5,7 +5,15 @@ const morgan = require("morgan");
 const swaggerUi = require("swagger-ui-express");
 const swaggerSpec = require("./config/swagger");
 
+const client = require("./config/prometheus");
+
+const {
+  httpRequestsTotal,
+  httpRequestDuration,
+} = require("./config/metrics");
+
 const errorHandler = require("./middleware/errorHandler");
+
 const {
   authLimiter,
   apiLimiter,
@@ -42,6 +50,44 @@ app.use(
 );
 
 app.use(apiLimiter);
+
+// ================= PROMETHEUS METRICS =================
+
+app.use((req, res, next) => {
+  const start = process.hrtime();
+
+  res.on("finish", () => {
+    // Skip internal endpoints
+    if (
+      req.originalUrl === "/metrics" ||
+      req.originalUrl === "/api/health"
+    ) {
+      return;
+    }
+
+    const diff = process.hrtime(start);
+    const duration = diff[0] + diff[1] / 1e9;
+
+    httpRequestsTotal.inc({
+      method: req.method,
+      route: req.originalUrl,
+      status: String(res.statusCode),
+    });
+
+    httpRequestDuration.observe(
+      {
+        method: req.method,
+        route: req.originalUrl,
+        status: String(res.statusCode),
+      },
+      duration
+    );
+  });
+
+  next();
+});
+
+
 
 // ================= ROUTES =================
 
@@ -89,6 +135,18 @@ app.get("/api/health", (req, res) => {
     timestamp: new Date().toISOString(),
     version: "2.0.0",
   });
+});
+
+
+// ================= PROMETHEUS =================
+
+app.get("/metrics", async (req, res) => {
+  try {
+    res.set("Content-Type", client.register.contentType);
+    res.end(await client.register.metrics());
+  } catch (err) {
+    res.status(500).end(err);
+  }
 });
 
 // ================= ROOT =================
