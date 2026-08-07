@@ -115,20 +115,31 @@ export default function Home() {
   useEffect(() => {
     let mounted = true;
 
-    Promise.all([
+    Promise.allSettled([
       axios.get(`${API_BASE_URL}/pl/home`),
       axios.get(`${API_BASE_URL}/worldcup/home`),
       axios.get(`${API_BASE_URL}/news`)
-    ]).then(([plRes, wcRes, newsRes]) => {
+    ]).then((results) => {
       if (!mounted) return;
-      setPlData(plRes.data || null);
-      setWcData(wcRes.data || null);
-      setNews(newsRes.data || []);
+
+      const [plRes, wcRes, newsRes] = results;
+      const nextPlData = plRes.status === 'fulfilled' ? (plRes.value.data || null) : { standings: [], players: [], clubs: [], matches: [], competition: { note: 'Premier League feed unavailable.' } };
+      const nextWcData = wcRes.status === 'fulfilled' ? (wcRes.value.data || null) : { matches: [], groups: [], teams: [] };
+      const nextNews = newsRes.status === 'fulfilled' ? (newsRes.value.data || []) : FALLBACK_NEWS;
+      const failures = results.filter(result => result.status === 'rejected').length;
+
+      setPlData(nextPlData);
+      setWcData(nextWcData);
+      setNews(nextNews);
+      setError(failures ? 'Some live feeds are temporarily unavailable. Showing fallback coverage.' : '');
       setLoading(false);
     }).catch(err => {
       console.error(err);
       if (mounted) {
-        setError('Football Hub could not load matches. Retrying shortly.');
+        setPlData({ standings: [], players: [], clubs: [], matches: [], competition: { note: 'Premier League feed unavailable.' } });
+        setWcData({ matches: [], groups: [], teams: [] });
+        setNews(FALLBACK_NEWS);
+        setError('Live feeds are temporarily unavailable. Showing fallback coverage.');
         setLoading(false);
       }
     });
@@ -225,26 +236,6 @@ export default function Home() {
   const plFinishedCount = plFinished.length;
   const wcFinishedCount = wcFinished.length;
 
-  if (error) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-[#06070a] px-4">
-        <div className="w-full max-w-md rounded-3xl border border-red-500/20 bg-red-950/10 p-8 text-center backdrop-blur-2xl">
-          <div className="mx-auto mb-6 flex h-14 w-14 items-center justify-center rounded-full bg-red-500/10 text-red-400">
-            <Activity size={24} />
-          </div>
-          <p className="text-xs font-black uppercase tracking-[0.3em] text-red-400">Connection Failed</p>
-          <p className="mt-2 text-sm text-white/60">{error}</p>
-          <button
-            onClick={() => window.location.reload()}
-            className="mt-6 w-full rounded-xl bg-white px-4 py-2.5 text-xs font-black uppercase tracking-widest text-black hover:bg-cyan-400 transition"
-          >
-            Retry Connection
-          </button>
-        </div>
-      </div>
-    );
-  }
-
   if (loading) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-[#06070a] px-4">
@@ -258,6 +249,14 @@ export default function Home() {
 
     return (
       <main className="min-h-screen w-full max-w-full overflow-x-clip bg-[#06070a] text-white">
+      {error && (
+        <section className="border-b border-amber-400/15 bg-amber-400/10">
+          <div className="mx-auto flex max-w-7xl items-center gap-3 px-4 py-3 text-sm text-amber-100 lg:px-6">
+            <Activity size={16} className="shrink-0" />
+            <p className="font-medium">{error}</p>
+          </div>
+        </section>
+      )}
       {/* 1. HERO SECTION (Layout aligned with WorldCupHome / PLHome) */}
       <section className="relative overflow-x-clip overflow-y-visible">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_12%_12%,rgba(16,185,129,0.15),transparent_30%),radial-gradient(circle_at_88%_8%,rgba(139,92,246,0.15),transparent_32%),linear-gradient(135deg,#07110d_0%,#0d1320_48%,#050608_100%)]" />

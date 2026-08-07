@@ -7,7 +7,7 @@ const {
 } = require("../config/metrics");
 
 const footballAPI = axios.create({
-  baseURL: process.env.FOOTBALL_API_BASE_URL,
+  baseURL: process.env.FOOTBALL_API_BASE_URL || "https://api.football-data.org/v4",
   headers: {
     "X-Auth-Token": process.env.FOOTBALL_API_KEY,
   },

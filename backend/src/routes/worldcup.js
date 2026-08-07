@@ -5,6 +5,11 @@ const router = express.Router()
 const WC_BASE = 'https://worldcup26.ir'
 const CACHE_DURATION = 5 * 60 * 1000
 const cache = {}
+const FALLBACK_WC_HOME = {
+    matches: [],
+    groups: [],
+    teams: []
+}
 
 const getCached = (key) => {
     const hit = cache[key]
@@ -113,7 +118,7 @@ router.get('/home', async (req, res) => {
         res.json({ matches, groups, teams })
     } catch (error) {
         console.error('Error fetching WC home:', error.message)
-        res.status(500).json({ error: 'Failed to fetch World Cup home data' })
+        res.json(FALLBACK_WC_HOME)
     }
 })
 

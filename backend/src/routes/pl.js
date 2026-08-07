@@ -44,6 +44,22 @@ const getPreviousCompletedSeasonStart = () => {
 
 const seasonLabel = (startYear) => `${startYear}/${String(startYear + 1).slice(2)}`;
 
+const FALLBACK_PL_HOME = {
+    competition: {
+        code: "PL",
+        name: "Premier League",
+        emblem: null,
+        currentSeason: null,
+        displaySeason: seasonLabel(getPreviousCompletedSeasonStart()),
+        dataMode: "fallback",
+        note: "Live Premier League data is temporarily unavailable."
+    },
+    standings: [],
+    players: [],
+    clubs: [],
+    matches: []
+};
+
 const fetchSeasonBundle = async (seasonStart) => {
     const params = seasonStart ? { season: seasonStart } : undefined;
     const [standings, scorers, matches] = await Promise.all([
@@ -134,9 +150,7 @@ router.get("/home", async (req, res) => {
 
         console.log(err.response?.data || err.message);
 
-        res.status(500).json({
-            error: "Failed to fetch Premier League data."
-        });
+        res.json(FALLBACK_PL_HOME);
 
     }
 
