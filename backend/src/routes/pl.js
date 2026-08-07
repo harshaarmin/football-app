@@ -1,5 +1,6 @@
 const express = require("express");
 const footballAPI = require("../services/footballApi");
+const { fallbackPLHome } = require("../data/fallbackContent");
 
 const router = express.Router();
 
@@ -44,21 +45,7 @@ const getPreviousCompletedSeasonStart = () => {
 
 const seasonLabel = (startYear) => `${startYear}/${String(startYear + 1).slice(2)}`;
 
-const FALLBACK_PL_HOME = {
-    competition: {
-        code: "PL",
-        name: "Premier League",
-        emblem: null,
-        currentSeason: null,
-        displaySeason: seasonLabel(getPreviousCompletedSeasonStart()),
-        dataMode: "fallback",
-        note: "Live Premier League data is temporarily unavailable."
-    },
-    standings: [],
-    players: [],
-    clubs: [],
-    matches: []
-};
+const FALLBACK_PL_HOME = fallbackPLHome;
 
 const fetchSeasonBundle = async (seasonStart) => {
     const params = seasonStart ? { season: seasonStart } : undefined;

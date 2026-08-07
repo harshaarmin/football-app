@@ -1,33 +1,28 @@
 {
-  "builds": [
-    {
-      "src": "frontend/package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "dist"
-      }
-    },
-    {
-      "src": "backend/src/app.js",
-      "use": "@vercel/node"
+  "installCommand": "npm install --prefix frontend && npm install --prefix backend",
+  "buildCommand": "npm run build --prefix frontend",
+  "outputDirectory": "frontend/dist",
+  "functions": {
+    "api/index.js": {
+      "runtime": "nodejs20.x"
     }
-  ],
+  },
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "/backend/src/app.js"
+      "destination": "/api/index"
     },
     {
       "source": "/api-docs",
-      "destination": "/backend/src/app.js"
+      "destination": "/api/index"
     },
     {
       "source": "/metrics",
-      "destination": "/backend/src/app.js"
+      "destination": "/api/index"
     },
     {
       "source": "/(.*)",
-      "destination": "/frontend/$1"
+      "destination": "/index.html"
     }
   ]
 }
