@@ -1,0 +1,18 @@
+apiVersion: v1
+
+kind: Pod
+
+metadata:
+  name: football-backend
+
+spec:
+  containers:
+    - name: backend
+      image: annihilator29/football-backend:latest
+
+      ports:
+        - containerPort: 3000
+
+      env:
+        - name: REDIS_URL
+          value: redis://redis:6379
