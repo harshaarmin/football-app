@@ -1,22 +1,30 @@
 const { createClient } = require("redis");
 
-const redisClient = createClient({
-  url: process.env.REDIS_URL || "redis://redis:6379",
-});
+const redisUrl = process.env.REDIS_URL || null;
 
-redisClient.on("connect", () => {
-  console.log("✅ Redis connected");
-});
+const redisClient = redisUrl
+  ? createClient({
+      url: redisUrl,
+    })
+  : null;
 
-redisClient.on("error", (err) => {
-  console.error("❌ Redis Error:");
-  console.error(err);
-});
+if (redisClient) {
+  redisClient.on("connect", () => {
+    console.log("✅ Redis connected");
+  });
+
+  redisClient.on("error", (err) => {
+    console.error("❌ Redis Error:");
+    console.error(err);
+  });
+}
 
 const connectRedis = async () => {
-  if (!redisClient.isOpen) {
-    await redisClient.connect();
+  if (!redisClient || redisClient.isOpen) {
+    return;
   }
+
+  await redisClient.connect();
 };
 
 module.exports = {

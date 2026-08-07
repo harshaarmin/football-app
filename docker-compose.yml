@@ -7,6 +7,8 @@ services:
 
     env_file:
       - ./backend/.env
+    environment:
+      REDIS_URL: redis://redis:6379
 
     expose:
       - "3000"

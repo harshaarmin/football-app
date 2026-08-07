@@ -61,6 +61,9 @@ const isSeasonEmpty = (standings) => {
 */
 
 const getCachedData = async (key) => {
+    if (!redisClient || !redisClient.isOpen) {
+        return null;
+    }
 
     try {
 
@@ -88,6 +91,9 @@ console.log(`⚡ Redis HIT -> ${key}`);
 };
 
 const setCachedData = async (key, value) => {
+    if (!redisClient || !redisClient.isOpen) {
+        return;
+    }
 
     try {
 
