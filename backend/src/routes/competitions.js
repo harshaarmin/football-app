@@ -1,6 +1,10 @@
 const express = require("express");
 const footballAPI = require("../services/footballApi");
 const { redisClient } = require("../config/redis");
+const {
+  competitionSummaries,
+  fallbackCompetitions,
+} = require("../data/fallbackContent");
 
 const {
   redisHitsTotal,
@@ -362,10 +366,7 @@ router.get("/", async (req, res) => {
     err.response?.data || err.message
   );
 
-  return res.status(err.response?.status || 500).json({
-    success: false,
-    message: "Failed to fetch competitions.",
-  });
+        return res.status(200).json(fallbackCompetitions);
 }
 
 });
@@ -473,10 +474,10 @@ router.get("/:code/summary", async (req, res) => {
             !bundle.matches &&
             !bundle.teams
         ) {
-            return res.status(404).json({
-                success: false,
-                message: "Competition data unavailable."
-            });
+            return res.status(200).json(
+                competitionSummaries[code] ||
+                competitionSummaries.PL
+            );
         }
 
         /*
@@ -511,16 +512,16 @@ router.get("/:code/summary", async (req, res) => {
         );
 
         if (err.response?.status === 404) {
-            return res.status(404).json({
-                success: false,
-                message: "Competition not found."
-            });
+            return res.status(200).json(
+                competitionSummaries[code] ||
+                competitionSummaries.PL
+            );
         }
 
-        res.status(500).json({
-            success: false,
-            message: "Failed to fetch competition summary."
-        });
+        res.status(200).json(
+            competitionSummaries[code] ||
+            competitionSummaries.PL
+        );
 
     }
 

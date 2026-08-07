@@ -1,15 +1,12 @@
 const express = require('express')
 const axios = require('axios')
+const { fallbackWorldCup } = require("../data/fallbackContent");
 const router = express.Router()
 
 const WC_BASE = 'https://worldcup26.ir'
 const CACHE_DURATION = 5 * 60 * 1000
 const cache = {}
-const FALLBACK_WC_HOME = {
-    matches: [],
-    groups: [],
-    teams: []
-}
+const FALLBACK_WC_HOME = fallbackWorldCup
 
 const getCached = (key) => {
     const hit = cache[key]
@@ -83,7 +80,7 @@ router.get('/groups', async (req, res) => {
         res.json(await fetchGroups())
     } catch (error) {
         console.error('Error fetching World Cup groups:', error.message)
-        res.status(500).json({ error: 'Failed to fetch World Cup data' })
+        res.json(fallbackWorldCup.groups)
     }
 })
 
@@ -93,7 +90,7 @@ router.get('/matches', async (req, res) => {
         res.json(await fetchMatches())
     } catch (error) {
         console.error('Error fetching WC matches:', error.message)
-        res.status(500).json({ error: 'Failed to fetch matches' })
+        res.json(fallbackWorldCup.matches)
     }
 })
 
@@ -102,7 +99,7 @@ router.get('/teams', async (req, res) => {
     try {
         res.json(await fetchTeams())
     } catch (error) {
-        res.status(500).json({ error: 'Failed to fetch teams' })
+        res.json(fallbackWorldCup.teams)
     }
 })
 

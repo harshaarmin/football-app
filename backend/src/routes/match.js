@@ -1,10 +1,11 @@
 const express = require("express");
 const axios = require("axios");
+const { findFallbackMatch } = require("../data/fallbackContent");
 
 const router = express.Router();
 
 const footballAPI = axios.create({
-    baseURL: process.env.FOOTBALL_API_BASE_URL,
+    baseURL: process.env.FOOTBALL_API_BASE_URL || "https://api.football-data.org/v4",
     headers: {
         "X-Auth-Token": process.env.FOOTBALL_API_KEY
     }
@@ -77,10 +78,13 @@ router.get("/:id", async (req, res) => {
             err.message
         );
 
+        const fallback = findFallbackMatch(id);
+        if (fallback) {
+            return res.json(fallback);
+        }
+
         res.status(500).json({
-
             error: "Failed to fetch match."
-
         });
 
     }

@@ -1,12 +1,13 @@
 const express = require("express");
 const axios = require("axios");
 const Parser = require("rss-parser");
+const { searchFallbackContent } = require("../data/fallbackContent");
 
 const router = express.Router();
 const parser = new Parser();
 
 const footballAPI = axios.create({
-    baseURL: process.env.FOOTBALL_API_BASE_URL,
+    baseURL: process.env.FOOTBALL_API_BASE_URL || "https://api.football-data.org/v4",
     headers: {
         "X-Auth-Token": process.env.FOOTBALL_API_KEY
     }
@@ -137,11 +138,7 @@ router.get("/", async (req, res) => {
 
         console.log(err.response?.data || err.message);
 
-        res.status(500).json({
-
-            error: "Search failed."
-
-        });
+        res.json(searchFallbackContent(query));
 
     }
 

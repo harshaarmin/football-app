@@ -1,5 +1,6 @@
 const express = require("express");
 const footballAPI = require("../services/footballApi");
+const { findFallbackTeam } = require("../data/fallbackContent");
 
 const router = express.Router();
 const cache = {};
@@ -31,6 +32,15 @@ router.get("/:id", async (req, res) => {
     const matches = matchesRes.status === "fulfilled" ? matchesRes.value.data.matches : [];
 
     if (!team) {
+      const fallback = findFallbackTeam(id);
+      if (fallback) {
+        return res.json(setCached(id, {
+          team: fallback.team,
+          matches: fallback.matches,
+          leagueStanding: fallback.leagueStanding,
+          form: fallback.matches
+        }));
+      }
       return res.status(404).json({ error: "Team not found." });
     }
 
@@ -79,6 +89,15 @@ router.get("/:id", async (req, res) => {
     }));
   } catch (err) {
     console.log(err.response?.data || err.message);
+    const fallback = findFallbackTeam(id);
+    if (fallback) {
+      return res.json(setCached(id, {
+        team: fallback.team,
+        matches: fallback.matches,
+        leagueStanding: fallback.leagueStanding,
+        form: fallback.matches
+      }));
+    }
     res.status(500).json({ error: "Failed to fetch team." });
   }
 });
